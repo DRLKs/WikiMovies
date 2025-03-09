@@ -7,7 +7,7 @@ Bienvenido a **MovieVerse**, el lugar donde puedes encontrar información sobre 
 ## 📌 Características
 - 🎞️ [Base de datos con cientos de películas](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata?resource=download&select=tmdb_5000_movies.csv).
 - 🔍 Búsqueda avanzada.
-- 📖 Muchísima información de todas las plículas.
+- 📖 Muchísima información de todas las películas.
 
 ## 🚀 Cómo Empezar
 1. Clona el repositorio:
