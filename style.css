@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 2px solid #ddd;
+}
+
+.logo {
+    color: #e6007e;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+}
+
+.tab {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.tab.active, .tab:hover {
+    background: #cce5ff;
+}
+
+.user-icon {
+    font-size: 20px;
+}
+
+.search-bar {
+    display: flex;
+    margin: 20px 0;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-btn {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 0 5px 5px 0;
+    background: #e6007e;
+    color: white;
+    cursor: pointer;
+}
+
+.movies-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.movie {
+    width: 120px;
+    height: 180px;
+    background: #ddd;
+    border-radius: 8px;
+}
