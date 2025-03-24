@@ -1,6 +1,0 @@
-
-function const Welcome = () => {
-  return (
-    
-  );
-};
