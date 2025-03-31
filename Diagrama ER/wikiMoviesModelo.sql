@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `Peliculas_TMDb`.`Etiquetas` (
 -- Table `Peliculas_TMDb`.`Idiomas`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Peliculas_TMDb`.`Idiomas` (
-  `id_idioma` INT NOT NULL,
+  `id_idioma` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id_idioma`));
 
