@@ -1,0 +1,147 @@
+/* General styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #141414;
+    color: #ffffff;
+    padding-top: 80px;
+}
+
+/* Navigation bar styling */
+.barra-navegacion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #0c0c0c;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.barra-navegacion h1 {
+    color: #e50914;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.botones-container {
+    display: flex;
+    gap: 20px;
+}
+
+.botones-container button {
+    background: transparent;
+    color: #ffffff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 8px 12px;
+}
+
+.botones-container button:hover {
+    color: #e50914;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #666; /* Placeholder until real image loads */
+    object-fit: cover;
+}
+
+/* Movie container styling */
+.peliculas-container {
+    margin: 30px 40px;
+}
+
+.peliculas-recomendadas,
+.peliculas-terror,
+.peliculas-humor {
+    margin-bottom: 40px;
+}
+
+.peliculas-container h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #e5e5e5;
+    font-weight: 500;
+}
+
+.lista-peliculas {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 15px;
+    scrollbar-width: thin;
+    scrollbar-color: #555 #141414;
+}
+
+/* Custom scrollbar styling */
+.lista-peliculas::-webkit-scrollbar {
+    height: 6px;
+}
+
+.lista-peliculas::-webkit-scrollbar-track {
+    background: #141414;
+}
+
+.lista-peliculas::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 6px;
+}
+
+/* Movie item styling */
+.pelicula-item {
+    flex: 0 0 auto;
+    width: 180px;
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.pelicula-item img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.pelicula-item:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .barra-navegacion {
+        padding: 15px 20px;
+    }
+
+    .peliculas-container {
+        margin: 20px;
+    }
+
+    .pelicula-item {
+        width: 140px;
+    }
+
+    .pelicula-item img {
+        height: 200px;
+    }
+}
