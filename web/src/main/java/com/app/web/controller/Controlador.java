@@ -15,7 +15,7 @@ public class Controlador {
     @Autowired
     PeliculasRepositorio peliculasRepositorio;
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index(Model model) {
 
         List<Pelicula> peliculas = peliculasRepositorio.findAll();
