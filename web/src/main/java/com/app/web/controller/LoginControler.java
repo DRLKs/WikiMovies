@@ -21,4 +21,9 @@ public class LoginControler {
         model.addAttribute("usuarios", usuarios);
         return "login";
     }
+
+    @GetMapping("/signup")
+    public String abrirSignup(Model model) {
+        return "signup";
+    }
 }
