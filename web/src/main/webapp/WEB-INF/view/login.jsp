@@ -23,7 +23,7 @@
             <h2>Iniciar Sesión</h2>
 
             <p class="signup-link">
-                ¿Nuevo? <a href="#">crear Cuenta</a>
+                ¿Nuevo? <a href="signup">crear Cuenta</a>
             </p>
 
             <div class="input-group">
@@ -33,7 +33,7 @@
 
             <div class="input-group">
                 <label for="password">contraseña*</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="pwd" required>
             </div>
 
             <div class="remember-me">
