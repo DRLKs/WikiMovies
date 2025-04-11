@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class UsuariosController {
+public class UsuariosController extends BaseControlador {
 
     private final String MENSAJE_USUARIO_EN_USO = "El usuario indicado ya está en eso";
     private final String MENSAJE_CORREO_EN_USO = "El email indicado ya está registrado";
@@ -23,21 +23,32 @@ public class UsuariosController {
     UsuariosRepositorio usuarioRepositorio;
 
     @GetMapping("/")
+    public String init(HttpSession session) {
+        if(estaAutenticado(session)) {
+            return "redirect:/welcome";
+        }else {
+            return "login";
+        }
+    }
+
+    @GetMapping("/login")
     public String index(@RequestParam("email") String correoElectronico,
                         @RequestParam("pwd") String contrasena, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            if( this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
+                model.addAttribute("mensaje", MENSAJE_CORREO_EN_USO);
+                return "login";
+            }
 
-        if( this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
-            model.addAttribute("mensaje", MENSAJE_CORREO_EN_USO);
-            return "login";
+            Usuario usuarioAutenticado = this.usuarioRepositorio.autenticaUsuario(correoElectronico, Hash.obtenerSHA256(contrasena));
+            if ( usuarioAutenticado == null ){
+                model.addAttribute("mensaje", MENSAJE_USUARIO_EN_USO);
+                return "login";
+            }
+            session.setAttribute("user", usuarioAutenticado);
         }
-
-        Usuario usuarioAutenticado = this.usuarioRepositorio.autenticaUsuario(correoElectronico, Hash.obtenerSHA256(contrasena));
-        if ( usuarioAutenticado == null ){
-            model.addAttribute("mensaje", MENSAJE_USUARIO_EN_USO);
-            return "login";
-        }
-        session.setAttribute("user", usuarioAutenticado);
         return "welcome";
+
     }
 
     @GetMapping("/signup")
