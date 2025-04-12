@@ -2,7 +2,7 @@
 
 <html>
     <title> WikiMovies </title>
-    <link rel="stylesheet" href="../../css/welcome.css">
+    <link rel="stylesheet" href="../../css/index.css">
 
 <body>
 

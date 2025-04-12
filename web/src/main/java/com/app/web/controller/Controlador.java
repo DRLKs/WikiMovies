@@ -2,6 +2,7 @@ package com.app.web.controller;
 
 import com.app.web.dao.PeliculasRepositorio;
 import com.app.web.entity.Pelicula;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,7 @@ public class Controlador {
     @Autowired
     PeliculasRepositorio peliculasRepositorio;
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String index(Model model) {
 
         List<Pelicula> peliculas = peliculasRepositorio.findAll();
@@ -27,6 +28,6 @@ public class Controlador {
     @GetMapping("/welcome")
     public String welcome(Model model) {
 
-        return "welcome";
+        return "index";
     }
 }

@@ -2,7 +2,7 @@
 
 <html>
     <title> WikiMovies </title>
-    <link rel="stylesheet" href="../../css/signup.css">
+    <link rel="stylesheet" href="../../css/signupLogin.css">
 
 <body>
 
@@ -48,11 +48,12 @@
     </form>
 
     <div class="footer">
-        <form action="/" method="get">
-            <p>¿Ya tienes una cuenta?</p>
-            <button type="submit">Iniciar sesión</button>
-        </form>
+        ¿Ya tienes una cuenta?
+        <a href="login" >Iniciar sesión</a>
     </div>
 </div>
+
+<script src="../../js/login.js"></script>
+
 </body>
 </html>

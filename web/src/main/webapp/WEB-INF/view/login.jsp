@@ -1,50 +1,51 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.app.web.dao.UsuariosRepositorio" %>
-<%@ page import="com.app.web.entity.Usuario" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/login.css">
-</head>
-    <%
-        List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
-    %>
+    <title> WikiMovies </title>
+    <link rel="stylesheet" href="../../css/signupLogin.css">
+
+
 <body>
-<!-- Nota: El "FONDO EPIQUISIMO CON PELÍCULAS" se configura en el CSS -->
+<div class="container">
+    <h1>Iniciar Sesión</h1>
+    <form id="login-form" method="post" action="${pageContext.request.contextPath}/log">
+        <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+            <div class="error" id="email-error">Por favor, ingresa un correo electrónico válido</div>
+        </div>
 
-<div class="main-container">
-    <h1>WikiMovies</h1>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="pwd" placeholder="Ingresa tu contraseña" required>
+            <div class="error" id="password-error">Por favor, ingresa tu contraseña</div>
+        </div>
 
-    <div class="login-box">
-        <form action="#" method="post"> <!-- El action="#" es un placeholder -->
-            <h2>Iniciar Sesión</h2>
+        <div class="remember-me">
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Recordarme</label>
+        </div>
 
-            <p class="signup-link">
-                ¿Nuevo? <a href="signup">crear Cuenta</a>
-            </p>
+        <!--
 
-            <div class="input-group">
-                <label for="email">email*</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+        No incorporamos olvidar contraseña en esta versión
 
-            <div class="input-group">
-                <label for="password">contraseña*</label>
-                <input type="password" id="password" name="pwd" required>
-            </div>
+        <div class="forgot-password">
+            <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+        -->
+        <button type="submit">Iniciar Sesión</button>
+        <div class="success-message" id="success-message">¡Sesión iniciada correctamente!</div>
+        <div class="error-message" id="login-error" style="display:none; color: #e74c3c; text-align: center; margin-top: 10px;"></div>
+    </form>
 
-            <div class="remember-me">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Recuerdame</label>
-            </div>
 
-            <button type="submit" class="login-button">Iniciar Sesión</button>
-        </form>
+    <div class="footer">
+        ¿No tienes una cuenta? <a href="/signup">Regístrate aquí</a>
     </div>
+
 </div>
 
+    <script src="../../js/login.js"></script>
 </body>
 </html>

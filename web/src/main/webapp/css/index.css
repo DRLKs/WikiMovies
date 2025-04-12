@@ -7,62 +7,9 @@
 }
 
 body {
-    background-color: #141414;
+    background-color: #312d2d;
     color: #ffffff;
     padding-top: 80px;
-}
-
-/* Navigation bar styling */
-.barra-navegacion {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background-color: #0c0c0c;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.barra-navegacion h1 {
-    color: #e50914;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.botones-container {
-    display: flex;
-    gap: 20px;
-}
-
-.botones-container button {
-    background: transparent;
-    color: #ffffff;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    transition: color 0.3s;
-    padding: 8px 12px;
-}
-
-.botones-container button:hover {
-    color: #e50914;
-}
-
-.profile {
-    display: flex;
-    align-items: center;
-}
-
-.profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #666; /* Placeholder until real image loads */
-    object-fit: cover;
 }
 
 /* Movie container styling */

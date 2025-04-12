@@ -1,33 +1,47 @@
 <%@ page import="com.app.web.entity.Pelicula" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: David
-  Date: 31/03/2025
-  Time: 14:20
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <html>
-<head>
-    <title> WikiMovies </title>
-</head>
+<title> WikiMovies </title>
+<link rel="stylesheet" href="../../css/index.css">
 
 <%
     List<Pelicula> peliculaList = (List<Pelicula>) request.getAttribute("peliculas");
 %>
 
 <body>
-    <h1>
-        HOLAAAAAAAAAAa
-    </h1>
 
-<%
-    for ( Pelicula pelicula : peliculaList ){
+<%@ include file="barra_navegacion.jsp" %>
 
-%>
+<div class="peliculas-container">
+    <div class="peliculas-recomendadas">
+        <h3> ¿Qué te apetece ver hoy? </h3>
+        <div class="lista-peliculas">
 
-<%= pelicula.getTitulo() %>
-<br>
-<%  } %>
+            <%
+                for ( Pelicula pelicula : peliculaList ){
+
+            %>
+
+            <%= pelicula.getTitulo() %>
+            <br>
+            <%  } %>
+
+        </div>
+    </div>
+    <div class="peliculas-terror">
+        <h3> Peliculas de terror</h3>
+        <div class="lista-peliculas">
+
+        </div>
+    </div>
+    <div class="peliculas-humor">
+        <h3> Peliculas de humor</h3>
+        <div class="lista-peliculas">
+
+        </div>
+    </div>
+</div>
 </body>
 </html>
