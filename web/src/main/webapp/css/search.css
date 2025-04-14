@@ -1,34 +1,198 @@
-
 :root {
-    --color-fondo-peliculas: #bebaba;
+    /* Modern movie-themed color palette */
+    --color-background: #121212;
+    --color-card-bg: #1e1e1e;
+    --color-primary: #ff4646;
+    --color-secondary: #2c2c2c;
+    --color-accent: #ffd369;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #b3b3b3;
+    --color-divider: #333333;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
-.info-busqueda-container{
-    margin-top: 120px;
+body {
+    font-family: 'Poppins', 'Roboto', sans-serif;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 0;
 }
 
-.peliculas-container{
-    background-color: var(--color-fondo-peliculas);
+.info-busqueda-container {
+    margin-top: 100px;
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), var(--color-background));
+}
+
+.info-busqueda-container h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.peliculas-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
+    gap: 30px;
+    padding: 40px 20px;
 }
 
 .pelicula-container {
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    padding: 30px;
     width: 100%;
     display: flex;
     flex-direction: row;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--color-primary);
+    position: relative;
 }
 
-.pancarta-container{
-    width: 22%;
+.pelicula-container:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    border-left: 4px solid var(--color-accent);
 }
-.informacion-container{
+
+.pancarta-container {
+    width: 22%;
+    margin-right: 30px;
+}
+
+.pancarta-container img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+    object-fit: cover;
+}
+
+.pelicula-container:hover .pancarta-container img {
+    transform: scale(1.05);
+}
+
+.informacion-container {
+    padding: 10px;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    gap: 20px;
 }
 
-.informacion-basica-container{
+.informacion-basica-container {
     display: flex;
+    flex-direction: column;
     text-align: left;
+    border-bottom: 1px solid var(--color-divider);
+    padding-bottom: 15px;
+}
+
+.informacion-basica-container h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: var(--color-text-primary);
+    letter-spacing: 0.5px;
+}
+
+.informacion-basica-container {
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+.descripcion-container {
+    color: var(--color-text-secondary);
+    font-size: 16px;
+    line-height: 1.8;
+    font-weight: 300;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .pelicula-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .pancarta-container {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .pancarta-container img {
+        max-width: 220px;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .info-busqueda-container h2 {
+        font-size: 26px;
+    }
+}
+
+/* Add to your search.css file */
+.pelicula-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.pelicula-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.favorite-form {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+}
+
+.favorite-button {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.favorite-button:hover {
+    transform: scale(1.15);
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.heart-icon {
+    color: #ffffff;
+    font-size: 20px;
+    font-style: normal;
+}
+
+/* Add style for when the movie is already favorited */
+.favorite-button.active .heart-icon {
+    color: var(--color-primary);
+}
+
+.favorite-button.active:hover .heart-icon {
+    color: var(--color-accent);
 }

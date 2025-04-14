@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -34,5 +35,19 @@ public class Controlador {
         model.addAttribute("peliculas",peliculas);
 
         return "search";
+    }
+
+    @GetMapping("/film")
+    public String seeFilm(@RequestParam("id") Integer id, Model model) {
+
+        Pelicula pelicula = peliculasRepositorio.getReferenceById(id);
+        model.addAttribute("pelicula", pelicula);
+
+        return "film";
+    }
+
+    @PostMapping("/favorite")
+    public String doFavorite( @RequestParam("id") Integer id, Model model, HttpSession session) {
+        return "/";
     }
 }

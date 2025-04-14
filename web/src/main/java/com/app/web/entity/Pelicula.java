@@ -85,4 +85,7 @@ public class Pelicula {
     @ManyToMany
     private Set<com.app.web.entity.Productora> productoras = new LinkedHashSet<>();
 
+    @Column(name = "poster", length = 200)
+    private String poster;
+
 }

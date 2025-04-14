@@ -16,7 +16,7 @@
 <%@ include file="barra_navegacion.jsp" %>
 
     <div class="info-busqueda-container" >
-        <h2> Mostrando resultado para "<%=titulo%>"</h2> <br>
+        <h2> Mostrando <%= peliculas.size() %> resultados para "<%=titulo%>"</h2> <br>
         ----------------------------------------
     </div>
 
@@ -34,24 +34,32 @@
             for ( Pelicula pelicula : peliculas ){
         %>
 
-        <div class="pelicula-container">
-
-            <div class="pancarta-container">
-                <img src="" alt="Pancarta Pelicula">
-            </div>
-            <div class="informacion-container">
-
-                <div class="informacion-basica-container">
-                    <h3> <%= pelicula.getTitulo() + " (" + pelicula.getFechaEstreno().getYear() + ")"%> </h3>
-                    Nota por la crítica: <%= pelicula.getMediaVotos()%>
+        <a href="film?id=<%= pelicula.getId() %>" class="pelicula-link">
+            <div class="pelicula-container">
+                <div class="pancarta-container">
+                    <img src="<%= pelicula.getPoster() %>" alt="Pancarta Pelicula">
                 </div>
-                <div class="descripcion-container">
-                    <%= pelicula.getDescripcion()%>
-
+                <div class="informacion-container">
+                    <div class="informacion-basica-container">
+                        <h3> <%= pelicula.getTitulo() + " (" + pelicula.getFechaEstreno().getYear() + ")"%> </h3>
+                        Nota por la crítica: <%= pelicula.getMediaVotos()%>
+                    </div>
+                    <div class="descripcion-container">
+                        <%= pelicula.getDescripcion()%>
+                    </div>
                 </div>
+                <form action="toggleFavorite" method="post" class="favorite-form" onclick="event.stopPropagation();">
+                    <input type="hidden" name="id" value="<%= pelicula.getId() %>">
+                    <button type="submit" class="favorite-button">
+                        <i class="heart-icon">❤</i>
+                    </button>
+                </form>
             </div>
-        </div>
+        </a>
         <%  } %>
     </div>
+
+<script src="../../js/login.js" > </script>
+
 </body>
 </html>
