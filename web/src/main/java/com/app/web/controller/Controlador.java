@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,9 +26,13 @@ public class Controlador {
         return "index";
     }
 
-    @GetMapping("/welcome")
-    public String welcome(Model model) {
+    @GetMapping("/search")
+    public String search(@RequestParam("title") String titulo, Model model) {
 
-        return "index";
+        List<Pelicula> peliculas = peliculasRepositorio.findByTitulo(titulo);
+        model.addAttribute("titulo", titulo);
+        model.addAttribute("peliculas",peliculas);
+
+        return "search";
     }
 }

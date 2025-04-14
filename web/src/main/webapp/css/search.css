@@ -1,0 +1,34 @@
+
+:root {
+    --color-fondo-peliculas: #bebaba;
+}
+
+.info-busqueda-container{
+    margin-top: 120px;
+}
+
+.peliculas-container{
+    background-color: var(--color-fondo-peliculas);
+    display: flex;
+    flex-direction: column;
+}
+
+.pelicula-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.pancarta-container{
+    width: 22%;
+}
+.informacion-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.informacion-basica-container{
+    display: flex;
+    text-align: left;
+}

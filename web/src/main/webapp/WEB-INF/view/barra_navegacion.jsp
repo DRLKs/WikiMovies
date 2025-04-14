@@ -14,11 +14,35 @@
 <body>
 
 <div class="barra-navegacion">
-    <h1> WikiMovies </h1>
+    <a href="/"><h1> WikiMovies </h1> </a>
     <div class="botones-container">
         <button>Peliculas</button>
         <button>Listas</button>
         <button>Miembros</button>
+    </div>
+
+    <div class="search-container">
+        <form action="/search" method="GET" class="search-form">
+            <div class="form-group">
+                <input
+                        type="text"
+                        id="tituloPelicula"
+                        name="title"
+                        class="form-input"
+                        placeholder="Introduce el nombre de la película..."
+                        autocomplete="off"
+                >
+            </div>
+
+            <!-- Si quieres añadir filtros adicionales expandibles -->
+            <div class="filters" style="display: none;">
+                <!-- Aquí puedes añadir más filtros como géneros, año, etc. -->
+            </div>
+
+            <button type="button" class="filters-toggle">
+                Mostrar filtros avanzados
+            </button>
+        </form>
     </div>
 
     <div class="profile">
