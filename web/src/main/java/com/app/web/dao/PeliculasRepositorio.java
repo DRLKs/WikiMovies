@@ -12,4 +12,7 @@ public interface PeliculasRepositorio extends JpaRepository<Pelicula, Integer> {
 
     @Query("select P from Pelicula P where lower( P.titulo ) like lower( concat( '%', :titulo, '%'))")
     public List<Pelicula> findByTitulo(@Param("titulo") String titulo);
+
+    @Query("select p from Pelicula p where p.id = :id")
+    public Pelicula getPeliculaById(@Param("id") Integer id);
 }

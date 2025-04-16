@@ -4,7 +4,6 @@
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/signupLogin.css">
 
-
 <body>
 <div class="container">
     <h1>Iniciar Sesión</h1>
@@ -47,5 +46,22 @@
 </div>
 
     <script src="../../js/login.js"></script>
+    
+    <%-- Script para mostrar mensaje de error si viene del servidor --%>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            <% 
+            String msg = (String) request.getAttribute("mensaje");
+            if(msg != null) {
+            %>
+                // Obtener el elemento de error
+                const loginError = document.getElementById('login-error');
+                if (loginError) {
+                    loginError.textContent = "<%= msg %>";
+                    loginError.style.display = 'block';
+                }
+            <% } %>
+        });
+    </script>
 </body>
 </html>

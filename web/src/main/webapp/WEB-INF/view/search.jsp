@@ -48,7 +48,7 @@
                         <%= pelicula.getDescripcion()%>
                     </div>
                 </div>
-                <form action="toggleFavorite" method="post" class="favorite-form" onclick="event.stopPropagation();">
+                <form action="/favorite" method="post" class="favorite-form" >
                     <input type="hidden" name="id" value="<%= pelicula.getId() %>">
                     <button type="submit" class="favorite-button">
                         <i class="heart-icon">❤</i>

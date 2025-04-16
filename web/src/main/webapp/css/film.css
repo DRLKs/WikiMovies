@@ -1,0 +1,196 @@
+:root {
+    /* Same movie-themed color palette as search.css for consistency */
+    --color-background: #121212;
+    --color-card-bg: #1e1e1e;
+    --color-primary: #ff4646;
+    --color-secondary: #2c2c2c;
+    --color-accent: #ffd369;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #b3b3b3;
+    --color-divider: #333333;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: 'Poppins', 'Roboto', sans-serif;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.pelicula-content {
+    margin: 120px auto 50px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.poster-container {
+    width: 50vh;
+    min-height: 300px;
+}
+
+.poster-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, var(--color-card-bg), transparent);
+}
+
+.poster-container img {
+    max-height: 80%;
+    max-width: 100%;
+}
+
+.informacion-container {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+.informacion-container h3 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+    letter-spacing: 0.5px;
+}
+
+.informacion-container i {
+    font-size: 18px;
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.descripcion-container {
+    margin: 25px 0;
+    color: var(--color-text-secondary);
+    font-size: 18px;
+    line-height: 1.8;
+    font-weight: 300;
+    padding-left: 15px;
+    background-color: rgba(255, 70, 70, 0.05);
+    padding: 20px;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+/* Duration styling */
+.informacion-container > :last-child {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    width: fit-content;
+    margin-top: 10px;
+}
+
+/* Favorite button */
+.favorite-container {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+}
+
+.favorite-button {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.favorite-button:hover {
+    transform: scale(1.15);
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.heart-icon {
+    color: #ffffff;
+    font-size: 25px;
+    font-style: normal;
+}
+
+.favorite-button.active .heart-icon {
+    color: var(--color-primary);
+}
+
+.heart-icon-favorite {
+    color: var(--color-accent);
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .pelicula-content {
+        margin-top: 100px;
+    }
+
+    .informacion-container {
+        padding: 25px;
+    }
+
+    .informacion-container h3 {
+        font-size: 28px;
+    }
+
+    .poster-container {
+        height: 40vh;
+    }
+
+    .descripcion-container {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    .favorite-container {
+        top: 25px;
+        right: 25px;
+    }
+}
+
+/* For larger screens, make it more cinematic */
+@media (min-width: 1024px) {
+    .pelicula-content {
+        flex-direction: row;
+        min-height: 600px;
+    }
+
+    .poster-container {
+        width: 40%;
+        height: auto;
+        background-position: center;
+    }
+
+    .poster-container::before {
+        height: 0;
+        width: 50%;
+        right: 0;
+        left: auto;
+        bottom: 0;
+        top: 0;
+        background: linear-gradient(to left, var(--color-card-bg), transparent);
+    }
+
+    .informacion-container {
+        width: 60%;
+    }
+}
