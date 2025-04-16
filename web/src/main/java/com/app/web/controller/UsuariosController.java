@@ -3,6 +3,9 @@ package com.app.web.controller;
 import com.app.web.utils.Hash;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Usuario;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +48,9 @@ public class UsuariosController extends BaseControlador {
     @PostMapping("/log")
     public String iniciarSesion(@RequestParam("email") String correoElectronico,
                                 @RequestParam("pwd") String contrasena,
-                                Model model, HttpSession session) {
+                                @RequestParam(value = "remember", defaultValue = "false") Boolean remember,
+                                Model model, HttpSession session,
+                                HttpServletRequest request, HttpServletResponse response) {
 
         if( !this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
             String msg = "El email indicado no está registrado";
@@ -59,14 +64,40 @@ public class UsuariosController extends BaseControlador {
             model.addAttribute("mensaje", msg);
             return "login";
         }
+
         session.setAttribute("usuario", usuarioAutenticado);
+
+        if (remember) {
+            // Usar un nombre personalizado para evitar conflictos con JSESSIONID
+            Cookie userCookie = new Cookie("wikimovies_user_session", session.getId());
+            userCookie.setHttpOnly(true);
+            userCookie.setMaxAge(60 * 60 * 24 * 30); // 30 días
+            userCookie.setPath("/");
+            response.addCookie(userCookie);
+        }
+
         return "redirect:/";
     }
 
     @GetMapping("/logout")
-    public String desLoguear(HttpSession session) {
+    public String desLoguear(HttpSession session, HttpServletRequest request, 
+                            HttpServletResponse response) {
         session.removeAttribute("usuario");
-
+        
+        // Eliminar la cookie de sesión
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("wikimovies_user_session".equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        
         return "redirect:/";
     }
 

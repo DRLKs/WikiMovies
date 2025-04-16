@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class Controlador extends BaseControlador {
@@ -60,7 +62,10 @@ public class Controlador extends BaseControlador {
         
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
-            fav
+            Set<Pelicula> peliculasFavoritas = usuario.getPeliculas();
+            if (peliculasFavoritas != null){
+                peliculaFavorita = peliculasFavoritas.contains(pelicula);
+            }
         }
         
         model.addAttribute("peliculaFavorita", peliculaFavorita);
@@ -78,19 +83,44 @@ public class Controlador extends BaseControlador {
         }
 
         Pelicula pelicula = peliculasRepositorio.getReferenceById(id);
+
+        if ( usuario.getPeliculas() == null ){
+            usuario.setPeliculas(new LinkedHashSet<>());
+        }
+
         boolean peliculaFavorita = usuario.getPeliculas().contains(pelicula);
+        Set<Pelicula> peliculasActualizadas = usuario.getPeliculas();
+        Set<Usuario> usuariosActualizadosLista = pelicula.getUsuarios();
 
         if( peliculaFavorita ) {        // Ya es favorita
-            usuario.getPeliculas().remove(pelicula);
-            pelicula.getUsuarios().remove(usuario);
+
+            peliculasActualizadas.remove(pelicula);
+            usuario.setPeliculas(peliculasActualizadas);
+
+            usuariosActualizadosLista.remove(usuario);
+            pelicula.setUsuarios(usuariosActualizadosLista);
+
         }else{                          // La introducimos como favorita
-            usuario.getPeliculas().add(pelicula);
-            pelicula.getUsuarios().add(usuario);
+
+            peliculasActualizadas.add(pelicula);
+            usuariosActualizadosLista.add(usuario);
+
+            usuario.setPeliculas(peliculasActualizadas);
+            pelicula.setUsuarios(usuariosActualizadosLista);
         }
 
         this.peliculasRepositorio.save(pelicula);
         this.usuarioRepositorio.save(usuario);
 
         return "redirect:/film?id=" + id;
+    }
+
+    @GetMapping("/miembros")
+    public String mostrarMiembros(Model model) {
+
+        List<Usuario> usuarios = usuarioRepositorio.findAll();
+        model.addAttribute("miembros", usuarios);
+
+        return "miembros";
     }
 }

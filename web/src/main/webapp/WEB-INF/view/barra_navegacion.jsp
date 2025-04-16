@@ -16,9 +16,9 @@
 <div class="barra-navegacion">
     <a href="/"><h1> WikiMovies </h1> </a>
     <div class="botones-container">
-        <button>Peliculas</button>
-        <button>Listas</button>
-        <button>Miembros</button>
+        <a href="<%= request.getContextPath() %>/peliculas" class="nav-button">Peliculas</a>
+        <a href="<%= request.getContextPath() %>/listas" class="nav-button">Listas</a>
+        <a href="<%= request.getContextPath() %>/miembros" class="nav-button">Miembros</a>
     </div>
 
     <div class="search-container">
