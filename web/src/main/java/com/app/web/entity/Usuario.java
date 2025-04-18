@@ -35,4 +35,7 @@ public class Usuario {
     @OneToMany(mappedBy = "idUsuario")
     private Set<Lista> listas = new LinkedHashSet<>();
 
+    public String getAvatarUrl() {
+        return null;
+    }
 }

@@ -123,4 +123,13 @@ public class Controlador extends BaseControlador {
 
         return "miembros";
     }
+
+    @GetMapping("/profile")
+    public String mostrarProfile(@RequestParam("id") Integer id, Model model) {
+
+        Usuario usuario = usuarioRepositorio.getReferenceById(id);
+        model.addAttribute("usuario", usuario);
+
+        return "profile";
+    }
 }

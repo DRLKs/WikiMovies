@@ -29,7 +29,7 @@
                         id="tituloPelicula"
                         name="title"
                         class="form-input"
-                        placeholder="Introduce el nombre de la película..."
+                        placeholder="Buscar peliculas..."
                         autocomplete="off"
                 >
             </div>
@@ -47,8 +47,15 @@
 
     <div class="profile">
         <div class="profile">
-            <%= usuario != null ? "Bienvenido " + usuario.getNombreUsuario() : "<a href='/login'>Iniciar sesión</a>" %>
-            <%= usuario != null ? "<a href='" + request.getContextPath() + "/logout'>Cerrar sesión</a>" : "" %>
+            <% if (usuario != null) { %>
+                <span>Bienvenido <%= usuario.getNombreUsuario() %></span>
+                <a href="profile?id=<%= usuario.getId() %>" >
+                    <img class="profile-image" src="<%= (usuario.getAvatarUrl() != null) ? usuario.getAvatarUrl() : "../../img/default-avatar.png" %>" alt="Avatar de <%= usuario.getNombreUsuario() %>">
+                </a>
+                <a href="<%= request.getContextPath() %>/logout">Cerrar sesión</a>
+            <% } else { %>
+                <a href="/login">Iniciar sesión</a>
+            <% } %>
         </div>
     </div>
 </div>

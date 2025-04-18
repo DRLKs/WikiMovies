@@ -9,25 +9,31 @@
     
     <%@ include file="barra_navegacion.jsp" %>
     
-    <h1 class="page-title">Miembros de WikiMovies</h1>
-    
-    <div class="miembros-grid">
-        <% 
-        List<Usuario> usuarios = (List<Usuario>) request.getAttribute("miembros");
-        if(usuarios != null || usuarios.size() > 0) {
-            for(Usuario userMiembro : usuarios) {
-        %>
+
+    <div class="miembros-container">
+        <h1 class="page-title">Miembros de WikiMovies</h1>
+
+        <div class="miembros-grid">
+            <%
+                List<Usuario> usuarios = (List<Usuario>) request.getAttribute("miembros");
+                if(usuarios != null && !usuarios.isEmpty()) {
+                    for(Usuario userMiembro : usuarios) {
+            %>
+            <a href="profile?id=<%= userMiembro.getId() %>" class="miembro-link">
                 <div class="miembro-card">
-                    <img src="<%= request.getContextPath() %>/img/default-profile.png" alt="Foto de perfil" class="profile-image">
+                    <img class="profile-image" src="<%= null != null ? "userMiembro.avatarUrl" : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                     <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>
                     <div class="miembro-info">Miembro desde hace tiempo</div>
                 </div>
-        <%
-            }
-        } else {
-        %>
+            </a>
+            <%
+                }
+            } else {
+            %>
             <p>No hay miembros para mostrar</p>
-        <% } %>
+            <% } %>
+        </div>
     </div>
+
 </body>
 </html>

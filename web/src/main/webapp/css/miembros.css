@@ -1,10 +1,18 @@
 
+.miembros-container {
+    margin-top: 130px; /* Centrado horizontalmente con margen superior e inferior */
+}
+
  .miembros-grid {
      display: grid;
      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
      grid-gap: 20px;
      padding: 20px;
  }
+
+.miembro-link {
+    text-decoration: none;
+}
 
 .miembro-card {
     background-color: #f5f5f5;
