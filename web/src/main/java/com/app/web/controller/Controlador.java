@@ -1,7 +1,9 @@
 package com.app.web.controller;
 
+import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.PeliculasRepositorio;
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,21 +28,37 @@ public class Controlador extends BaseControlador {
     @Autowired
     UsuariosRepositorio usuarioRepositorio;
 
+    @Autowired
+    GenerosRepository generosRepositorio;
+
     @GetMapping("/")
     public String index(Model model) {
 
         List<Pelicula> peliculas = peliculasRepositorio.findAll();
         model.addAttribute("peliculas", peliculas);
 
+        List<Genero> generos =generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+
         return "index";
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam("title") String titulo, Model model) {
+    public String search(@RequestParam("title")String titulo,
+                         @RequestParam(value = "generos", required = false ) Integer[] listaGeneros,
+                         Model model) {
 
-        List<Pelicula> peliculas = peliculasRepositorio.findByTitulo(titulo);
+        List<Pelicula> peliculas;
+        if( listaGeneros != null & listaGeneros.length > 0 ) {
+            peliculas = peliculasRepositorio.findByGeneroTitulo( listaGeneros, titulo );
+        }else{
+           peliculas  = peliculasRepositorio.findByTitulo(titulo);
+        }
         model.addAttribute("titulo", titulo);
         model.addAttribute("peliculas",peliculas);
+
+        List<Genero> generos =generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
 
         return "search";
     }
@@ -121,6 +140,9 @@ public class Controlador extends BaseControlador {
         List<Usuario> usuarios = usuarioRepositorio.findAll();
         model.addAttribute("miembros", usuarios);
 
+        List<Genero> generos =generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+
         return "miembros";
     }
 
@@ -129,6 +151,9 @@ public class Controlador extends BaseControlador {
 
         Usuario usuario = usuarioRepositorio.getReferenceById(id);
         model.addAttribute("usuario", usuario);
+
+        List<Genero> generos =generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
 
         return "profile";
     }

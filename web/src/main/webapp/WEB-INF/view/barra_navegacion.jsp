@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.entity.Usuario" %>
+<%@ page import="com.app.web.entity.Genero" %>
 
 <html>
     <link rel="stylesheet" href="../../css/barra_navegacion.css">
@@ -24,7 +25,7 @@
     <div class="search-container">
         <form action="/search" method="GET" class="search-form">
             <div class="form-group">
-                <input
+                <label for="tituloPelicula"></label><input
                         type="text"
                         id="tituloPelicula"
                         name="title"
@@ -36,7 +37,30 @@
 
             <!-- Si quieres añadir filtros adicionales expandibles -->
             <div class="filters" style="display: none;">
-                <!-- Aquí puedes añadir más filtros como géneros, año, etc. -->
+                <!-- Mostrar géneros desde la base de datos -->
+                <div class="generos-container">
+                    <h4>Géneros</h4>
+                    <div class="generos-list">
+                        <%
+                            List<Genero> generos = (List<Genero>) request.getAttribute("generos");
+                            if(generos != null && !generos.isEmpty()) {
+                                for(Genero genero : generos) {
+                        %>
+                            <div class="genero-item">
+                                <input type="checkbox" 
+                                       id="genero_<%= genero.getId() %>" 
+                                       name="generos" 
+                                       value="<%= genero.getId() %>">
+                                <label for="genero_<%= genero.getId() %>"><%= genero.getNombre() %></label>
+                            </div>
+                        <%
+                                }
+                            } else {
+                        %>
+                            <p>No hay géneros disponibles</p>
+                        <% } %>
+                    </div>
+                </div>
             </div>
 
             <button type="button" class="filters-toggle">
@@ -60,4 +84,19 @@
     </div>
 </div>
 
+<!-- Script para mostrar/ocultar filtros -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filtersToggle = document.querySelector('.filters-toggle');
+        const filters = document.querySelector('.filters');
+        
+        filtersToggle.addEventListener('click', function() {
+            const isHidden = filters.style.display === 'none';
+            filters.style.display = isHidden ? 'block' : 'none';
+            filtersToggle.textContent = isHidden ? 'Ocultar filtros avanzados' : 'Mostrar filtros avanzados';
+        });
+    });
+</script>
+
 </body>
+</html>

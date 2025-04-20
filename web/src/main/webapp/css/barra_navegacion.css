@@ -191,6 +191,30 @@
     text-decoration: underline;
 }
 
+/* Añadir al archivo CSS correspondiente */
+.filters {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.generos-container {
+    margin-bottom: 10px;
+}
+
+.generos-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+}
+
+.genero-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .search-container {

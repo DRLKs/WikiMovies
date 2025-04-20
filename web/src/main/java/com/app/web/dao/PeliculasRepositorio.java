@@ -15,4 +15,9 @@ public interface PeliculasRepositorio extends JpaRepository<Pelicula, Integer> {
 
     @Query("select p from Pelicula p where p.id = :id")
     public Pelicula getPeliculaById(@Param("id") Integer id);
+
+    @Query("SELECT DISTINCT p FROM Pelicula p JOIN p.generos g " +
+            "WHERE LOWER(p.titulo) LIKE LOWER(CONCAT('%', :titulo, '%')) " +
+            "AND g.id IN :listaGeneros")
+    List<Pelicula> findByGeneroTitulo(Integer[] listaGeneros, String titulo);
 }
