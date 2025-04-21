@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,7 +48,8 @@ public class Controlador extends BaseControlador {
                          Model model) {
 
         List<Pelicula> peliculas;
-        if( listaGeneros != null & listaGeneros.length > 0 ) {
+
+        if( listaGeneros != null && listaGeneros.length > 0 ) {
             peliculas = peliculasRepositorio.findByGeneroTitulo( listaGeneros, titulo );
         }else{
            peliculas  = peliculasRepositorio.findByTitulo(titulo);
@@ -81,7 +81,7 @@ public class Controlador extends BaseControlador {
         
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
-            Set<Pelicula> peliculasFavoritas = usuario.getPeliculas();
+            Set<Pelicula> peliculasFavoritas = usuario.getPeliculasFavoritas();
             if (peliculasFavoritas != null){
                 peliculaFavorita = peliculasFavoritas.contains(pelicula);
             }
@@ -103,18 +103,18 @@ public class Controlador extends BaseControlador {
 
         Pelicula pelicula = peliculasRepositorio.getReferenceById(id);
 
-        if ( usuario.getPeliculas() == null ){
-            usuario.setPeliculas(new LinkedHashSet<>());
+        if ( usuario.getPeliculasFavoritas() == null ){
+            usuario.setPeliculasFavoritas(new LinkedHashSet<>());
         }
 
-        boolean peliculaFavorita = usuario.getPeliculas().contains(pelicula);
-        Set<Pelicula> peliculasActualizadas = usuario.getPeliculas();
+        boolean peliculaFavorita = usuario.getPeliculasFavoritas().contains(pelicula);
+        Set<Pelicula> peliculasActualizadas = usuario.getPeliculasFavoritas();
         Set<Usuario> usuariosActualizadosLista = pelicula.getUsuarios();
 
         if( peliculaFavorita ) {        // Ya es favorita
 
             peliculasActualizadas.remove(pelicula);
-            usuario.setPeliculas(peliculasActualizadas);
+            usuario.setPeliculasFavoritas(peliculasActualizadas);
 
             usuariosActualizadosLista.remove(usuario);
             pelicula.setUsuarios(usuariosActualizadosLista);
@@ -124,7 +124,7 @@ public class Controlador extends BaseControlador {
             peliculasActualizadas.add(pelicula);
             usuariosActualizadosLista.add(usuario);
 
-            usuario.setPeliculas(peliculasActualizadas);
+            usuario.setPeliculasFavoritas(peliculasActualizadas);
             pelicula.setUsuarios(usuariosActualizadosLista);
         }
 
@@ -138,6 +138,8 @@ public class Controlador extends BaseControlador {
     public String mostrarMiembros(Model model) {
 
         List<Usuario> usuarios = usuarioRepositorio.findAll();
+
+
         model.addAttribute("miembros", usuarios);
 
         List<Genero> generos =generosRepositorio.findAll();

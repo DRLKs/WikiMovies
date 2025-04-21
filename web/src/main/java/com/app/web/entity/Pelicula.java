@@ -61,6 +61,9 @@ public class Pelicula {
     @Column(name = "numero_votos")
     private Integer numeroVotos;
 
+    @Column(name = "poster", length = 200)
+    private String poster;
+
     @OneToMany(mappedBy = "idPelicula")
     private Set<Crew> crews = new LinkedHashSet<>();
 
@@ -84,16 +87,5 @@ public class Pelicula {
 
     @ManyToMany
     private Set<com.app.web.entity.Productora> productoras = new LinkedHashSet<>();
-
-    @Column(name = "poster", length = 200)
-    private String poster;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pelicula pelicula = (Pelicula) o;
-        return titulo.equals(pelicula.titulo) && id.equals(pelicula.id);
-    }
 
 }

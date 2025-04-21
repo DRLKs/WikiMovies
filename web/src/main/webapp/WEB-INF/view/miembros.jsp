@@ -21,7 +21,7 @@
             %>
             <a href="profile?id=<%= userMiembro.getId() %>" class="miembro-link">
                 <div class="miembro-card">
-                    <img class="profile-image" src="<%= null != null ? "userMiembro.avatarUrl" : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
+                    <img class="profile-image" src="<%= userMiembro.getAvatarUrl() != null ? userMiembro.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                     <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>
                     <div class="miembro-info">Miembro desde hace tiempo</div>
                 </div>

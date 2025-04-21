@@ -26,6 +26,6 @@ public class Idioma {
     private Set<com.app.web.entity.Pelicula> peliculas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idiomaOriginal")
-    private Set<com.app.web.entity.Pelicula> peliculas_IdiomaOriginal = new LinkedHashSet<>();
+    private Set<com.app.web.entity.Pelicula> peliculaIdiomaOriginal = new LinkedHashSet<>();
 
 }

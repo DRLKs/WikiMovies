@@ -29,13 +29,43 @@ public class Usuario {
     @Column(name = "rol")
     private Integer rol;
 
-    @ManyToMany
-    private Set<Pelicula> peliculas = new LinkedHashSet<>();
+    @Column(name = "avatarUrl", length = 200)
+    private String avatarUrl;
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<Lista> listas = new LinkedHashSet<>();
 
-    public String getAvatarUrl() {
-        return null;
-    }
+
+    @ManyToMany
+    @JoinTable(name = "favoritos",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
+    private Set<Pelicula> peliculasFavoritas = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "seguidores",
+            joinColumns = @JoinColumn(name = "idUsuario1"),
+            inverseJoinColumns = @JoinColumn(name = "idUsuario2"))
+    private Set<Usuario> seguidores = new LinkedHashSet<>();
+
+    /*
+    @ManyToMany
+    @JoinTable(
+            name = "seguidores",
+            joinColumns = @JoinColumn(name = "idUsuario1"),
+            inverseJoinColumns = @JoinColumn(name = "idUsuario1")
+    )
+    private Set<Usuario> seguidores = new LinkedHashSet<>();
+
+    // Usuarios a los que este usuario sigue
+    @ManyToMany
+    @JoinTable(
+            name = "seguidores",
+            joinColumns = @JoinColumn(name = "idUsuario2"),
+            inverseJoinColumns = @JoinColumn(name = "idUsuario2")
+    )
+    private Set<Usuario> seguidos = new LinkedHashSet<>();
+
+    * */
+
 }

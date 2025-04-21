@@ -18,7 +18,7 @@
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-avatar">
-            <img src="<%= null != null ? "userMiembro.avatarUrl" : "../../img/default-avatar.png"%>" alt="Avatar de <%=userProfile.getNombreUsuario()%>">
+            <img src="<%= userProfile.getAvatarUrl() != null ? userProfile.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userProfile.getNombreUsuario()%>">
         </div>
         <div class="profile-info">
             <h1 class="profile-username"><%=userProfile.getNombreUsuario()%></h1>
@@ -35,7 +35,7 @@
     
     <div class="profile-stats">
         <div class="stat-box">
-            <span class="stat-count"><%= 0 %></span>
+            <span class="stat-count"><%= userProfile.getSeguidores().size() %></span>
             <span class="stat-label">Seguidores</span>
         </div>
         <div class="stat-box">

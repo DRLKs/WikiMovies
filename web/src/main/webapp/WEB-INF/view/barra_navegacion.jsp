@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="java.util.List" %>
 
 <html>
     <link rel="stylesheet" href="../../css/barra_navegacion.css">
@@ -42,7 +43,13 @@
                     <h4>Géneros</h4>
                     <div class="generos-list">
                         <%
-                            List<Genero> generos = (List<Genero>) request.getAttribute("generos");
+                            List<Genero> generos = null;
+                            try {
+                                generos = (List<Genero>) request.getAttribute("generos");
+                            } catch (Exception e) {
+                                // Handle the exception silently
+                            }
+                            
                             if(generos != null && !generos.isEmpty()) {
                                 for(Genero genero : generos) {
                         %>
