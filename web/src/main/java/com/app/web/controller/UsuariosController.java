@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 public class UsuariosController extends BaseControlador {
 
@@ -27,14 +26,13 @@ public class UsuariosController extends BaseControlador {
      * @return Redirección
      */
     @GetMapping("/login")
-    public String abrirLogin( HttpSession session) {
+    public String abrirLogin(HttpServletRequest request, HttpSession session) {
 
-        if(estaAutenticado(session)) {
+        if(estaAutenticado(request, session)) {
             return "redirect:/welcome";
         }
 
         return "login";
-
     }
 
     /**
@@ -68,12 +66,18 @@ public class UsuariosController extends BaseControlador {
         session.setAttribute("usuario", usuarioAutenticado);
 
         if (remember) {
-            // Usar un nombre personalizado para evitar conflictos con JSESSIONID
-            Cookie userCookie = new Cookie("wikimovies_user_session", session.getId());
+            // Crear un token único que combine ID de usuario y una marca de tiempo
+            String userToken = usuarioAutenticado.getId() + ":" + System.currentTimeMillis();
+            
+            // Guardar en la cookie este token en lugar del session ID
+            Cookie userCookie = new Cookie("wikimovies_user_session", userToken);
             userCookie.setHttpOnly(true);
             userCookie.setMaxAge(60 * 60 * 24 * 30); // 30 días
             userCookie.setPath("/");
             response.addCookie(userCookie);
+            
+            // Guardar en el cache de sesiones
+            guardarUsuarioEnSesionCache(userToken, usuarioAutenticado);
         }
 
         return "redirect:/";
@@ -89,6 +93,10 @@ public class UsuariosController extends BaseControlador {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("wikimovies_user_session".equals(cookie.getName())) {
+                    // Eliminar del cache antes de invalidar la cookie
+                    eliminarUsuarioDelSesionCache(cookie.getValue());
+                    
+                    // Invalidar la cookie
                     cookie.setValue("");
                     cookie.setPath("/");
                     cookie.setMaxAge(0);
@@ -101,12 +109,25 @@ public class UsuariosController extends BaseControlador {
         return "redirect:/";
     }
 
+    /**
+     * Función que abre el apartado de SIGNUP
+     * @return Redirección
+     */
     @GetMapping("/signup")
     public String abrirSignup(){
 
         return "signup";
     }
 
+    /**
+     * Función que crea la cuenta de un nuevo usuario
+     * @param nombreUsuario
+     * @param correoElectronico
+     * @param contrasena
+     * @param contrasenaConfirm
+     * @param model
+     * @return
+     */
     @PostMapping("/crearCuenta")
     public String crearCuenta(@RequestParam("username") String nombreUsuario,
                               @RequestParam("email") String correoElectronico,

@@ -6,6 +6,7 @@ import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,12 +49,17 @@ public class Controlador extends BaseControlador {
                          @RequestParam(value = "generos", required = false ) Integer[] listaGeneros,
                          Model model) {
 
-        List<Pelicula> peliculas;
+        List<Pelicula> peliculas = new ArrayList<>();
 
         if( listaGeneros != null && listaGeneros.length > 0 ) {
-            peliculas = peliculasRepositorio.findByGeneroTitulo( listaGeneros, titulo );
+
+            for ( Pelicula p : peliculasRepositorio.findByTitulo(titulo) ) {
+                if( p.getGeneros() != null && p.getGeneros().contains(listaGeneros)  ) {
+                    peliculas.add(p);
+                }
+            }
         }else{
-           peliculas  = peliculasRepositorio.findByTitulo(titulo);
+            peliculas = peliculasRepositorio.findByTitulo(titulo);
         }
         model.addAttribute("titulo", titulo);
         model.addAttribute("peliculas",peliculas);
@@ -94,12 +101,13 @@ public class Controlador extends BaseControlador {
 
     
     @PostMapping("/favorite")
-    public String doFavorite( @RequestParam("id") Integer id, Model model, HttpSession session) {
+    public String doFavorite(@RequestParam("id") Integer id, Model model, HttpServletRequest request, HttpSession session) {
 
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if( usuario == null ) {
+        if( !estaAutenticado(request,session) ) {
             return "redirect:/login";
         }
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         Pelicula pelicula = peliculasRepositorio.getReferenceById(id);
 
@@ -138,7 +146,6 @@ public class Controlador extends BaseControlador {
     public String mostrarMiembros(Model model) {
 
         List<Usuario> usuarios = usuarioRepositorio.findAll();
-
 
         model.addAttribute("miembros", usuarios);
 
