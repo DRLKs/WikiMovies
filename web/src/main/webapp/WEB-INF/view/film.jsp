@@ -30,7 +30,7 @@
             <%
                 if (pelicula.getGeneros() != null && !pelicula.getGeneros().isEmpty()) {
             %>
-                <div class="generos-container">
+                <div class="generosTags-container">
                     <%
                         for (Genero genero : pelicula.getGeneros()) {
                     %>
