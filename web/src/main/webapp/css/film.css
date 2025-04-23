@@ -194,3 +194,46 @@ body {
         width: 60%;
     }
 }
+
+/* Estilos para los géneros */
+.generos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.genero-tag {
+    background-color: var(--color-secondary);
+    color: var(--color-accent);
+    padding: 8px 15px;
+    border-radius: 4px; /* Cambiado de 20px a 4px para hacer cuadrados */
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-divider); /* Añadido borde para destacar cada cuadrado */
+    text-align: center;
+    min-width: 80px; /* Asegura un ancho mínimo para consistencia */
+}
+
+.genero-tag:hover {
+    background-color: var(--color-accent);
+    color: var(--color-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-color: var(--color-accent); /* El borde también cambia de color */
+}
+
+/* Ajustes responsive para los géneros */
+@media (max-width: 768px) {
+    .generos-container {
+        gap: 8px;
+    }
+    
+    .genero-tag {
+        font-size: 12px;
+        padding: 6px 8px;
+        min-width: 60px;
+    }
+}

@@ -27,6 +27,22 @@
             </div>
             <%= "⏳" + pelicula.getDuracion() + " mins" %>
 
+            <%
+                if (pelicula.getGeneros() != null && !pelicula.getGeneros().isEmpty()) {
+            %>
+                <div class="generos-container">
+                    <%
+                        for (Genero genero : pelicula.getGeneros()) {
+                    %>
+                        <span class="genero-tag"><%= genero.getNombre() %></span>
+                    <%
+                        }
+                    %>
+                </div>
+            <%
+                }
+            %>
+
             <div class="favorite-container">
                 <form action="/favorite" method="post">
                     <input type="hidden" name="id" value="<%= pelicula.getId() %>">

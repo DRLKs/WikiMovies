@@ -13,6 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "peliculas")
 public class Pelicula {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pelicula", nullable = false)
@@ -67,25 +69,28 @@ public class Pelicula {
     @OneToMany(mappedBy = "idPelicula")
     private Set<Crew> crews = new LinkedHashSet<>();
 
-    @ManyToMany
-    private Set<com.app.web.entity.Usuario> usuarios = new LinkedHashSet<>();
+    @ManyToMany(mappedBy = "peliculasFavoritas")
+    private Set<Usuario> usuarios = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "peliculas")
     private Set<Lista> listas = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "peliculas")
     private Set<Etiqueta> etiquetas = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "peliculas")
     private Set<Genero> generos = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "peliculas")
     private Set<Idioma> idiomas = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "peliculas")
     private Set<Paisproduccion> paisproduccions = new LinkedHashSet<>();
 
     @ManyToMany
-    private Set<com.app.web.entity.Productora> productoras = new LinkedHashSet<>();
+    @JoinTable(name = "pelicula_productora",
+            joinColumns = @JoinColumn(name = "id_pelicula"),
+            inverseJoinColumns = @JoinColumn(name = "id_productora"))
+    private Set<Productora> productoras = new LinkedHashSet<>();
 
 }

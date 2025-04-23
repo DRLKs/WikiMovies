@@ -49,15 +49,10 @@ public class Controlador extends BaseControlador {
                          @RequestParam(value = "generos", required = false ) Integer[] listaGeneros,
                          Model model) {
 
-        List<Pelicula> peliculas = new ArrayList<>();
+        List<Pelicula> peliculas = null;
 
-        if( listaGeneros != null && listaGeneros.length > 0 ) {
-
-            for ( Pelicula p : peliculasRepositorio.findByTitulo(titulo) ) {
-                if( p.getGeneros() != null && p.getGeneros().contains(listaGeneros)  ) {
-                    peliculas.add(p);
-                }
-            }
+        if( listaGeneros != null && listaGeneros.length > 0 ) { // Filtro de géneros
+            peliculas = peliculasRepositorio.findByGeneroTitulo(listaGeneros,titulo);
         }else{
             peliculas = peliculasRepositorio.findByTitulo(titulo);
         }
