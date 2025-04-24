@@ -20,13 +20,16 @@
         <div class="lista-peliculas">
 
             <%
-                for ( Pelicula pelicula : peliculaList ){
-
+                for (Pelicula pelicula : peliculaList) {
             %>
-
-            <%= pelicula.getTitulo() %>
-            <br>
-            <%  } %>
+            <img
+                    src="<%= pelicula.getPoster() %>"
+                    alt="Pancarta Pelicula"
+                    style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
+            >
+            <%
+                }
+            %>
 
         </div>
     </div>

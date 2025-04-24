@@ -1,0 +1,128 @@
+/* Estilo para el título */
+.ranking-titulo {
+    font-size: 32px; /* Un tamaño mayor para destacar el título */
+    font-weight: 700; /* Negrita para mayor impacto */
+    margin-bottom: 40px;
+    text-align: center;
+    color: #ffffff; /* Blanco para buen contraste sobre fondo oscuro */
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Contenedor principal */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #121212; /* Fondo oscuro, más profundo para profesionalidad */
+    border-radius: 12px;
+}
+
+/* Contenedor de las películas en grid */
+.ranking-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas en pantallas grandes */
+    gap: 30px;
+    overflow-y: auto;
+    max-height: 800px;
+}
+
+/* Estilo de cada película */
+.pelicula-ranking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1e1e1e; /* Fondo oscuro para las tarjetas */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada para dar profundidad */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Título de cada película */
+.pelicula-ranking h4 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #f1f1f1; /* Color suave y claro */
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Estilo de la imagen de la película */
+.poster-ranking {
+    width: 200px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover en la imagen */
+.poster-ranking:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Efecto hover en la película */
+.pelicula-ranking:hover {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px);
+}
+.puntuacion {
+    margin-top: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffc107; /* dorado brillante */
+    background-color: #222;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+
+/* Medias queries para responsividad */
+
+/* Pantallas medianas (tabletas) */
+@media (max-width: 768px) {
+    .ranking-titulo {
+        font-size: 28px;
+    }
+
+    .ranking-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+        gap: 20px;
+    }
+
+    .poster-ranking {
+        width: 180px;
+        height: 240px;
+    }
+
+    .pelicula-ranking h4 {
+        font-size: 18px;
+    }
+}
+
+/* Pantallas pequeñas (teléfonos móviles) */
+@media (max-width: 480px) {
+    .ranking-titulo {
+        font-size: 24px;
+    }
+
+    .ranking-container {
+        grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+        gap: 15px;
+    }
+
+    .poster-ranking {
+        width: 160px;
+        height: 220px;
+    }
+
+    .pelicula-ranking h4 {
+        font-size: 16px;
+    }
+}

@@ -198,3 +198,15 @@ body {
 .favorite-button.active:hover .heart-icon {
     color: var(--color-accent);
 }
+img {
+    width: 200px;         /* o cualquier tamaño consistente */
+    height: 300px;        /* proporción similar a póster de película */
+    object-fit: cover;    /* mantiene el recorte centrado sin deformar */
+    border-radius: 10px;  /* esquinas redondeadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* sombra para destacar */
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.05); /* efecto de ampliación al pasar el mouse */
+}

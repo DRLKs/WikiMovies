@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "lista")
 public class Lista {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_lista", nullable = false)
@@ -19,14 +20,15 @@ public class Lista {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private com.app.web.entity.Usuario idUsuario;
+    private Usuario idUsuario;
 
     @Column(name = "nombre", length = 100)
     private String nombre;
 
     @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "id_lista"),
+    @JoinTable(name = "lista_peliculas",
+            joinColumns = @JoinColumn(name = "id_lista"),
             inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
-    private Set<com.app.web.entity.Pelicula> peliculas = new LinkedHashSet<>();
+    private Set<Pelicula> peliculas = new LinkedHashSet<>();
 
 }

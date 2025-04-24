@@ -78,14 +78,21 @@
 
     <div class="profile">
         <div class="profile">
+
             <% if (usuario != null) { %>
+
                 <span>Bienvenido <%= usuario.getNombreUsuario() %></span>
+
                 <a href="profile?id=<%= usuario.getId() %>" >
                     <img class="profile-image" src="<%= (usuario.getAvatarUrl() != null) ? usuario.getAvatarUrl() : "../../img/default-avatar.png" %>" alt="Avatar de <%= usuario.getNombreUsuario() %>">
                 </a>
+
                 <a href="<%= request.getContextPath() %>/logout">Cerrar sesión</a>
+
             <% } else { %>
+
                 <a href="/login">Iniciar sesión</a>
+
             <% } %>
         </div>
     </div>
