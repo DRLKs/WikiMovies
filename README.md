@@ -1,4 +1,4 @@
-![Banner DataSet](assets/readme/banner.png)
+![Banner DataSet](public/assets/readme/banner.png)
 
 # 🎬 WikiMovies - Tu Mundo de Películas
 
