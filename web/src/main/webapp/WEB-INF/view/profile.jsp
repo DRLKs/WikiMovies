@@ -1,5 +1,6 @@
 <%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -13,6 +14,8 @@
 <%
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
     Set<Lista> listas = userProfile.getListas();
+    int generoUsuario = userProfile.getGenero() != null ? userProfile.getGenero() : 0;
+    LocalDate fechaNacimientoUsuario = userProfile.getNacimientoFecha() != null ? LocalDate.parse(LocalDate.ofInstant(userProfile.getNacimientoFecha(), java.time.ZoneOffset.UTC).toString()) : null;
 %>
 
 <div class="profile-container">
@@ -22,7 +25,7 @@
         </div>
         <div class="profile-info">
             <h1 class="profile-username"><%=userProfile.getNombreUsuario()%></h1>
-            <p class="profile-bio"><%=null != null ? "usuario.bio" : "Sin biografía"%></p>
+            <p class="profile-bio"><%=userProfile.getGenero() != null && !userProfile.getBiografia().isEmpty() ? userProfile.getBiografia() : "Sin biografía"%></p>
             <div class="profile-actions">
                 <% if (session.getAttribute("usuarioActual") != null && !session.getAttribute("usuarioActual").equals(request.getAttribute("usuario"))) { %>
                     <button class="follow-btn" data-userid="<%=userProfile.getId()%>">
@@ -69,33 +72,77 @@
             <% } %>
         </div>
     </div>
+
+    <%
+        if ( usuario != null && usuario.getId() == userProfile.getId() ){
+    %>
+    <div class="profile-editar">
+        <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
+        
+        <div id="editProfileModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Editar tu perfil</h2>
+                <form id="editProfileForm" action="/profile/update" method="POST" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="avatar">Foto de perfil:</label>
+                        <div class="avatar-preview">
+                            <img id="avatarPreview" placeholder="URL imagen" src="<%= userProfile.getAvatarUrl() != null ? userProfile.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar">
+                        </div>
+                        <input type="text" id="avatar" name="avatar">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nombreUsuario">Nombre de usuario:</label>
+                        <input type="text" id="nombreUsuario" name="nombreUsuario" value="<%= userProfile.getNombreUsuario() %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fechaNacimiento">Fecha Nacimiento:</label>
+                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" 
+                               value="<%= fechaNacimientoUsuario != null ? fechaNacimientoUsuario : "" %>"
+                        <% if (userProfile.getNacimientoFecha() == null) { %>
+                            <span class="fecha-placeholder">No indicada</span>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="generos">Género:</label>
+
+                        <label class="radio-label">
+                            <input type="radio" name="genero" value="1" <%= generoUsuario == 1 ? "checked" : "" %>> Hombre
+                        </label>
+
+                        <label class="radio-label">
+                            <input type="radio" name="genero" value="2" <%= generoUsuario == 2 ? "checked" : "" %>> Mujer
+                        </label>
+
+                        <label class="radio-label">
+                            <input type="radio" name="genero" value="3" <%= generoUsuario == 3 ? "checked" : "" %>> Otro
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="biografia">Biografía:</label>
+                        <textarea id="biografia" name="biografia" maxlength="500" rows="7"><%= userProfile.getBiografia() != null ? userProfile.getBiografia() : "" %></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn">Cancelar</button>
+                        <button type="submit" class="save-btn">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%
+        }
+    %>
+
 </div>
 
-<script>
-    document.querySelectorAll('.follow-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const userId = this.getAttribute('data-userid');
-            fetch('/usuario/seguir', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `usuarioId=${userId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    this.textContent = this.textContent === 'Seguir' ? 'Dejar de seguir' : 'Seguir';
-                    // Actualizar contador de seguidores
-                    const seguidoresElement = document.querySelector('.stat-count');
-                    const seguidores = parseInt(seguidoresElement.textContent);
-                    seguidoresElement.textContent = this.textContent === 'Dejar de seguir' ? 
-                        (seguidores + 1) : (seguidores - 1);
-                }
-            });
-        });
-    });
-</script>
+<script type="text/javascript" src="../../js/updateProfile.js"></script>
 
 </body>
 </html>

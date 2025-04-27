@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,6 +48,15 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "idUsuario1"),
             inverseJoinColumns = @JoinColumn(name = "idUsuario2"))
     private Set<Usuario> seguidores = new LinkedHashSet<>();
+
+    @Column(name = "biografia", length = 500)
+    private String biografia;
+
+    @Column(name = "genero")
+    private Integer genero;
+
+    @Column(name = "nacimientoFecha")
+    private Instant nacimientoFecha;
 
     /*
     @ManyToMany

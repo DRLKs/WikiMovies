@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -179,5 +180,71 @@ public class Controlador extends BaseControlador {
         model.addAttribute("generos", generos);
 
         return "profile";
+    }
+
+    @PostMapping("/profile/update")
+    public String doUpdateProfile(@RequestParam(value="avatar", required = false) String avatar,
+                                  @RequestParam(value = "nombreUsuario", required = false) String nombreUsuario,
+                                  @RequestParam(value = "biografia", required = false) String biografia,
+                                  @RequestParam(value = "fechaNacimiento", required = false) String fechaNacimiento,
+                                  @RequestParam(value = "genero", required = false) Integer genero,
+                                  Model model, HttpServletRequest request, HttpSession session) {
+
+        if( !estaAutenticado(request,session) ) {
+            return "redirect:/login";
+        }
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        try {
+
+            if (avatar != null && !avatar.isEmpty()) {
+                usuario.setAvatarUrl(avatar);
+            }
+
+            if (nombreUsuario != null && !nombreUsuario.isEmpty() && !nombreUsuario.equals(usuario.getNombreUsuario())) {
+                usuario.setNombreUsuario(nombreUsuario);
+            }
+
+            if (biografia != null && !biografia.isEmpty() && !biografia.equals(usuario.getBiografia())) {
+                usuario.setBiografia(biografia);
+            }
+
+            if( fechaNacimiento != null && !fechaNacimiento.isEmpty()) {
+
+                usuario.setNacimientoFecha(parseFecha(fechaNacimiento));
+            }
+
+            if( genero != null ) {
+                usuario.setGenero(genero);
+            }
+
+        }catch (Exception e) {      // A veces, las URLS son muy largas y da errores
+            model.addAttribute("usuario", usuario);
+            return "profile";
+        }
+
+        this.usuarioRepositorio.save(usuario);
+
+        return "redirect:/profile?id=" + usuario.getId();
+    }
+
+
+    /**
+     * Función para pasar de fecha al formato esperado
+     * @param fecha Cadena de caracteres con la fecha
+     * @return fecha en formato requerido por la base de datos
+     */
+    private Instant parseFecha(String fecha) {
+        try {
+            // Convertir de YYYY-MM-DD a un formato que Instant pueda parsear
+            // Añadimos la hora (medianoche) y la zona horaria UTC
+            return java.time.LocalDate.parse(fecha)
+                    .atStartOfDay(java.time.ZoneOffset.UTC)
+                    .toInstant();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // En caso de error, devolvemos null
+        }
     }
 }
