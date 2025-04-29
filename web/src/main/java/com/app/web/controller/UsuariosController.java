@@ -1,6 +1,8 @@
 package com.app.web.controller;
 
 import com.app.web.entity.Usuario;
+import com.app.web.ui.UsuarioLogin;
+import com.app.web.ui.UsuarioSignup;
 import com.app.web.utils.Hash;
 import com.app.web.dao.UsuariosRepositorio;
 import jakarta.servlet.http.Cookie;
@@ -11,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 
 @Controller
 public class UsuariosController extends BaseControlador {
@@ -26,29 +30,31 @@ public class UsuariosController extends BaseControlador {
      * @return Redirección
      */
     @GetMapping("/login")
-    public String abrirLogin(HttpServletRequest request, HttpSession session) {
+    public String abrirLogin(Model model, HttpServletRequest request, HttpSession session) {
 
         if(estaAutenticado(request, session)) {
             return "redirect:/welcome";
         }
 
+        model.addAttribute("usuarioLogin", new UsuarioLogin());
         return "login";
     }
 
     /**
      *
-     * @param correoElectronico Email seleccionada por el usuario
-     * @param contrasena Contraseña escrita por el usuario
+     * @param usuarioLogin DTO de usuario específica para el login de una cuenta
      * @param model Modelo
      * @param session Sesión
      * @return Redirección
      */
     @PostMapping("/log")
-    public String iniciarSesion(@RequestParam("email") String correoElectronico,
-                                @RequestParam("pwd") String contrasena,
-                                @RequestParam(value = "remember", defaultValue = "false") Boolean remember,
+    public String iniciarSesion(@ModelAttribute()UsuarioLogin usuarioLogin,
                                 Model model, HttpSession session,
                                 HttpServletRequest request, HttpServletResponse response) {
+
+        String correoElectronico = usuarioLogin.getEmail();
+        String contrasena = usuarioLogin.getPassword();
+        boolean remember = usuarioLogin.getRemember();
 
         if( !this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
             String msg = "El email indicado no está registrado";
@@ -114,25 +120,25 @@ public class UsuariosController extends BaseControlador {
      * @return Redirección
      */
     @GetMapping("/signup")
-    public String abrirSignup(){
+    public String abrirSignup(Model model){
 
+        model.addAttribute("usuarioSignup", new UsuarioSignup());
         return "signup";
     }
 
     /**
      * Función que crea la cuenta de un nuevo usuario
-     * @param nombreUsuario
-     * @param correoElectronico
-     * @param contrasena
-     * @param contrasenaConfirm
+     * @param usuarioSignup DTO de usuario específico para la creación de una cuenta
      * @param model
      * @return
      */
     @PostMapping("/crearCuenta")
-    public String crearCuenta(@RequestParam("username") String nombreUsuario,
-                              @RequestParam("email") String correoElectronico,
-                              @RequestParam("pwd") String contrasena,
-                              @RequestParam("pwd_confirm") String contrasenaConfirm,Model model) {
+    public String crearCuenta(@ModelAttribute() UsuarioSignup usuarioSignup,Model model) {
+
+        String nombreUsuario = usuarioSignup.getUsername();
+        String correoElectronico = usuarioSignup.getEmail();
+        String contrasena = usuarioSignup.getPassword();
+        String contrasenaConfirm = usuarioSignup.getPasswordConfirmed();
 
         if( this.usuarioRepositorio.existsByNombreUsuario(nombreUsuario) ){
             String msg = "El usuario indicado ya está en eso";
@@ -156,6 +162,7 @@ public class UsuariosController extends BaseControlador {
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setCorreoElectronico(correoElectronico);
         usuario.setContrasenaHash( Hash.obtenerSHA256(contrasena) );
+        usuario.setCreacionCuentaFecha(LocalDate.now());
 
         this.usuarioRepositorio.save(usuario);
 

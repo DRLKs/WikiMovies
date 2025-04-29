@@ -7,12 +7,59 @@
 
 body {
     background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    flex-direction: column;
 }
 
+/* Header y Logo */
+.wiki-header {
+    background-color: #141414;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    width: 100%;
+    position: relative;
+}
+
+.logo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.logo-link:hover {
+    transform: scale(1.03);
+}
+
+.logo-icon {
+    width: 40px;  /* Ancho fijo */
+    height: 40px; /* Altura fija para mantener proporción */
+    margin-right: 10px; /* Espacio entre el logo y el texto */
+    object-fit: contain; /* Mantiene las proporciones sin recortar */
+    vertical-align: middle; /* Alineación vertical con el texto */
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #e50914;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Contenedor principal centrado horizontalmente pero no verticalmente */
 .container {
     background-color: white;
     padding: 2rem;
@@ -20,12 +67,16 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    margin: 60px auto; /* Espacio superior entre el header y el contenedor */
+    flex-grow: 0; /* Para que no se expanda y ocupe todo el espacio disponible */
 }
 
+/* Título principal */
 h1 {
-    text-align: center;
-    margin-bottom: 1.5rem;
     color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
 }
 
 .form-group {
@@ -58,6 +109,16 @@ input:focus {
     font-size: 0.8rem;
     margin-top: 0.3rem;
     display: none;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 4px solid #c62828;
+    font-size: 14px;
 }
 
 button {
@@ -110,3 +171,4 @@ button:hover {
     width: auto;
     margin-right: 0.5rem;
 }
+

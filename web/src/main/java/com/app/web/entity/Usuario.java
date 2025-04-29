@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 @Getter
 @Setter
@@ -56,7 +59,44 @@ public class Usuario {
     private Integer genero;
 
     @Column(name = "nacimientoFecha")
-    private Instant nacimientoFecha;
+    private LocalDate nacimientoFecha;
+
+    @Column(name = "creacionCuentaFecha", nullable = false)
+    private LocalDate creacionCuentaFecha;
+
+    public String getTiempoRegistrado(){
+
+        Period periodoPasado = Period.between(getCreacionCuentaFecha(), LocalDate.now());
+
+        StringBuilder sb = new StringBuilder();
+        int anyos = periodoPasado.getYears();
+        int meses = periodoPasado.getMonths();
+        int dias = periodoPasado.getDays();
+
+        if( anyos > 1 ){
+            sb.append(anyos).append(" años ");
+        }else if( anyos > 0 ){
+            sb.append( anyos ).append(" año ");
+        }
+
+        if( meses > 1 ){
+            sb.append(meses).append(" meses ");
+        }else if( meses > 0 ){
+            sb.append(meses).append(" mes ");
+        }
+
+        if( dias > 1 ){
+            sb.append(dias).append(" dias ");
+        }else if( dias > 0 ){
+            sb.append(dias).append(" dia ");
+        }else if( dias <= 0 && meses <= 0 && anyos <= 0  ){
+            sb.append("Usuario nuevo");
+        }
+
+
+        return sb.toString();
+    }
+
 
     /*
     @ManyToMany

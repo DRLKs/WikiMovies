@@ -6,6 +6,8 @@ import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
+import com.app.web.ui.UsuarioProfile;
+import com.app.web.ui.UsuarioSignup;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -179,20 +183,31 @@ public class Controlador extends BaseControlador {
         List<Genero> generos =generosRepositorio.findAll();
         model.addAttribute("generos", generos);
 
+        // Introducimos los datos necesarios en el DTO
+        UsuarioProfile usuarioProfile = new UsuarioProfile();
+        usuarioProfile.setAvatar(usuario.getAvatarUrl());
+        usuarioProfile.setBiografia(usuario.getBiografia());
+        usuarioProfile.setNombreUsuario(usuario.getNombreUsuario());
+        usuarioProfile.setGenero(usuario.getGenero());
+        usuarioProfile.setFechaNacimiento( usuario.getNacimientoFecha() );
+        model.addAttribute("usuarioProfile", usuarioProfile);
+
         return "profile";
     }
 
     @PostMapping("/profile/update")
-    public String doUpdateProfile(@RequestParam(value="avatar", required = false) String avatar,
-                                  @RequestParam(value = "nombreUsuario", required = false) String nombreUsuario,
-                                  @RequestParam(value = "biografia", required = false) String biografia,
-                                  @RequestParam(value = "fechaNacimiento", required = false) String fechaNacimiento,
-                                  @RequestParam(value = "genero", required = false) Integer genero,
-                                  Model model, HttpServletRequest request, HttpSession session) {
+    public String doUpdateProfile(@ModelAttribute() UsuarioProfile usuarioProfile, Model model,
+                                  HttpServletRequest request, HttpSession session) {
 
         if( !estaAutenticado(request,session) ) {
             return "redirect:/login";
         }
+
+        String avatar = usuarioProfile.getAvatar();
+        String nombreUsuario = usuarioProfile.getNombreUsuario();
+        String biografia = usuarioProfile.getBiografia();
+        LocalDate fechaNacimiento = usuarioProfile.getFechaNacimiento();
+        Integer genero = usuarioProfile.getGenero();
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
@@ -210,9 +225,9 @@ public class Controlador extends BaseControlador {
                 usuario.setBiografia(biografia);
             }
 
-            if( fechaNacimiento != null && !fechaNacimiento.isEmpty()) {
+            if( fechaNacimiento != null) {
 
-                usuario.setNacimientoFecha(parseFecha(fechaNacimiento));
+                usuario.setNacimientoFecha(fechaNacimiento);
             }
 
             if( genero != null ) {
@@ -229,22 +244,4 @@ public class Controlador extends BaseControlador {
         return "redirect:/profile?id=" + usuario.getId();
     }
 
-
-    /**
-     * Función para pasar de fecha al formato esperado
-     * @param fecha Cadena de caracteres con la fecha
-     * @return fecha en formato requerido por la base de datos
-     */
-    private Instant parseFecha(String fecha) {
-        try {
-            // Convertir de YYYY-MM-DD a un formato que Instant pueda parsear
-            // Añadimos la hora (medianoche) y la zona horaria UTC
-            return java.time.LocalDate.parse(fecha)
-                    .atStartOfDay(java.time.ZoneOffset.UTC)
-                    .toInstant();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null; // En caso de error, devolvemos null
-        }
-    }
 }

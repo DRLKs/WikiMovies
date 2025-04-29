@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.time.LocalDate" %>
@@ -14,8 +15,6 @@
 <%
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
     Set<Lista> listas = userProfile.getListas();
-    int generoUsuario = userProfile.getGenero() != null ? userProfile.getGenero() : 0;
-    LocalDate fechaNacimientoUsuario = userProfile.getNacimientoFecha() != null ? LocalDate.parse(LocalDate.ofInstant(userProfile.getNacimientoFecha(), java.time.ZoneOffset.UTC).toString()) : null;
 %>
 
 <div class="profile-container">
@@ -83,43 +82,39 @@
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
                 <h2>Editar tu perfil</h2>
-                <form id="editProfileForm" action="/profile/update" method="POST" enctype="multipart/form-data">
+                <form:form id="editProfileForm" action="/profile/update" method="POST" enctype="multipart/form-data" modelAttribute="usuarioProfile" >
 
                     <div class="form-group">
                         <label for="avatar">Foto de perfil:</label>
                         <div class="avatar-preview">
                             <img id="avatarPreview" placeholder="URL imagen" src="<%= userProfile.getAvatarUrl() != null ? userProfile.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar">
                         </div>
-                        <input type="text" id="avatar" name="avatar">
+                        <form:input type="text" id="avatar" path="avatar"/>
                     </div>
                     
                     <div class="form-group">
                         <label for="nombreUsuario">Nombre de usuario:</label>
-                        <input type="text" id="nombreUsuario" name="nombreUsuario" value="<%= userProfile.getNombreUsuario() %>">
+                        <form:input type="text" id="nombreUsuario" path="nombreUsuario" value="<%= userProfile.getNombreUsuario() %>"/>
                     </div>
 
                     <div class="form-group">
                         <label for="fechaNacimiento">Fecha Nacimiento:</label>
-                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" 
-                               value="<%= fechaNacimientoUsuario != null ? fechaNacimientoUsuario : "" %>"
-                        <% if (userProfile.getNacimientoFecha() == null) { %>
-                            <span class="fecha-placeholder">No indicada</span>
-                        <% } %>
+                        <form:input type="date" id="fechaNacimiento" path="fechaNacimiento"/>
                     </div>
 
                     <div class="form-group">
                         <label for="generos">Género:</label>
 
                         <label class="radio-label">
-                            <input type="radio" name="genero" value="1" <%= generoUsuario == 1 ? "checked" : "" %>> Hombre
+                            <form:radiobutton path="genero" value="1"/> Hombre
                         </label>
 
                         <label class="radio-label">
-                            <input type="radio" name="genero" value="2" <%= generoUsuario == 2 ? "checked" : "" %>> Mujer
+                            <form:radiobutton path="genero" value="2"/> Mujer
                         </label>
 
                         <label class="radio-label">
-                            <input type="radio" name="genero" value="3" <%= generoUsuario == 3 ? "checked" : "" %>> Otro
+                            <form:radiobutton path="genero" value="3" /> Otro
                         </label>
                     </div>
 
@@ -130,9 +125,9 @@
 
                     <div class="form-actions">
                         <button type="button" class="cancel-btn">Cancelar</button>
-                        <button type="submit" class="save-btn">Guardar cambios</button>
+                        <form:button type="submit" class="save-btn">Guardar cambios</form:button>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>

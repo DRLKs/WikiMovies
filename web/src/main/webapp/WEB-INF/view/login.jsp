@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -5,38 +6,44 @@
     <link rel="stylesheet" href="../../css/signupLogin.css">
 
 <body>
+
+    <header class="wiki-header">
+        <div class="logo-container">
+            <a href="${pageContext.request.contextPath}/" class="logo-link">
+                <img src="../../img/logo_blanco.png" class="logo-icon" alt="LogoWikiMovies">
+                <h1 class="logo-text">WikiMovies</h1>
+            </a>
+        </div>
+    </header>
+
 <div class="container">
     <h1>Iniciar Sesión</h1>
-    <form id="login-form" method="post" action="${pageContext.request.contextPath}/log">
+
+    <div class="error-message" id="login-error" style="display:none;"></div>
+
+    <form:form id="login-form" method="post" action="${pageContext.request.contextPath}/log" modelAttribute="usuarioLogin">
         <div class="form-group">
             <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+            <form:input type="email" id="email" path="email" placeholder="Ingresa tu correo electrónico" required="required"/>
             <div class="error" id="email-error">Por favor, ingresa un correo electrónico válido</div>
+            <form:errors path="email" cssClass="error-message" />
         </div>
 
         <div class="form-group">
             <label for="password">Contraseña</label>
-            <input type="password" id="password" name="pwd" placeholder="Ingresa tu contraseña" required>
+            <form:password id="password" path="password" placeholder="Ingresa tu contraseña" required="required"/>
             <div class="error" id="password-error">Por favor, ingresa tu contraseña</div>
+            <form:errors path="password" cssClass="error-message" />
         </div>
 
         <div class="remember-me">
-            <input type="checkbox" id="remember" name="remember">
+            <form:checkbox id="remember" path="remember"/>
             <label for="remember">Recordarme</label>
         </div>
 
-        <!--
-
-        No incorporamos olvidar contraseña en esta versión
-
-        <div class="forgot-password">
-            <a href="#">¿Olvidaste tu contraseña?</a>
-        </div>
-        -->
-        <button type="submit">Iniciar Sesión</button>
+        <form:button type="submit" class="submit-btn">Iniciar Sesión</form:button>
         <div class="success-message" id="success-message">¡Sesión iniciada correctamente!</div>
-        <div class="error-message" id="login-error" style="display:none; color: #e74c3c; text-align: center; margin-top: 10px;"></div>
-    </form>
+    </form:form>
 
 
     <div class="footer">

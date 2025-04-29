@@ -123,3 +123,8 @@ h1 {
 .login-button:hover {
     background-color: #222; /* Color más oscuro al pasar el ratón */
 }
+
+.error-message {
+    color: #a94442;
+    text-align: center;
+}
