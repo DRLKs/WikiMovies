@@ -86,8 +86,9 @@ public class Controlador extends BaseControlador {
 
         // Para saber si esta película está entre sus favoritas
         boolean peliculaFavorita = false;
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        
+        int idUsuario = ((Usuario) session.getAttribute("usuario")).getId();
+        Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
+
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
             Set<Pelicula> peliculasFavoritas = usuario.getPeliculasFavoritas();
@@ -101,7 +102,14 @@ public class Controlador extends BaseControlador {
         return "film";
     }
 
-    
+    /**
+     * El controlador recibe la acción de poner como favorita para el usuario la película entregada
+     * @param id El identificador de la película
+     * @param model
+     * @param request
+     * @param session
+     * @return
+     */
     @PostMapping("/favorite")
     public String doFavorite(@RequestParam("id") Integer id, Model model, HttpServletRequest request, HttpSession session) {
 
@@ -109,7 +117,8 @@ public class Controlador extends BaseControlador {
             return "redirect:/login";
         }
 
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        int idUsuario = ((Usuario) session.getAttribute("usuario")).getId();
+        Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
         Pelicula pelicula = peliculasRepositorio.getReferenceById(id);
 
@@ -117,24 +126,24 @@ public class Controlador extends BaseControlador {
             usuario.setPeliculasFavoritas(new LinkedHashSet<>());
         }
 
-        boolean peliculaFavorita = usuario.getPeliculasFavoritas().contains(pelicula);
-        Set<Pelicula> peliculasActualizadas = usuario.getPeliculasFavoritas();
+        Set<Pelicula> peliculasFavoritasActualizadas = usuario.getPeliculasFavoritas();
+        boolean peliculaFavorita = peliculasFavoritasActualizadas.contains(pelicula);
         Set<Usuario> usuariosActualizadosLista = pelicula.getUsuarios();
 
         if( peliculaFavorita ) {        // Ya es favorita
 
-            peliculasActualizadas.remove(pelicula);
-            usuario.setPeliculasFavoritas(peliculasActualizadas);
+            peliculasFavoritasActualizadas.remove(pelicula);
+            usuario.setPeliculasFavoritas(peliculasFavoritasActualizadas);
 
             usuariosActualizadosLista.remove(usuario);
             pelicula.setUsuarios(usuariosActualizadosLista);
 
         }else{                          // La introducimos como favorita
 
-            peliculasActualizadas.add(pelicula);
+            peliculasFavoritasActualizadas.add(pelicula);
             usuariosActualizadosLista.add(usuario);
 
-            usuario.setPeliculasFavoritas(peliculasActualizadas);
+            usuario.setPeliculasFavoritas(peliculasFavoritasActualizadas);
             pelicula.setUsuarios(usuariosActualizadosLista);
         }
 

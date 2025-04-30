@@ -15,4 +15,6 @@ public interface UsuariosRepositorio extends JpaRepository<Usuario, Integer> {
 
     @Query("select u from Usuario u where u.correoElectronico = :correoElectronico and u.contrasenaHash = :contrasenaHash")
     Usuario autenticaUsuario(@Param("correoElectronico") String correoElectronico, @Param("contrasenaHash") String contrasenaHash);
+
+    Usuario getUsuarioById(Integer id);
 }

@@ -2,6 +2,7 @@
 <%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="com.app.web.entity.Pelicula" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -14,6 +15,7 @@
 
 <%
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
+    Set<Pelicula> peliculasFavoritas =  userProfile.getPeliculasFavoritas();
     Set<Lista> listas = userProfile.getListas();
 %>
 
@@ -53,6 +55,16 @@
     <div class="profile-lists">
         <h2>Listas de <%= userProfile.getNombreUsuario() %> </h2>
         <div class="lists-container">
+            <div class="list-card">
+                <div id="fauvorite-list" class="list-thumbnail">
+                    <img src="../../img/logo_negro.png" alt="PeliculasFavoritas" />
+                </div>
+                <div class="list-info">
+                    <h3 class="list-title">Favoritas</h3>
+                    <p class="list-description">Tus películas favoritas</p>
+                    <span class="list-count"><%= peliculasFavoritas.size() %> películas</span>
+                </div>
+            </div>
             <% if ( listas  != null  && !listas.isEmpty() ) { %>
                 <% for (Lista lista : listas ) { %>
                     <div class="list-card">
@@ -66,9 +78,9 @@
                         </div>
                     </div>
                 <% } %>
-            <% } else { %>
-                <p class="no-lists">Este usuario no tiene listas todavía.</p>
             <% } %>
+            </div>
+
         </div>
     </div>
 

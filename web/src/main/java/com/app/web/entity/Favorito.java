@@ -9,17 +9,19 @@ import lombok.Setter;
 @Entity
 @Table(name = "favoritos")
 public class Favorito {
+
+
     @EmbeddedId
     private FavoritoId id;
 
-    @MapsId("idUsuario")
+    @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private com.app.web.entity.Usuario idUsuario;
+    private Usuario idUsuario;
 
-    @MapsId("idPelicula")
+    @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pelicula", nullable = false)
-    private com.app.web.entity.Pelicula idPelicula;
+    private Pelicula idPelicula;
 
 }

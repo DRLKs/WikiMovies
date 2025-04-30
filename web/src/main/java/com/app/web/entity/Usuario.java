@@ -39,7 +39,6 @@ public class Usuario {
     @OneToMany(mappedBy = "idUsuario")
     private Set<Lista> listas = new LinkedHashSet<>();
 
-
     @ManyToMany
     @JoinTable(name = "favoritos",
             joinColumns = @JoinColumn(name = "id_usuario"),
