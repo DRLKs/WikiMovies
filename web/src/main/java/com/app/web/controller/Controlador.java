@@ -6,8 +6,7 @@ import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
-import com.app.web.ui.UsuarioProfile;
-import com.app.web.ui.UsuarioSignup;
+import com.app.web.ui.FiltroBusquedaDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.*;
+
+import static com.app.web.utils.Constantes.USUARIO_SESION;
 
 @Controller
 public class Controlador extends BaseControlador {
@@ -40,8 +39,9 @@ public class Controlador extends BaseControlador {
         List<Pelicula> peliculas = peliculasRepositorio.findAll();
         model.addAttribute("peliculas", peliculas);
 
-        List<Genero> generos =generosRepositorio.findAll();
+        List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "index";
     }
@@ -50,22 +50,25 @@ public class Controlador extends BaseControlador {
      * Controlador del formulario sobre el filtro al buscar películas
      */
     @GetMapping("/search")
-    public String search(@RequestParam("title")String titulo,
-                         @RequestParam(value = "generos", required = false ) Integer[] listaGeneros,
-                         Model model) {
+    public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO,
+                         Model model, HttpSession session) {
 
-        List<Pelicula> peliculas = null;
+        List<Pelicula> peliculas;
+        Integer[] listaGeneros = filtroBusquedaDTO.getGeneros();
+        String titulo = filtroBusquedaDTO.getTitulo();
 
         if( listaGeneros != null && listaGeneros.length > 0 ) { // Filtro de géneros
             peliculas = peliculasRepositorio.findByGeneroTitulo(listaGeneros,titulo);
         }else{
             peliculas = peliculasRepositorio.findByTitulo(titulo);
         }
+
         model.addAttribute("titulo", titulo);
         model.addAttribute("peliculas",peliculas);
 
-        List<Genero> generos =generosRepositorio.findAll();
+        List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", filtroBusquedaDTO);
 
         return "search";
     }
@@ -88,7 +91,7 @@ public class Controlador extends BaseControlador {
         // Para saber si esta película está entre sus favoritas
         boolean peliculaFavorita = false;
 
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
@@ -98,7 +101,11 @@ public class Controlador extends BaseControlador {
             }
         }
         
-        model.addAttribute("peliculaFavorita", peliculaFavorita);
+        model.addAttribute( "peliculaFavorita", peliculaFavorita);
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "film";
     }
@@ -116,7 +123,7 @@ public class Controlador extends BaseControlador {
         }
 
         // Obtenemos los datos del usuario
-        int idUsuario = ((Usuario) session.getAttribute("usuario")).getId();
+        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
         Set<Pelicula> peliculasFavoritasActualizadas;
@@ -164,6 +171,22 @@ public class Controlador extends BaseControlador {
         model.addAttribute("pelicula", pelicula);
 
         return "informacionPelicula";
+    }
+
+    @GetMapping("/favoriteMovies")
+    public String mostrarLista(@RequestParam("usuarioId") Integer usuarioId, Model model){
+
+        Usuario usuario = usuarioRepositorio.getUsuarioById(usuarioId);
+        Set<Pelicula> peliculasFavoritas = usuario.getPeliculasFavoritas();
+
+        model.addAttribute("usuarioLista", usuario);
+        model.addAttribute("peliculasFavoritas", peliculasFavoritas);
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        return "favoriteMovies";
     }
 
 }

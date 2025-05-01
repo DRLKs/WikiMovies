@@ -9,6 +9,7 @@
 <%
     String titulo = (String) request.getAttribute("titulo");
     List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
+    Boolean peliculaFavorita;
 %>
 
 <body>
@@ -32,6 +33,7 @@
 
         <%
             for ( Pelicula pelicula : peliculas ){
+               peliculaFavorita = pelicula.peliculaEsFavoritaPorUsuario(usuario);
         %>
 
         <a href="film?id=<%= pelicula.getId() %>" class="pelicula-link">
@@ -51,7 +53,7 @@
                 <form action="/favorite" method="post" class="favorite-form" >
                     <input type="hidden" name="id" value="<%= pelicula.getId() %>">
                     <button type="submit" class="favorite-button">
-                        <i class="heart-icon">❤</i>
+                        <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
                     </button>
                 </form>
             </div>

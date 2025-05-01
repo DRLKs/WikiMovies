@@ -55,6 +55,7 @@
     <div class="profile-lists">
         <h2>Listas de <%= userProfile.getNombreUsuario() %> </h2>
         <div class="lists-container">
+            <a href="/favoriteMovies?usuarioId=<%= userProfile.getId() %>" class="lista-link">
             <div class="list-card">
                 <div id="fauvorite-list" class="list-thumbnail">
                     <img src="../../img/logo_negro.png" alt="PeliculasFavoritas" />
@@ -65,6 +66,7 @@
                     <span class="list-count"><%= peliculasFavoritas.size() %> películas</span>
                 </div>
             </div>
+            </a>
             <% if ( listas  != null  && !listas.isEmpty() ) { %>
                 <% for (Lista lista : listas ) { %>
                     <div class="list-card">

@@ -4,6 +4,7 @@ import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Usuario;
+import com.app.web.ui.FiltroBusquedaDTO;
 import com.app.web.ui.UsuarioProfile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.app.web.utils.Constantes.USUARIO_SESION;
 
 @Controller
 public class MiembrosControlador extends BaseControlador{
@@ -33,10 +36,11 @@ public class MiembrosControlador extends BaseControlador{
 
         List<Usuario> usuarios = usuarioRepositorio.findAll();
 
-        model.addAttribute("miembros", usuarios);
-
-        List<Genero> generos =generosRepositorio.findAll();
+        List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        model.addAttribute("miembros", usuarios);
 
         return "miembros";
     }
@@ -48,10 +52,11 @@ public class MiembrosControlador extends BaseControlador{
     public String mostrarProfile(@RequestParam("id") Integer id, Model model) {
 
         Usuario usuario = usuarioRepositorio.getReferenceById(id);
-        model.addAttribute("usuario", usuario);
+        model.addAttribute(USUARIO_SESION, usuario);
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         // Introducimos los datos necesarios en el DTO
         UsuarioProfile usuarioProfile = new UsuarioProfile();
@@ -82,7 +87,7 @@ public class MiembrosControlador extends BaseControlador{
         LocalDate fechaNacimiento = usuarioProfile.getFechaNacimiento();
         Integer genero = usuarioProfile.getGenero();
 
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
         try {
 
@@ -109,7 +114,7 @@ public class MiembrosControlador extends BaseControlador{
 
         }catch (Exception e) {      // A veces, las URLS son muy largas y da errores
             model.addAttribute("usuario", usuario);
-            return "profile";
+            return "redirect:/profile?id=" + usuario.getId();
         }
 
         this.usuarioRepositorio.save(usuario);

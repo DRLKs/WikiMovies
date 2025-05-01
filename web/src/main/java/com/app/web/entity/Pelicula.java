@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -93,4 +94,22 @@ public class Pelicula {
             inverseJoinColumns = @JoinColumn(name = "id_productora"))
     private Set<Productora> productoras = new LinkedHashSet<>();
 
+    public Boolean peliculaEsFavoritaPorUsuario( Usuario usuario ){
+
+        if( usuario == null ) return false;
+
+        return usuarios.contains(usuario);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pelicula pelicula = (Pelicula) o;
+        return Objects.equals(id, pelicula.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="com.app.web.entity.Genero" %>
@@ -24,16 +25,18 @@
     </div>
 
     <div class="search-container">
-        <form action="/search" method="GET" class="search-form">
+        <form:form action="/search" method="GET" class="search-form" modelAttribute="filtroBusquedaDTO">
             <div class="form-group">
-                <label for="tituloPelicula"></label><input
+                <label for="tituloPelicula"></label>
+                <form:input
                         type="text"
                         id="tituloPelicula"
-                        name="title"
+                        path="titulo"
                         class="form-input"
                         placeholder="Buscar peliculas..."
                         autocomplete="off"
-                >
+                        maxlength="30"
+                />
             </div>
 
             <!-- Si quieres añadir filtros adicionales expandibles -->
@@ -42,30 +45,13 @@
                 <div class="generos-container">
                     <h4>Géneros</h4>
                     <div class="generos-list">
-                        <%
-                            List<Genero> generos = null;
-                            try {
-                                generos = (List<Genero>) request.getAttribute("generos");
-                            } catch (Exception e) {
-                                // Handle the exception silently
-                            }
-                            
-                            if(generos != null && !generos.isEmpty()) {
-                                for(Genero genero : generos) {
-                        %>
-                            <div class="genero-item">
-                                <input type="checkbox" 
-                                       id="genero_<%= genero.getId() %>" 
-                                       name="generos" 
-                                       value="<%= genero.getId() %>">
-                                <label for="genero_<%= genero.getId() %>"><%= genero.getNombre() %></label>
-                            </div>
-                        <%
-                                }
-                            } else {
-                        %>
-                            <p>No hay géneros disponibles</p>
-                        <% } %>
+                        <form:checkboxes
+                                items="${generos}"
+                                itemLabel="nombre"
+                                itemValue="id"
+                                path="generos"
+                                class="genero-item"
+                        />
                     </div>
                 </div>
             </div>
@@ -73,7 +59,7 @@
             <button type="button" class="filters-toggle">
                 Mostrar filtros avanzados
             </button>
-        </form>
+        </form:form>
     </div>
 
     <div class="profile">
@@ -98,19 +84,8 @@
     </div>
 </div>
 
-<!-- Script para mostrar/ocultar filtros -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filtersToggle = document.querySelector('.filters-toggle');
-        const filters = document.querySelector('.filters');
-        
-        filtersToggle.addEventListener('click', function() {
-            const isHidden = filters.style.display === 'none';
-            filters.style.display = isHidden ? 'block' : 'none';
-            filtersToggle.textContent = isHidden ? 'Ocultar filtros avanzados' : 'Mostrar filtros avanzados';
-        });
-    });
-</script>
+<script src="../../js/barraNavegacion.js" > </script>
+
 
 </body>
 </html>

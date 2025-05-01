@@ -203,6 +203,14 @@
     overflow: auto;
 }
 
+.lista-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
 .modal-content {
     background-color: #fff;
     margin: 5% auto;

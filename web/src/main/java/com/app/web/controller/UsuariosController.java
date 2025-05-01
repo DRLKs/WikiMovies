@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 
+import static com.app.web.utils.Constantes.USUARIO_SESION;
+
 @Controller
 public class UsuariosController extends BaseControlador {
 
@@ -69,7 +71,7 @@ public class UsuariosController extends BaseControlador {
             return "login";
         }
 
-        session.setAttribute("usuario", usuarioAutenticado);
+        session.setAttribute(USUARIO_SESION, usuarioAutenticado);
 
         if (remember) {
             // Crear un token único que combine ID de usuario y una marca de tiempo
@@ -92,7 +94,7 @@ public class UsuariosController extends BaseControlador {
     @GetMapping("/logout")
     public String desLoguear(HttpSession session, HttpServletRequest request, 
                             HttpServletResponse response) {
-        session.removeAttribute("usuario");
+        session.removeAttribute(USUARIO_SESION);
         
         // Eliminar la cookie de sesión
         Cookie[] cookies = request.getCookies();

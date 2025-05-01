@@ -190,6 +190,10 @@ body {
     font-style: normal;
 }
 
+.heart-icon.active{
+    color: var(--color-primary);
+}
+
 /* Add style for when the movie is already favorited */
 .favorite-button.active .heart-icon {
     color: var(--color-primary);

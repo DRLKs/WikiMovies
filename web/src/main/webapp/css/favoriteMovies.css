@@ -1,0 +1,116 @@
+:root {
+    /* Modern movie-themed color palette */
+    --color-background: #121212;
+    --color-card-bg: #1e1e1e;
+    --color-primary: #ff4646;
+    --color-secondary: #2c2c2c;
+    --color-accent: #ffd369;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #b3b3b3;
+    --color-divider: #333333;
+    --border-radius: 12px;
+    --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: 'Poppins', 'Roboto', sans-serif;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    width: 80%;
+    max-width: 1000px;
+    margin: 100px auto 40px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid var(--color-primary);
+}
+
+caption {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 15px 0;
+}
+
+tr:first-child {
+    background-color: var(--color-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+tr:first-child td {
+    padding: 16px 20px;
+    color: var(--color-accent);
+    font-size: 16px;
+    border-bottom: 2px solid var(--color-divider);
+}
+
+tr:not(:first-child) {
+    transition: all 0.3s ease;
+}
+
+tr:not(:first-child):hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+td {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--color-divider);
+    color: var(--color-text-secondary);
+    font-size: 16px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:not(:first-child) td:first-child {
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    table {
+        width: 90%;
+        margin: 80px auto 30px;
+    }
+    
+    caption {
+        font-size: 22px;
+    }
+    
+    td {
+        padding: 14px 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        width: 95%;
+    }
+    
+    caption {
+        font-size: 18px;
+    }
+    
+    td {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+}
+
