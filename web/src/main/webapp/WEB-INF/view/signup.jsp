@@ -26,6 +26,7 @@
 <div class="container">
     
     <h1>Crear Cuenta</h1>
+    <div class="error" id="error"><%= msgError %></div>
     <form:form action="${pageContext.request.contextPath}/crearCuenta" method="post" id="signup-form" modelAttribute="usuarioSignup">
         <div class="form-group">
             <label for="username">Nombre de usuario</label>

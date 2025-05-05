@@ -1,8 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.entity.Usuario" %>
-<%@ page import="com.app.web.entity.Genero" %>
-<%@ page import="java.util.List" %>
 
 <html>
     <link rel="stylesheet" href="../../css/barra_navegacion.css">

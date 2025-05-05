@@ -1,5 +1,4 @@
 <%@ page import="com.app.web.entity.Pelicula" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -32,7 +31,7 @@
             %>
                 <div class="generosTags-container">
                     <%
-                        for (Genero genero : pelicula.getGeneros()) {
+                        for (com.app.web.entity.Genero genero : pelicula.getGeneros()) {
                     %>
                         <span class="genero-tag"><%= genero.getNombre() %></span>
                     <%

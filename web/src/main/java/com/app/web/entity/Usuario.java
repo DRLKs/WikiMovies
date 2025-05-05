@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.StringJoiner;
 
 @Getter
 @Setter
@@ -89,7 +87,7 @@ public class Usuario {
             sb.append(dias).append(" dias ");
         }else if( dias > 0 ){
             sb.append(dias).append(" dia ");
-        }else if( dias <= 0 && meses <= 0 && anyos <= 0  ){
+        }else if( meses <= 0 && anyos <= 0  ){
             sb.append("Usuario nuevo");
         }
 

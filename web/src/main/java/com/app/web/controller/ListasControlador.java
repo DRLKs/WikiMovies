@@ -18,9 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,17 +28,13 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class ListasControlador extends BaseControlador{
 
-    @Autowired
-    protected GenerosRepository generosRepositorio;
-    @Autowired
-    protected PeliculasRepositorio peliculasRepositorio;
-    @Autowired
-    protected UsuariosRepositorio usuarioRepositorio;
-    @Autowired
-    protected ListaRepository listaRepository;
+    @Autowired protected GenerosRepository generosRepositorio;
+    @Autowired protected PeliculasRepositorio peliculasRepositorio;
+    @Autowired protected UsuariosRepositorio usuarioRepositorio;
+    @Autowired protected ListaRepository listaRepository;
 
     /**
-     * Controlador de la petición del sistema para cargar todas las
+     * Controlador de la petición del sistema para cargar todas las listas
      */
     @GetMapping("/listas")
     public String mostrarListas(Model model, HttpServletRequest request, HttpSession session) {
@@ -60,6 +54,10 @@ public class ListasControlador extends BaseControlador{
         return "listas";
     }
 
+    /**
+     * Controlador para la petición del usuario para crear una lista nueva
+     * @return
+     */
     @GetMapping("/crearLista")
     public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
         // Un usuario no puede guardarse una películas como favorita si tiene la sesión iniciada
@@ -81,8 +79,14 @@ public class ListasControlador extends BaseControlador{
         return "crearLista";
     }
 
+    /**
+     * Controlador de la petición para guardar la lista creada por el usuario
+     * @param nuevaLista
+     * @param session
+     * @return
+     */
     @PostMapping("/guardarLista")
-    public String guardarLista(@ModelAttribute("nuevaLista") NuevaLista nuevaLista, Model model, HttpServletRequest request, HttpSession session) {
+    public String guardarLista(@ModelAttribute("nuevaLista") NuevaLista nuevaLista, HttpSession session) {
 
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);

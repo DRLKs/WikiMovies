@@ -23,8 +23,7 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class UsuariosController extends BaseControlador {
 
-    @Autowired
-    UsuariosRepositorio usuarioRepositorio;
+    @Autowired UsuariosRepositorio usuarioRepositorio;
 
     /**
      * Función que abre el apartado de LOGIN
@@ -52,7 +51,7 @@ public class UsuariosController extends BaseControlador {
     @PostMapping("/log")
     public String iniciarSesion(@ModelAttribute()UsuarioLogin usuarioLogin,
                                 Model model, HttpSession session,
-                                HttpServletRequest request, HttpServletResponse response) {
+                                HttpServletResponse response) {
 
         String correoElectronico = usuarioLogin.getEmail();
         String contrasena = usuarioLogin.getPassword();
@@ -131,8 +130,7 @@ public class UsuariosController extends BaseControlador {
     /**
      * Función que crea la cuenta de un nuevo usuario
      * @param usuarioSignup DTO de usuario específico para la creación de una cuenta
-     * @param model
-     * @return
+     * @return JSP
      */
     @PostMapping("/crearCuenta")
     public String crearCuenta(@ModelAttribute() UsuarioSignup usuarioSignup,Model model) {

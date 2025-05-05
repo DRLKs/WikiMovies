@@ -143,6 +143,7 @@ CREATE TABLE `favoritos` (
 
 LOCK TABLES `favoritos` WRITE;
 /*!40000 ALTER TABLE `favoritos` DISABLE KEYS */;
+INSERT INTO `favoritos` VALUES (10,1),(11,1),(10,2),(10,3);
 /*!40000 ALTER TABLE `favoritos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -557,7 +558,7 @@ CREATE TABLE `usuarios` (
   `creacionCuentaFecha` date NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `correo_electronico_UNIQUE` (`correo_electronico`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -566,7 +567,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (10,'David','david@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,NULL,NULL,NULL,'2022-01-01');
+INSERT INTO `usuarios` VALUES (10,'David','david@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,'https://hips.hearstapps.com/hmg-prod/images/chris-bumstead-competes-in-the-classic-physique-event-news-photo-1730192136.jpg?crop=1xw:0.84334xh;center,top&resize=1200:*',NULL,NULL,NULL,'2022-01-01'),(11,'Cristobal','cbarba@uma.es','c31febb2564abe57222be150a26b16fb1fbf00a17c6c439faa67eec03643ccd9',NULL,'https://itis.uma.es/wp-content/uploads/2020/12/CristobalBarba-731x1024-200x250.jpg','Sí',NULL,1,'2025-04-30'),(12,'PRUEBA','1@a','6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b',NULL,NULL,NULL,NULL,NULL,'2025-04-30');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -579,4 +580,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-29 12:02:45
+-- Dump completed on 2025-05-05 17:51:07

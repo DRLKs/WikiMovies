@@ -45,8 +45,11 @@ public class MiembrosControlador extends BaseControlador{
         return "miembros";
     }
 
+
     /**
      * Controlador de la petición del sistema al cargar el profile de un usuario
+     * @param id Identificador del usuario del profile
+     * @return JSP de envío
      */
     @GetMapping("/profile")
     public String mostrarProfile(@RequestParam("id") Integer id, Model model) {
@@ -72,6 +75,8 @@ public class MiembrosControlador extends BaseControlador{
 
     /**
      * Controlador del formulario de actualización del Profile del Usuario
+     * @param usuarioProfile Usuario del profile
+     * @return JSP
      */
     @PostMapping("/profile/update")
     public String doUpdateProfile(@ModelAttribute() UsuarioProfile usuarioProfile, Model model,

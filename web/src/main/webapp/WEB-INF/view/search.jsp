@@ -24,7 +24,7 @@
     <div class="peliculas-container">
 
         <%
-            if ( peliculas.size() < 1 ){
+            if ( peliculas.isEmpty() ){
         %>
             <h1> No hay películas con este filtro </h1>
         <%

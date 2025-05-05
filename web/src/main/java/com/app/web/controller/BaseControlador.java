@@ -52,8 +52,8 @@ public class BaseControlador {
 
     /**
      * Método para guardar un usuario en el cache de sesiones
-     * @param token
-     * @param usuario 
+     * @param token Identificador del usuario en la caché
+     * @param usuario Usuario a guardar
     */ 
     protected void guardarUsuarioEnSesionCache(String token, Usuario usuario) {
         sesionesCache.put(token, usuario);
@@ -61,7 +61,7 @@ public class BaseControlador {
 
     /**
      * Método para eliminar un usuario del cache de sesiones
-     * @param token
+     * @param token Identificador del usuario en la caché
      */
     protected void eliminarUsuarioDelSesionCache(String token) {
         sesionesCache.remove(token);
@@ -69,8 +69,8 @@ public class BaseControlador {
 
     /**
      * Método para recuperar usuario desde el cache de sesiones
-     * @param token
-     * @return
+     * @param token Identificador del usuario en la caché
+     * @return Usuario obtenido en la caché
      */
     private Usuario obtenerUsuarioDesdeSesionCache(String token) {
         return sesionesCache.get(token);

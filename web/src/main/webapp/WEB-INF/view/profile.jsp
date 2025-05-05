@@ -1,7 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="java.time.LocalDate" %>
 <%@ page import="com.app.web.entity.Pelicula" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -87,7 +86,7 @@
     </div>
 
     <%
-        if ( usuario != null && usuario.getId() == userProfile.getId() ){
+        if ( usuario != null && usuario.getId().equals(userProfile.getId())){
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>

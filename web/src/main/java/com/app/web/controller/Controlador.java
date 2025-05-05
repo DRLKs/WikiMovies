@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +49,7 @@ public class Controlador extends BaseControlador {
      * Controlador del formulario sobre el filtro al buscar películas
      */
     @GetMapping("/search")
-    public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO,
-                         Model model, HttpSession session) {
+    public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO, Model model) {
 
         List<Pelicula> peliculas;
         Integer[] listaGeneros = filtroBusquedaDTO.getGeneros();
@@ -115,7 +113,7 @@ public class Controlador extends BaseControlador {
      * @param id El identificador de la película
      */
     @PostMapping("/favorite")
-    public String doFavorite(@RequestParam("id") Integer id, Model model, HttpServletRequest request, HttpSession session) {
+    public String doFavorite(@RequestParam("id") Integer id, HttpServletRequest request, HttpSession session) {
 
         // Un usuario no puede guardarse una películas como favorita si tiene la sesión iniciada
         if( !estaAutenticado(request,session) ) {
@@ -158,9 +156,14 @@ public class Controlador extends BaseControlador {
     }
 
     @GetMapping("/peliculas")
-    public String mostrarPeliculas(Model model, Pageable pageable) {
+    public String mostrarPeliculas(Model model) {
         List<Pelicula> peliculas = peliculasRepositorio.findTopPeliculasByPopularidad(PageRequest.of(0, 10));
         model.addAttribute("peliculas", peliculas);
+
+        // Para que la búsqueda y el filtro funcione
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "peliculas";
     }
