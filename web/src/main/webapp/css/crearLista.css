@@ -1,0 +1,94 @@
+/* Estilos generales para la página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Contenedor del formulario */
+.formulario-crear-lista {
+    width: 80%; /* Ajuste para que no llegue a los dos extremos de la pantalla */
+    max-width: 1000px; /* Limitar el ancho máximo */
+    margin: 30px auto; /* Centrar el formulario con un margen superior */
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilos para la tabla del formulario */
+.tabla-formulario {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabla-formulario td {
+    padding: 15px; /* Aumento de padding para mayor comodidad */
+    vertical-align: middle;
+}
+
+/* Estilo para las etiquetas */
+.label {
+    font-weight: bold;
+    font-size: 1.2em; /* Aumento del tamaño de la fuente */
+    color: #333333;
+}
+
+/* Estilo para los inputs y textarea */
+.input-nombre,
+.textarea-descripcion,
+.select-peliculas {
+    width: 100%;
+    padding: 12px; /* Aumento de padding para mayor comodidad */
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1.1em; /* Aumento del tamaño de la fuente */
+}
+
+.textarea-descripcion {
+    height: 200px; /* Aumento de altura para textarea */
+}
+
+/* Estilo para el botón de guardar */
+.boton-guardar {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 14px 22px; /* Aumento de padding en el botón */
+    font-size: 1.2em; /* Aumento del tamaño de la fuente */
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.boton-guardar:hover {
+    background-color: #45a049;
+}
+
+/* Estilos responsivos */
+@media screen and (max-width: 768px) {
+    .formulario-crear-lista {
+        width: 90%; /* Ajuste del ancho para pantallas pequeñas */
+    }
+
+
+
+    .tabla-formulario td {
+        font-size: 1em; /* Ajustar el tamaño de la fuente en pantallas pequeñas */
+    }
+
+    .input-nombre,
+    .textarea-descripcion,
+    .select-peliculas {
+        font-size: 1em; /* Ajuste del tamaño de la fuente en pantallas pequeñas */
+    }
+
+    .boton-guardar {
+        font-size: 1.1em; /* Ajuste del tamaño del botón en pantallas pequeñas */
+    }
+}
