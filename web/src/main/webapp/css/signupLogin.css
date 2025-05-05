@@ -111,6 +111,23 @@ input:focus {
     display: none;
 }
 
+/* New style for the main error message at the top of the form */
+#error {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 4px solid #e74c3c;
+    display: none; /* Hidden by default */
+}
+
+/* Show the error when it has content */
+#error:not(:empty) {
+    display: block;
+}
+
 .error-message {
     background-color: #ffebee;
     color: #c62828;
