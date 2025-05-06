@@ -90,7 +90,7 @@
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
-        
+
         <div id="editProfileModal" class="modal">
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
@@ -102,9 +102,11 @@
                         <div class="avatar-preview">
                             <img id="avatarPreview" placeholder="URL imagen" src="<%= userProfile.getAvatarUrl() != null ? userProfile.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar">
                         </div>
-                        <form:input type="text" id="avatar" path="avatar"/>
+
+                        <form:input type="text" id="avatar" path="avatar" placeholder="url" />
+
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="nombreUsuario">Nombre de usuario:</label>
                         <form:input type="text" id="nombreUsuario" path="nombreUsuario" value="<%= userProfile.getNombreUsuario() %>"/>

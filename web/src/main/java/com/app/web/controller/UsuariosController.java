@@ -162,6 +162,7 @@ public class UsuariosController extends BaseControlador {
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setCorreoElectronico(correoElectronico);
         usuario.setContrasenaHash( Hash.obtenerSHA256(contrasena) );
+        usuario.setBiografia(""); //añadido
         usuario.setCreacionCuentaFecha(LocalDate.now());
 
         this.usuarioRepositorio.save(usuario);
