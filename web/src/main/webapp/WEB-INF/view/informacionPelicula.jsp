@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="../../css/informacionPelicula.css">
 </head>
 <body>
+<div style="text-align: left; margin-top: 20px;">
+    <button onclick="history.back()" class="boton-volver">Volver</button>
+</div>
 <div class="detalle-container">
     <div class="poster-box">
         <img src="<%= pelicula.getPoster() %>" alt="Póster de <%= pelicula.getTitulo() %>">
