@@ -1,5 +1,8 @@
 package com.app.web.controller;
 
+import com.app.web.dao.ListaRepository;
+import com.app.web.entity.Lista;
+import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.ui.UsuarioSignup;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.app.web.utils.Constantes.USUARIO_SESION;
 
@@ -24,6 +29,9 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 public class UsuariosController extends BaseControlador {
 
     @Autowired UsuariosRepositorio usuarioRepositorio;
+
+    @Autowired
+    ListaRepository listaRepository;
 
     /**
      * Función que abre el apartado de LOGIN
@@ -166,6 +174,27 @@ public class UsuariosController extends BaseControlador {
         usuario.setCreacionCuentaFecha(LocalDate.now());
 
         this.usuarioRepositorio.save(usuario);
+
+
+        //Le añado la lista de "Favoritas" y "Vistas"
+        Set<Lista>listas = new HashSet<>();
+        Lista listaFav = new Lista();
+        listaFav.setNombre("Favoritas");
+        //añadir descripcion y foto aqui
+        listaFav.setIdUsuario(usuario);
+        listaFav.setPeliculas(new HashSet<>());
+        listas.add(listaFav);
+
+        Lista listaVistas = new Lista();
+        listaVistas.setNombre("Vistas");
+        //añadir descripcion y foto aqui
+        listaVistas.setIdUsuario(usuario);
+        listaVistas.setPeliculas(new HashSet<>());
+        listas.add(listaVistas);
+
+        this.listaRepository.save(listaVistas);
+        this.listaRepository.save(listaFav);
+
 
         return "redirect:/login";
     }

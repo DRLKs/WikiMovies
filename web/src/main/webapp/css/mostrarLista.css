@@ -17,14 +17,63 @@ body {
     line-height: 1.7;
     color: var(--color-text-primary);
     background-color: var(--color-background);
-    margin: 0;
+    margin-top: 100px;
     padding: 0;
+}
+
+.container-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 80%;
+    max-width: 1000px;
+}
+
+.container-header img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-right: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.container-header .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container-header .info h1 {
+    font-size: 28px;
+    margin: 0;
+    color: var(--color-accent);
+}
+
+.container-header .info p {
+    margin: 5px 0;
+    color: var(--color-text-secondary);
+    font-size: 16px;
+}
+
+.container-header .info .movie-count {
+    font-weight: bold;
+    color: var(--color-text-secondary);
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 table {
     width: 80%;
     max-width: 1000px;
-    margin: 100px auto 40px;
+    margin: 20px auto 40px;
     border-collapse: separate;
     border-spacing: 0;
     background-color: var(--color-card-bg);
@@ -34,14 +83,6 @@ table {
     border-left: 4px solid var(--color-primary);
 }
 
-caption {
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--color-accent);
-    margin-bottom: 20px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    padding: 15px 0;
-}
 
 tr:first-child {
     background-color: var(--color-secondary);
@@ -84,15 +125,25 @@ tr:not(:first-child) td:first-child {
 
 /* Media query for responsiveness */
 @media (max-width: 768px) {
+    .container-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .container-header img {
+        margin-bottom: 15px;
+    }
+
     table {
         width: 90%;
-        margin: 80px auto 30px;
+        margin: 20px auto 30px;
     }
-    
+
     caption {
         font-size: 22px;
     }
-    
+
     td {
         padding: 14px 10px;
         font-size: 14px;
@@ -103,14 +154,46 @@ tr:not(:first-child) td:first-child {
     table {
         width: 95%;
     }
-    
+
     caption {
         font-size: 18px;
     }
-    
+
     td {
         padding: 12px 8px;
         font-size: 13px;
     }
 }
+
+
+.clickable {
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Solo estrecha la celda de la X */
+.delete-cell-wrapper {
+    width: 40px; /* o menos si prefieres */
+    max-width: 50px;
+    text-align: center;
+    padding-right: 5px;
+}
+
+.delete-cell {
+    cursor: pointer;
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: #201e1e;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding: 4px;
+    text-align: center;
+}
+
+.delete-cell:hover {
+    background-color: #ffcdd2;
+    color: #b71c1c;
+    border-radius: 4px;
+}
+
 

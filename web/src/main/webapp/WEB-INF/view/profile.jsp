@@ -64,30 +64,20 @@
     <div class="profile-lists">
         <h2>Listas de <%= userProfile.getNombreUsuario() %> </h2>
         <div class="lists-container">
-            <a href="/favoriteMovies?usuarioId=<%= userProfile.getId() %>" class="lista-link">
-            <div class="list-card">
-                <div id="fauvorite-list" class="list-thumbnail">
-                    <img src="../../img/logo_negro.png" alt="PeliculasFavoritas" />
-                </div>
-                <div class="list-info">
-                    <h3 class="list-title">Favoritas</h3>
-                    <p class="list-description">Tus películas favoritas</p>
-                    <span class="list-count"><%= peliculasFavoritas.size() %> películas</span>
-                </div>
-            </div>
-            </a>
             <% if ( listas  != null  && !listas.isEmpty() ) { %>
                 <% for (Lista lista : listas ) { %>
+                    <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
                     <div class="list-card">
                         <div class="list-thumbnail">
                             <img src="<%=null != null ? "lista.imagenUrl" : "../../img/default-list.png"%>" alt="<%= lista.getNombre() %>">
                         </div>
                         <div class="list-info">
                             <h3 class="list-title"><%=lista.getNombre()%></h3>
-                            <p class="list-description"><%=lista.getNombre() %></p>
+                            <p class="list-description"><%=lista.getNombre() %></p> <!-- CAMBIAR ESTO POR LA DESCRIPCION-->
                             <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
                         </div>
                     </div>
+                    </a>
                 <% } %>
             <% } %>
             </div>

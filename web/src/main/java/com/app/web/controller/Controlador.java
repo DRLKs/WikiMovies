@@ -1,9 +1,11 @@
 package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
+import com.app.web.dao.ListaRepository;
 import com.app.web.dao.PeliculasRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
+import com.app.web.entity.Lista;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.FiltroBusquedaDTO;
@@ -29,6 +31,7 @@ public class Controlador extends BaseControlador {
     PeliculasRepository peliculasRepositorio;
     @Autowired UsuariosRepositorio usuarioRepositorio;
     @Autowired GenerosRepository generosRepositorio;
+    @Autowired protected ListaRepository listaRepository;
 
     /**
      * Controlador de la pantalla inicial
@@ -177,20 +180,23 @@ public class Controlador extends BaseControlador {
         return "informacionPelicula";
     }
 
-    @GetMapping("/favoriteMovies")
-    public String mostrarLista(@RequestParam("usuarioId") Integer usuarioId, Model model){
+    @GetMapping("/mostrarLista")
+    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request, HttpSession session){
 
-        Usuario usuario = usuarioRepositorio.getUsuarioById(usuarioId);
-        Set<Pelicula> peliculasFavoritas = usuario.getPeliculasFavoritas();
+        // Obtenemos los datos del usuario
+        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
+
+        Lista lista = listaRepository.findById(listaId).get();
 
         model.addAttribute("usuarioLista", usuario);
-        model.addAttribute("peliculasFavoritas", peliculasFavoritas);
+        model.addAttribute("lista", lista);
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
-        return "favoriteMovies";
+        return "mostrarLista";
     }
 
 }

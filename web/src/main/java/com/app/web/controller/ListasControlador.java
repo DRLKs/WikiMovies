@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashSet;
 import java.util.List;
@@ -93,7 +94,7 @@ public class ListasControlador extends BaseControlador{
 
         Lista lista = new Lista();
         lista.setNombre(nuevaLista.getNombre());
-        //añadir descripcion en la bbdd y aqui
+        //añadir descripcion y foto aqui
         lista.setIdUsuario(usuario);
         Set<Pelicula> pelis = new HashSet<>();
         for(Integer peliId : nuevaLista.getPeliculasId()){
@@ -105,6 +106,27 @@ public class ListasControlador extends BaseControlador{
         listaRepository.save(lista);
 
         return "redirect:/";
+    }
+
+
+    @GetMapping("/quitarPeliLista")
+    public String quitarPeliLista(@RequestParam("idPeli") Integer idPeli, @RequestParam("idLista") Integer idLista,
+            Model model, HttpServletRequest request, HttpSession session) {
+
+        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
+
+        Pelicula peli  = peliculasRepositorio.getPeliculaById(idPeli);
+
+        Lista lista = listaRepository.findById(idLista).get();
+        Set<Pelicula> pelis = lista.getPeliculas();
+
+        pelis.remove(peli);
+
+        lista.setPeliculas(pelis);
+        listaRepository.save(lista);
+
+        return "redirect:/mostrarLista?listaId="+idLista;
     }
 
 }
