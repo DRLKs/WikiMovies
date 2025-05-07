@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface UsuariosRepositorio extends JpaRepository<Usuario, Integer> {
 
     @Query("select COUNT(u) > 0 from Usuario u where u.correoElectronico = :correoElectronico")
@@ -15,6 +17,9 @@ public interface UsuariosRepositorio extends JpaRepository<Usuario, Integer> {
 
     @Query("select u from Usuario u where u.correoElectronico = :correoElectronico and u.contrasenaHash = :contrasenaHash")
     Usuario autenticaUsuario(@Param("correoElectronico") String correoElectronico, @Param("contrasenaHash") String contrasenaHash);
+
+    @Query("select u from Usuario u join u.seguidores s where s.id = :id")
+    List<Usuario> getSeguidos(@Param("id") Integer id);
 
     Usuario getUsuarioById(Integer id);
 }

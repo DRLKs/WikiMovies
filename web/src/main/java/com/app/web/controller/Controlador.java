@@ -1,7 +1,7 @@
 package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
-import com.app.web.dao.PeliculasRepositorio;
+import com.app.web.dao.PeliculasRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
@@ -25,7 +25,8 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class Controlador extends BaseControlador {
 
-    @Autowired PeliculasRepositorio peliculasRepositorio;
+    @Autowired
+    PeliculasRepository peliculasRepositorio;
     @Autowired UsuariosRepositorio usuarioRepositorio;
     @Autowired GenerosRepository generosRepositorio;
 

@@ -5,9 +5,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
-<title> WikiMovies </title>
-<link rel="stylesheet" href="../../css/profile.css">
 
+<head>
+    <title> WikiMovies </title>
+    <link rel="stylesheet" href="../../css/profile.css">
+</head>
 <body>
 
 <%@ include file="barra_navegacion.jsp" %>
@@ -16,6 +18,8 @@
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
     Set<Pelicula> peliculasFavoritas =  userProfile.getPeliculasFavoritas();
     Set<Lista> listas = userProfile.getListas();
+    Usuario user = (Usuario)session.getAttribute("usuario");
+    Integer seguidos = (Integer) request.getAttribute("seguidos");
 %>
 
 <div class="profile-container">
@@ -26,14 +30,20 @@
         <div class="profile-info">
             <h1 class="profile-username"><%=userProfile.getNombreUsuario()%></h1>
             <p class="profile-bio"><%=userProfile.getGenero() != null && !userProfile.getBiografia().isEmpty() ? userProfile.getBiografia() : "Sin biografía"%></p>
-            <div class="profile-actions">
-                <% if (session.getAttribute("usuarioActual") != null && !session.getAttribute("usuarioActual").equals(request.getAttribute("usuario"))) { %>
-                    <button class="follow-btn" data-userid="<%=userProfile.getId()%>">
-                        <%=false ? "Dejar de seguir" : "Seguir"%>
-                    </button>
-                <% } %>
-            </div>
+
+            <%
+                if(user != null && userProfile.getId() != user.getId()){
+                    if(user.sigueA(userProfile)) { %>
+                        <a class="unfollow-btn" href="/dejarSeguir?id=<%= userProfile.getId() %>">Dejar de seguir</a>
+                    <% } else { %>
+                        <a class="follow-btn" href="/seguir?id=<%= userProfile.getId() %>">Seguir</a>
+                    <% } %>
+            <%
+                }
+            %>
+
         </div>
+
     </div>
     
     <div class="profile-stats">
@@ -42,7 +52,7 @@
             <span class="stat-label">Seguidores</span>
         </div>
         <div class="stat-box">
-            <span class="stat-count"><%= 0 %></span>
+            <span class="stat-count"><%= seguidos %></span>
             <span class="stat-label">Siguiendo</span>
         </div>
         <div class="stat-box">
@@ -86,7 +96,7 @@
     </div>
 
     <%
-        if ( usuario != null && usuario.getId().equals(userProfile.getId())){
+        if ( usuario != null && usuario.getId() == userProfile.getId()){
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
@@ -150,7 +160,6 @@
         }
     %>
 
-</div>
 
 <script type="text/javascript" src="../../js/updateProfile.js"></script>
 

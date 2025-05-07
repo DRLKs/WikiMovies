@@ -3,6 +3,7 @@ package com.app.web.controller;
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
+import com.app.web.entity.Seguidore;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.FiltroBusquedaDTO;
 import com.app.web.ui.UsuarioProfile;
@@ -70,6 +71,9 @@ public class MiembrosControlador extends BaseControlador{
         usuarioProfile.setFechaNacimiento( usuario.getNacimientoFecha() );
         model.addAttribute("usuarioProfile", usuarioProfile);
 
+        List<Usuario> seguidos = usuarioRepositorio.getSeguidos(id);
+        model.addAttribute("seguidos", seguidos.size());
+
         return "profile";
     }
 
@@ -125,5 +129,27 @@ public class MiembrosControlador extends BaseControlador{
         this.usuarioRepositorio.save(usuario);
 
         return "redirect:/profile?id=" + usuario.getId();
+    }
+
+    @GetMapping("/seguir")
+    public String seguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session, HttpServletRequest request) {
+        Usuario usuarioSeguido = usuarioRepositorio.findById(idSeguido).get();
+        Usuario yo = (Usuario) session.getAttribute("usuario");
+        usuarioSeguido.getSeguidores().add(yo);
+        usuarioRepositorio.save(usuarioSeguido);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/miembros");
+    }
+
+    @GetMapping("/dejarSeguir")
+    public String dejarSeguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session, HttpServletRequest request) {
+        Usuario usuarioSeguido = usuarioRepositorio.findById(idSeguido).get();
+        Usuario yo = (Usuario) session.getAttribute("usuario");
+        usuarioSeguido.getSeguidores().remove(yo);
+        usuarioRepositorio.save(usuarioSeguido);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/miembros");
     }
 }

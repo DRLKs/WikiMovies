@@ -84,15 +84,19 @@ public class Usuario {
         }
 
         if( dias > 1 ){
-            sb.append(dias).append(" dias ");
+            sb.append(dias).append(" días ");
         }else if( dias > 0 ){
-            sb.append(dias).append(" dia ");
+            sb.append(dias).append(" día ");
         }else if( meses <= 0 && anyos <= 0  ){
             sb.append("Usuario nuevo");
         }
 
 
         return sb.toString();
+    }
+
+    public boolean sigueA(Usuario usuario){
+        return usuario.getSeguidores().contains(this);
     }
 
     @Override

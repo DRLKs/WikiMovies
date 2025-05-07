@@ -2,7 +2,7 @@ package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.ListaRepository;
-import com.app.web.dao.PeliculasRepositorio;
+import com.app.web.dao.PeliculasRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
@@ -29,7 +29,7 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 public class ListasControlador extends BaseControlador{
 
     @Autowired protected GenerosRepository generosRepositorio;
-    @Autowired protected PeliculasRepositorio peliculasRepositorio;
+    @Autowired protected PeliculasRepository peliculasRepositorio;
     @Autowired protected UsuariosRepositorio usuarioRepositorio;
     @Autowired protected ListaRepository listaRepository;
 

@@ -40,7 +40,6 @@
 .miembro-nombre {
     font-weight: bold;
     font-size: 1.2em;
-    margin-top: 10px;
     color: #333;
 }
 
@@ -48,6 +47,7 @@
     color: #666;
     margin-top: 5px;
     font-size: 0.9em;
+    margin-bottom: 25px;
 }
 
 .page-title {
@@ -55,4 +55,36 @@
     margin: 20px 0;
     color: #2c3e50;
     font-size: 2em;
+}
+
+/* Botón de seguir */
+.follow-btn {
+    padding: 5px;
+    text-decoration: none;
+    background-color: #e50914;
+    color: white;
+    border: 0.5px solid #e50914;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.follow-btn:hover {
+    background-color: #b80000;
+}
+
+/* Botón de DEJAR DE seguir */
+.unfollow-btn {
+    padding: 5px;
+    text-decoration: none;
+    background-color: white;
+    color: red;
+    border: 0.5px solid red;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.unfollow-btn:hover {
+    background-color: #dddddd;
 }

@@ -1,7 +1,6 @@
 package com.app.web.dao;
 
 import com.app.web.entity.Pelicula;
-import com.app.web.entity.Usuario;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PeliculasRepositorio extends JpaRepository<Pelicula, Integer> {
+public interface PeliculasRepository extends JpaRepository<Pelicula, Integer> {
 
     @Query("select P from Pelicula P where lower( P.titulo ) like lower( concat( '%', :titulo, '%'))")
     public List<Pelicula> findByTitulo(@Param("titulo") String titulo);
