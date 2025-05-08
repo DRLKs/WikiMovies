@@ -1,5 +1,6 @@
 package com.app.web.dao;
 
+import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,7 @@ public interface PeliculasRepository extends JpaRepository<Pelicula, Integer> {
      */
     @Query("SELECT P FROM Pelicula P JOIN P.usuarios users WHERE :usuario = users.id")
     List<Pelicula> findPeliculasFavoritasByUsuario(int usuario);
+
+    @Query("SELECT p FROM Pelicula p WHERE :genero MEMBER OF p.generos ORDER BY p.popularidad DESC, p.mediaVotos DESC")
+    List<Pelicula> findPeliculasByGenero(@Param("genero") Genero genero, PageRequest pageable);
 }

@@ -1,50 +1,63 @@
 <%@ page import="com.app.web.entity.Pelicula" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.app.web.entity.Genero" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
-<title> WikiMovies </title>
-<link rel="stylesheet" href="../../css/index.css">
+    <title> WikiMovies </title>
+    <link rel="stylesheet" href="../../css/index.css">
 
-<%
-    List<Pelicula> peliculaList = (List<Pelicula>) request.getAttribute("peliculas");
-%>
+    <%
+        List<Pelicula> peliculaList = (List<Pelicula>) request.getAttribute("peliculas");
+        List<Genero> generos = (List<Genero>) request.getAttribute("generos");
+    %>
 
-<body>
+    <body>
 
-<%@ include file="barra_navegacion.jsp" %>
+        <%@ include file="barra_navegacion.jsp" %>
 
-<div class="peliculas-container">
-    <div class="peliculas-recomendadas">
-        <h3> ¿Qué te apetece ver hoy? </h3>
-        <div class="lista-peliculas">
+        <div class="peliculas-container">
+            <div class="peliculas-recomendadas">
+                <h3> ¿Qué te apetece ver hoy? </h3>
+                <div class="lista-peliculas">
 
-            <%
-                for (Pelicula pelicula : peliculaList) {
-            %>
-            <img
-                    src="<%= pelicula.getPoster() %>"
-                    alt="Pancarta Pelicula"
-                    style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
-            >
-            <%
-                }
-            %>
+                    <%
+                        for (Pelicula p : peliculaList) {
+                    %>
+                    <a href="informacionPelicula?id=<%= p.getId() %>">
+                        <img src="<%= p.getPoster() %>"
+                             alt="Póster de <%= p.getTitulo() %>"
+                             class="poster-ranking"
+                             style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
+                        >
+                    </a>
+                    <%
+                        }
+                    %>
+
+                </div>
+            </div>
+            <%for (Genero g: generos){%>
+            <div class="peliculas-generos">
+                <h3> Peliculas de <%=g.getNombre()%></h3>
+                <div class="lista-peliculas">
+                    <%for(Pelicula p : peliculaList){%>
+                        <%if(p.getGeneros().contains(g)){%>
+                            <a href="informacionPelicula?id=<%= p.getId() %>">
+                                <img src="<%= p.getPoster() %>"
+                                     alt="Póster de <%= p.getTitulo() %>"
+                                     class="poster-ranking"
+                                     style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
+                                >
+                            </a>
+                        <%}%>
+                    <%}%>
+
+                </div>
+            </div>
+            <%}%>
+
 
         </div>
-    </div>
-    <div class="peliculas-terror">
-        <h3> Peliculas de terror</h3>
-        <div class="lista-peliculas">
-
-        </div>
-    </div>
-    <div class="peliculas-humor">
-        <h3> Peliculas de humor</h3>
-        <div class="lista-peliculas">
-
-        </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>
