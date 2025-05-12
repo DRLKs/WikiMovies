@@ -206,10 +206,12 @@ CREATE TABLE `lista` (
   `id_lista` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
+  `descripcion` varchar(400) NOT NULL,
+  `imgURL` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id_lista`),
   KEY `FK_Lista_Usuario` (`id_usuario`),
   CONSTRAINT `FK_Lista_Usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,6 +220,7 @@ CREATE TABLE `lista` (
 
 LOCK TABLES `lista` WRITE;
 /*!40000 ALTER TABLE `lista` DISABLE KEYS */;
+INSERT INTO `lista` VALUES (1,10,'','',NULL),(2,10,'ListaNueva','',NULL);
 /*!40000 ALTER TABLE `lista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,6 +247,7 @@ CREATE TABLE `lista_peliculas` (
 
 LOCK TABLES `lista_peliculas` WRITE;
 /*!40000 ALTER TABLE `lista_peliculas` DISABLE KEYS */;
+INSERT INTO `lista_peliculas` VALUES (2,1),(2,2),(1,3),(2,3);
 /*!40000 ALTER TABLE `lista_peliculas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -580,4 +584,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-05 17:51:07
+-- Dump completed on 2025-05-12 11:01:43
