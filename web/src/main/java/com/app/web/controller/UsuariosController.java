@@ -102,9 +102,6 @@ public class UsuariosController extends BaseControlador {
             model.addAttribute("mensaje", msg);
             return "signup";
         }
-
-
-        loginService.crearCuenta(nombreUsuario,correoElectronico,contrasena,model);
         
         return loginService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
     }

@@ -3,7 +3,6 @@ package com.app.web.controller;
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
-import com.app.web.entity.Seguidore;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.FiltroBusquedaDTO;
 import com.app.web.ui.UsuarioProfile;
