@@ -31,4 +31,10 @@ public class Lista {
             inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
     private Set<Pelicula> peliculas = new LinkedHashSet<>();
 
+    @Column(name = "descripcion", nullable = false, length = 400)
+    private String descripcion;
+
+    @Column(name = "imgURL", length = 250)
+    private String imgURL;
+
 }
