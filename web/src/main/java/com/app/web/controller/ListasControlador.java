@@ -40,19 +40,16 @@ public class ListasControlador extends BaseControlador{
     @GetMapping("/listas")
     public String mostrarListas(Model model, HttpServletRequest request, HttpSession session) {
         Usuario usuario = null;
-        Lista favoritas = null;
         // Obtenemos los datos del usuario
         if(estaAutenticado(request,session) ) {
             int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
             usuario = usuarioRepositorio.getUsuarioById(idUsuario);
-            favoritas = usuarioRepositorio.getListaFavoritas(idUsuario);
         }
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
         model.addAttribute("usuario", usuario);
-        model.addAttribute("favoritas", favoritas);
 
         return "listas";
     }

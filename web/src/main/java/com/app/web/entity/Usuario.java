@@ -75,22 +75,21 @@ public class Usuario {
             sb.append(anyos).append(" años ");
         }else if( anyos > 0 ){
             sb.append( anyos ).append(" año ");
+        } else {
+            if( meses > 1 ){
+                sb.append(meses).append(" meses ");
+            }else if( meses > 0 ){
+                sb.append(meses).append(" mes ");
+            } else {
+                if( dias > 1 ){
+                    sb.append(dias).append(" días ");
+                }else if( dias > 0 ){
+                    sb.append(dias).append(" día ");
+                }else {
+                    sb.append("Usuario nuevo");
+                }
+            }
         }
-
-        if( meses > 1 ){
-            sb.append(meses).append(" meses ");
-        }else if( meses > 0 ){
-            sb.append(meses).append(" mes ");
-        }
-
-        if( dias > 1 ){
-            sb.append(dias).append(" días ");
-        }else if( dias > 0 ){
-            sb.append(dias).append(" día ");
-        }else if( meses <= 0 && anyos <= 0  ){
-            sb.append("Usuario nuevo");
-        }
-
 
         return sb.toString();
     }

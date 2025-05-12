@@ -157,6 +157,26 @@ body {
     color: inherit;
 }
 
+/* PELICULAS VISTAS */
+.seen-form {
+    position: absolute;
+    top: 20px;
+    right: 70px;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+}
+
+.fa-eye-slash{
+    color: white;
+}
+
+.fa-eye{
+    color: #11f811;
+}
+/* FIN PELICULAS VISTAS */
+
+/* FAVORITOS */
 .favorite-form {
     position: absolute;
     top: 20px;
@@ -193,15 +213,9 @@ body {
 .heart-icon.active{
     color: var(--color-primary);
 }
+/* FIN FAVORITOS */
 
-/* Add style for when the movie is already favorited */
-.favorite-button.active .heart-icon {
-    color: var(--color-primary);
-}
-
-.favorite-button.active:hover .heart-icon {
-    color: var(--color-accent);
-}
+/* IMAGEN */
 img {
     width: 200px;         /* o cualquier tamaño consistente */
     height: 300px;        /* proporción similar a póster de película */
@@ -214,3 +228,4 @@ img {
 img:hover {
     transform: scale(1.05); /* efecto de ampliación al pasar el mouse */
 }
+/* FIN IMAGEN */

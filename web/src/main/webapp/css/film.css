@@ -68,7 +68,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-.informacion-container i {
+.eslogan {
     font-size: 18px;
     color: var(--color-accent);
     font-weight: 500;
@@ -88,7 +88,7 @@ body {
 }
 
 /* Duration styling */
-.informacion-container > :last-child {
+.duration{
     display: inline-block;
     background-color: var(--color-secondary);
     padding: 8px 16px;
@@ -99,19 +99,41 @@ body {
     margin-top: 10px;
 }
 
-/* Favorite button */
-.favorite-container {
+/* PELICULAS VISTAS */
+.seen-form {
     position: absolute;
-    top: 40px;
-    right: 40px;
+    top: 20px;
+    right: 70px;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+}
+
+.fa-eye-slash{
+    color: white;
+}
+
+.fa-eye{
+    color: #11f811;
+}
+/* FIN PELICULAS VISTAS */
+
+/* FAVORITOS */
+.favorite-form {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
 }
 
 .favorite-button {
     background: rgba(0, 0, 0, 0.5);
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,17 +148,14 @@ body {
 
 .heart-icon {
     color: #ffffff;
-    font-size: 25px;
+    font-size: 20px;
     font-style: normal;
 }
 
-.favorite-button.active .heart-icon {
+.heart-icon.active{
     color: var(--color-primary);
 }
-
-.heart-icon-favorite {
-    color: var(--color-accent);
-}
+/* FIN FAVORITOS */
 
 /* Media query for responsiveness */
 @media (max-width: 768px) {
@@ -161,15 +180,10 @@ body {
         padding: 15px;
     }
 
-    .favorite-container {
-        top: 25px;
-        right: 25px;
-    }
-
     .generosTags-container {
         gap: 8px;
     }
-    
+
     .genero-tag {
         font-size: 12px;
         padding: 6px 8px;
