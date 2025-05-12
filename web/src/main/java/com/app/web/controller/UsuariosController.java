@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.app.web.utils.Constantes.USUARIO_SESION;
+import static com.app.web.utils.Constantes.*;
 
 @Controller
 public class UsuariosController extends BaseControlador {
@@ -179,14 +179,14 @@ public class UsuariosController extends BaseControlador {
         //Le añado la lista de "Favoritas" y "Vistas"
         Set<Lista>listas = new HashSet<>();
         Lista listaFav = new Lista();
-        listaFav.setNombre("Favoritas");
+        listaFav.setNombre(LISTA_FAVORITAS);
         //añadir descripcion y foto aqui
         listaFav.setIdUsuario(usuario);
         listaFav.setPeliculas(new HashSet<>());
         listas.add(listaFav);
 
         Lista listaVistas = new Lista();
-        listaVistas.setNombre("Vistas");
+        listaVistas.setNombre(LISTA_VISTAS);
         //añadir descripcion y foto aqui
         listaVistas.setIdUsuario(usuario);
         listaVistas.setPeliculas(new HashSet<>());

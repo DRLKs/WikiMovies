@@ -12,4 +12,9 @@ public class Constantes {
      * Nombre que tendrá la lista de películas favoritas
      */
     public static final String LISTA_FAVORITAS = "Favoritas";
+
+    /**
+     * Nombre que tendrá la lista de películas vistas
+     */
+    public static final String LISTA_VISTAS = "Vistas";
 }
