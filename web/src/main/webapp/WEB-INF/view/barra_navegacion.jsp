@@ -21,28 +21,32 @@
         <a href="<%= request.getContextPath() %>/listas" class="nav-button">Listas</a>
         <a href="<%= request.getContextPath() %>/miembros" class="nav-button">Miembros</a>
     </div>
+    <div class="search-container" style="display: flex; align-items: flex-start; gap: 16px;">
+        <form:form action="/search" method="GET" modelAttribute="filtroBusquedaDTO" style="display: flex; align-items: center; gap: 8px;">
+            <!-- Campo de búsqueda -->
+            <form:input
+                    type="text"
+                    id="tituloPelicula"
+                    path="titulo"
+                    placeholder="Buscar películas..."
+                    autocomplete="off"
+                    maxlength="30"
+                    style="padding: 8px 12px; border-radius: 20px; border: none; background-color: #333; color: white; width: 200px;"
+            />
 
-    <div class="search-container">
-        <form:form action="/search" method="GET" class="search-form" modelAttribute="filtroBusquedaDTO">
-            <div class="form-group">
-                <label for="tituloPelicula"></label>
-                <form:input
-                        type="text"
-                        id="tituloPelicula"
-                        path="titulo"
-                        class="form-input"
-                        placeholder="Buscar peliculas..."
-                        autocomplete="off"
-                        maxlength="30"
-                />
-            </div>
+            <!-- Botón de filtros (a la derecha del input) -->
+            <button type="button" class="filters-toggle" title="Mostrar filtros avanzados"
+                    style="background: none; border: none; cursor: pointer; display: flex; align-items: center;">
+                <img src="https://icones.pro/wp-content/uploads/2021/05/icone-de-filtre-rouge.png"
+                     alt="Filtros"
+                     style="width: 18px; height: 18px;" />
+            </button>
 
-            <!-- Si quieres añadir filtros adicionales expandibles -->
-            <div class="filters" style="display: none;">
-                <!-- Mostrar géneros desde la base de datos -->
-                <div class="generos-container">
-                    <h4>Géneros</h4>
-                    <div class="generos-list">
+            <!-- Filtros avanzados (aún más a la derecha) -->
+            <div class="filters" style="display: none; margin-left: 16px;">
+                <div style="background-color: #222; padding: 10px; border-radius: 8px;">
+                    <h4 style="margin-top: 0; color: white;">Géneros</h4>
+                    <div class="generos-list" style="display: flex; flex-direction: column; gap: 4px;">
                         <form:checkboxes
                                 items="${generos}"
                                 itemLabel="nombre"
@@ -51,14 +55,17 @@
                                 class="genero-item"
                         />
                     </div>
+                    <button type="submit"
+                            style="margin-top: 8px; padding: 6px 12px; border: none; border-radius: 4px;
+                               background-color: red; color: white; cursor: pointer;">
+                        Buscar
+                    </button>
                 </div>
             </div>
-
-            <button type="button" class="filters-toggle">
-                Mostrar filtros avanzados
-            </button>
         </form:form>
     </div>
+
+
 
     <div class="profile">
         <div class="profile">
