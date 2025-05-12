@@ -103,14 +103,9 @@ public class UsuariosController extends BaseControlador {
             return "signup";
         }
 
-<<<<<<< Updated upstream
+
         loginService.crearCuenta(nombreUsuario,correoElectronico,contrasena,model);
         
-
-
-        return "redirect:/login";
-=======
         return loginService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
->>>>>>> Stashed changes
     }
 }
