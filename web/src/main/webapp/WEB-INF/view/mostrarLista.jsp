@@ -22,7 +22,7 @@
         </div>
         <div class="info">
             <h1 class="lista-name"><%=lista.getNombre()%></h1>
-            <p class="lista-descripcion"><%=null != null ? "Biografia de la lista" : "Sin biografía"%></p> <!-- Cuando se añadan las descripciones a las listas -->
+            <p class="lista-descripcion"><%= lista.getDescripcion() %></p>
             <p class="movie-count" > Número de películas: <%=lista.getPeliculas().size()%></p>
         </div>
 

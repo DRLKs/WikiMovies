@@ -16,7 +16,7 @@
 
     <div class="pelicula-content">
         <div class="poster-container">
-            <img src="<%= pelicula.getPoster() %>" alt="No tenemos pancarta para esta película">
+            <img src="<%= pelicula.getPoster() %>" alt="No tenemos imagen para esta película">
         </div>
         <div class="informacion-container">
             <h3> <%= pelicula.getTitulo() + "   (" + pelicula.getFechaEstreno().getYear() + ")" %> </h3>
@@ -44,7 +44,7 @@
 
             <div class="favorite-container">
                 <form action="/favorite" method="post">
-                    <input type="hidden" name="id" value="<%= pelicula.getId() %>">
+                    <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
                     <button type="submit" class="favorite-button">
                         <i class="heart-icon<%= peliculaFavorita ? "-favorite" : "" %>">❤</i>
                     </button>

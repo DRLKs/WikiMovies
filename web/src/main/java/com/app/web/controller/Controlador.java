@@ -97,10 +97,8 @@ public class Controlador extends BaseControlador {
 
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
-            List<Pelicula> peliculasFavoritas = peliculasRepositorio.findPeliculasFavoritasByUsuario(usuario.getId());
-            if (peliculasFavoritas != null){
-                peliculaFavorita = peliculasFavoritas.contains(pelicula);
-            }
+            Lista peliculasFavoritas = usuarioRepositorio.getListaFavoritas(usuario.getId());
+            peliculaFavorita = peliculasFavoritas.getPeliculas().contains(pelicula);
         }
         
         model.addAttribute( "peliculaFavorita", peliculaFavorita);
@@ -117,7 +115,7 @@ public class Controlador extends BaseControlador {
      * @param id El identificador de la película
      */
     @PostMapping("/favorite")
-    public String doFavorite(@RequestParam("id") Integer id, HttpServletRequest request, HttpSession session) {
+    public String doFavorite(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request, HttpSession session) {
 
         // Un usuario no puede guardarse una películas como favorita si tiene la sesión iniciada
         if( !estaAutenticado(request,session) ) {
@@ -128,35 +126,19 @@ public class Controlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Set<Pelicula> peliculasFavoritasActualizadas;
-        if ( usuario.getPeliculasFavoritas() == null ){
-            peliculasFavoritasActualizadas = new HashSet<>();
-        }else{
-            peliculasFavoritasActualizadas = usuario.getPeliculasFavoritas();
-        }
+        Lista favoritas = usuarioRepositorio.getListaFavoritas(usuario.getId());
+        Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
 
-        Pelicula pelicula = peliculasRepositorio.getReferenceById(id);
-
-        if( peliculasFavoritasActualizadas.contains(pelicula) ) {   // Ya era favorita
-
-            peliculasFavoritasActualizadas.remove(pelicula);
-            usuario.setPeliculasFavoritas(peliculasFavoritasActualizadas);
-
-            pelicula.getUsuarios().remove(usuario);
-
+        if( favoritas.getPeliculas().contains(pelicula) ) {   // Ya era favorita
+            favoritas.getPeliculas().remove(pelicula);
         }else{                                                      // La introducimos como favorita
-
-            peliculasFavoritasActualizadas.add(pelicula);
-            usuario.setPeliculasFavoritas(peliculasFavoritasActualizadas);
-            
-            pelicula.getUsuarios().add(usuario);
+            favoritas.getPeliculas().add(pelicula);
         }
 
         // Guardamos los cambios
-        this.peliculasRepositorio.save(pelicula);
         this.usuarioRepositorio.save(usuario);
 
-        return "redirect:/film?id=" + id;
+        return "redirect:/film?id=" + idPelicula;
     }
 
     @GetMapping("/peliculas")

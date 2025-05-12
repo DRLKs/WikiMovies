@@ -73,7 +73,7 @@
                         </div>
                         <div class="list-info">
                             <h3 class="list-title"><%=lista.getNombre()%></h3>
-                            <p class="list-description"><%=lista.getNombre() %></p> <!-- CAMBIAR ESTO POR LA DESCRIPCION-->
+                            <p class="list-description"><%=lista.getDescripcion() %></p>
                             <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
                         </div>
                     </div>

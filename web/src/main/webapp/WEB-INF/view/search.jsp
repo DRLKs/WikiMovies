@@ -1,4 +1,5 @@
 <%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -9,7 +10,8 @@
 <%
     String titulo = (String) request.getAttribute("titulo");
     List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
-    Boolean peliculaFavorita;
+    Lista favoritas = (Lista) request.getAttribute("favoritas");
+    Boolean peliculaFavorita = false;
 %>
 
 <body>
@@ -33,7 +35,9 @@
 
         <%
             for ( Pelicula pelicula : peliculas ){
-               peliculaFavorita = pelicula.peliculaEsFavoritaPorUsuario(usuario);
+                if(favoritas != null) {
+                    peliculaFavorita = favoritas.getPeliculas().contains(pelicula);
+                }
         %>
 
         <a href="film?id=<%= pelicula.getId() %>" class="pelicula-link">
@@ -51,7 +55,7 @@
                     </div>
                 </div>
                 <form action="/favorite" method="post" class="favorite-form" >
-                    <input type="hidden" name="id" value="<%= pelicula.getId() %>">
+                    <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
                     <button type="submit" class="favorite-button">
                         <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
                     </button>

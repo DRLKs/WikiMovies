@@ -94,13 +94,6 @@ public class Pelicula {
             inverseJoinColumns = @JoinColumn(name = "id_productora"))
     private Set<Productora> productoras = new LinkedHashSet<>();
 
-    public Boolean peliculaEsFavoritaPorUsuario( Usuario usuario ){
-
-        if( usuario == null ) return false;
-
-        return usuarios.contains(usuario);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -181,6 +181,7 @@ public class UsuariosController extends BaseControlador {
         Lista listaFav = new Lista();
         listaFav.setNombre(LISTA_FAVORITAS);
         //añadir descripcion y foto aqui
+        listaFav.setDescripcion("Lista de películas favoritas");
         listaFav.setIdUsuario(usuario);
         listaFav.setPeliculas(new HashSet<>());
         listas.add(listaFav);
@@ -188,6 +189,7 @@ public class UsuariosController extends BaseControlador {
         Lista listaVistas = new Lista();
         listaVistas.setNombre(LISTA_VISTAS);
         //añadir descripcion y foto aqui
+        listaVistas.setDescripcion("Lista de películas vistas");
         listaVistas.setIdUsuario(usuario);
         listaVistas.setPeliculas(new HashSet<>());
         listas.add(listaVistas);
