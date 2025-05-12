@@ -204,15 +204,22 @@ public class Controlador extends BaseControlador {
     }
 
     @GetMapping("/mostrarLista")
-    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request, HttpSession session){
+    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request, HttpSession session) {
 
-        // Obtenemos los datos del usuario
-        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
-        Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
+        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
-        Lista lista = listaRepository.findById(listaId).get();
+        //Esto lo he añadido, puede que de fallo REVISAR
+        if (usuario != null) {
+            int idUsuario = usuario.getId();
+            usuario = usuarioRepositorio.getUsuarioById(idUsuario); // opcional si quieres recargarlo desde DB
+            model.addAttribute("usuarioLista", usuario);
+        }
 
-        model.addAttribute("usuarioLista", usuario);
+        Lista lista = listaRepository.findById(listaId).orElse(null);
+        if (lista == null) {
+            return "redirect:/error"; // o una página 404
+        }
+
         model.addAttribute("lista", lista);
 
         List<Genero> generos = generosRepositorio.findAll();
@@ -221,5 +228,6 @@ public class Controlador extends BaseControlador {
 
         return "mostrarLista";
     }
+
 
 }

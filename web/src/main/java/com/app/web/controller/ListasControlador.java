@@ -27,21 +27,26 @@ import java.util.Set;
 import static com.app.web.utils.Constantes.USUARIO_SESION;
 
 @Controller
-public class ListasControlador extends BaseControlador{
+public class ListasControlador extends BaseControlador {
 
-    @Autowired protected GenerosRepository generosRepositorio;
-    @Autowired protected PeliculasRepository peliculasRepositorio;
-    @Autowired protected UsuariosRepositorio usuarioRepositorio;
-    @Autowired protected ListaRepository listaRepository;
+    @Autowired
+    protected GenerosRepository generosRepositorio;
+    @Autowired
+    protected PeliculasRepository peliculasRepositorio;
+    @Autowired
+    protected UsuariosRepositorio usuarioRepositorio;
+    @Autowired
+    protected ListaRepository listaRepository;
 
     /**
      * Controlador de la petición del sistema para cargar todas las listas
      */
+
     @GetMapping("/listas")
     public String mostrarListas(Model model, HttpServletRequest request, HttpSession session) {
         Usuario usuario = null;
         // Obtenemos los datos del usuario
-        if(estaAutenticado(request,session) ) {
+        if (estaAutenticado(request, session)) {
             int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
             usuario = usuarioRepositorio.getUsuarioById(idUsuario);
         }
@@ -56,12 +61,14 @@ public class ListasControlador extends BaseControlador{
 
     /**
      * Controlador para la petición del usuario para crear una lista nueva
+     * 
      * @return
      */
     @GetMapping("/crearLista")
     public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
-        // Un usuario no puede guardarse una películas como favorita si tiene la sesión iniciada
-        if( !estaAutenticado(request,session) ) {
+        // Un usuario no puede guardarse una películas como favorita si tiene la sesión
+        // iniciada
+        if (!estaAutenticado(request, session)) {
             return "redirect:/login";
         }
 
@@ -79,8 +86,28 @@ public class ListasControlador extends BaseControlador{
         return "crearLista";
     }
 
+    @GetMapping("/listasPopulares")
+    public String listasPopulares(Model model, HttpSession session) {
+        List<Lista> listas = listaRepository.findAll();
+        model.addAttribute("listas", listas);
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+
+        Usuario usuario = null;
+        if (session != null) {
+            usuario = (Usuario) session.getAttribute("usuario");
+        }
+        model.addAttribute("usuario", usuario);
+
+        return "listasPopulares";
+    }
+
     /**
      * Controlador de la petición para guardar la lista creada por el usuario
+     * 
      * @param nuevaLista
      * @param session
      * @return
@@ -93,12 +120,12 @@ public class ListasControlador extends BaseControlador{
 
         Lista lista = new Lista();
         lista.setNombre(nuevaLista.getNombre());
-        //añadir foto aqui
+        // añadir foto aqui
         lista.setDescripcion(nuevaLista.getDescripcion());
         lista.setIdUsuario(usuario);
         Set<Pelicula> pelis = new HashSet<>();
-        for(Integer peliId : nuevaLista.getPeliculasId()){
-            Pelicula aux =  peliculasRepositorio.getPeliculaById(peliId);
+        for (Integer peliId : nuevaLista.getPeliculasId()) {
+            Pelicula aux = peliculasRepositorio.getPeliculaById(peliId);
             pelis.add(aux);
         }
         lista.setPeliculas(pelis);
@@ -108,7 +135,6 @@ public class ListasControlador extends BaseControlador{
         return "redirect:/";
     }
 
-
     @GetMapping("/quitarPeliLista")
     public String quitarPeliLista(@RequestParam("idPeli") Integer idPeli, @RequestParam("idLista") Integer idLista,
             Model model, HttpServletRequest request, HttpSession session) {
@@ -116,7 +142,7 @@ public class ListasControlador extends BaseControlador{
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Pelicula peli  = peliculasRepositorio.getPeliculaById(idPeli);
+        Pelicula peli = peliculasRepositorio.getPeliculaById(idPeli);
 
         Lista lista = listaRepository.findById(idLista).get();
         Set<Pelicula> pelis = lista.getPeliculas();
@@ -126,7 +152,7 @@ public class ListasControlador extends BaseControlador{
         lista.setPeliculas(pelis);
         listaRepository.save(lista);
 
-        return "redirect:/mostrarLista?listaId="+idLista;
+        return "redirect:/mostrarLista?listaId=" + idLista;
     }
 
 }

@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="../../css/barra_navegacion.css">
 
 <%
+    // Check if usuario is already defined in the parent JSP
     Usuario usuario = null;
-    if (session != null ) {
+    if (session != null) {
         usuario = (Usuario) session.getAttribute("usuario");
     }
 %>
@@ -82,7 +83,6 @@
 </div>
 
 <script src="../../js/barraNavegacion.js" > </script>
-
 
 </body>
 </html>

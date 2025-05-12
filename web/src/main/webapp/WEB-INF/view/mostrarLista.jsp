@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../../css/mostrarLista.css">
 
     <%
-        Usuario usuarioLista = (Usuario) request.getAttribute("usuarioLista");
+        Usuario propietario = (Usuario) request.getAttribute("usuarioLista");
         Lista lista = (Lista) request.getAttribute("lista");
     %>
 
@@ -50,11 +50,13 @@
                     <%= pelicula.getDuracion() %>
                 </div>
             </td>
-            <td class="delete-cell-wrapper">
-                <div class="delete-cell" onclick="window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= lista.getId() %>';">
-                    ✖
-                </div>
-            </td>
+            <%if(propietario != null && usuario.getId() == propietario.getId()){%>
+                <td class="delete-cell-wrapper">
+                    <div class="delete-cell" onclick="window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= lista.getId() %>';">
+                        ✖
+                    </div>
+                </td>
+            <%}%>
         </tr>
 
     <%
