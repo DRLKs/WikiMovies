@@ -29,4 +29,7 @@ public interface UsuariosRepositorio extends JpaRepository<Usuario, Integer> {
     Lista getListaVistas(@Param("idUsuario") Integer idUsuario);
 
     Usuario getUsuarioById(Integer id);
+
+    @Query("SELECT U FROM Usuario U JOIN U.seguidores S GROUP BY U ORDER BY COUNT(S) ASC")
+    List<Usuario> usuariosOrdenadosPorSeguidores();
 }

@@ -35,7 +35,12 @@ public class MiembrosControlador extends BaseControlador{
     @GetMapping("/miembros")
     public String mostrarMiembros(Model model) {
 
+<<<<<<< Updated upstream
+        //List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
         List<Usuario> usuarios = usuarioRepositorio.findAll();
+=======
+        List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
+>>>>>>> Stashed changes
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);

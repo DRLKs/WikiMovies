@@ -4,6 +4,7 @@ import com.app.web.dao.ListaRepository;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
+import com.app.web.service.LoginService;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.ui.UsuarioSignup;
 import com.app.web.utils.Hash;
@@ -28,7 +29,7 @@ import static com.app.web.utils.Constantes.*;
 @Controller
 public class UsuariosController extends BaseControlador {
 
-    @Autowired UsuariosRepositorio usuarioRepositorio;
+    @Autowired LoginService loginService;
 
     @Autowired
     ListaRepository listaRepository;
@@ -41,12 +42,7 @@ public class UsuariosController extends BaseControlador {
     @GetMapping("/login")
     public String abrirLogin(Model model, HttpServletRequest request, HttpSession session) {
 
-        if(estaAutenticado(request, session)) {
-            return "redirect:/welcome";
-        }
-
-        model.addAttribute("usuarioLogin", new UsuarioLogin());
-        return "login";
+        return loginService.abrirLogin(model, request, session);
     }
 
     /**
@@ -65,61 +61,14 @@ public class UsuariosController extends BaseControlador {
         String contrasena = usuarioLogin.getPassword();
         boolean remember = usuarioLogin.getRemember();
 
-        if( !this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
-            String msg = "El email indicado no está registrado";
-            model.addAttribute("mensaje", msg);
-            return "login";
-        }
+        return loginService.log(correoElectronico,contrasena,remember,model,session,response);
 
-        Usuario usuarioAutenticado = this.usuarioRepositorio.autenticaUsuario(correoElectronico, Hash.obtenerSHA256(contrasena));
-        if ( usuarioAutenticado == null ){
-            String msg = "Correo y contraseña no coinciden";
-            model.addAttribute("mensaje", msg);
-            return "login";
-        }
-
-        session.setAttribute(USUARIO_SESION, usuarioAutenticado);
-
-        if (remember) {
-            // Crear un token único que combine ID de usuario y una marca de tiempo
-            String userToken = usuarioAutenticado.getId() + ":" + System.currentTimeMillis();
-            
-            // Guardar en la cookie este token en lugar del session ID
-            Cookie userCookie = new Cookie("wikimovies_user_session", userToken);
-            userCookie.setHttpOnly(true);
-            userCookie.setMaxAge(60 * 60 * 24 * 30); // 30 días
-            userCookie.setPath("/");
-            response.addCookie(userCookie);
-            
-            // Guardar en el cache de sesiones
-            guardarUsuarioEnSesionCache(userToken, usuarioAutenticado);
-        }
-
-        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String desLoguear(HttpSession session, HttpServletRequest request, 
                             HttpServletResponse response) {
-        session.removeAttribute(USUARIO_SESION);
-        
-        // Eliminar la cookie de sesión
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("wikimovies_user_session".equals(cookie.getName())) {
-                    // Eliminar del cache antes de invalidar la cookie
-                    eliminarUsuarioDelSesionCache(cookie.getValue());
-                    
-                    // Invalidar la cookie
-                    cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                    break;
-                }
-            }
-        }
+        loginService.logOut(session,request,response);
         
         return "redirect:/";
     }
@@ -148,56 +97,20 @@ public class UsuariosController extends BaseControlador {
         String contrasena = usuarioSignup.getPassword();
         String contrasenaConfirm = usuarioSignup.getPasswordConfirmed();
 
-        if( this.usuarioRepositorio.existsByNombreUsuario(nombreUsuario) ){
-            String msg = "El usuario indicado ya está en eso";
-            model.addAttribute("mensaje", msg);
-            return "signup";
-        }
-
-        if( this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
-            String msg = "El email indicado ya está registrado";
-            model.addAttribute("mensaje", msg);
-            return "signup";
-        }
-
         if ( !contrasena.equals( contrasenaConfirm ) ){
             String msg = "Las contraseñas indicadas no coinciden";
             model.addAttribute("mensaje", msg);
             return "signup";
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setNombreUsuario(nombreUsuario);
-        usuario.setCorreoElectronico(correoElectronico);
-        usuario.setContrasenaHash( Hash.obtenerSHA256(contrasena) );
-        usuario.setBiografia(""); //añadido
-        usuario.setCreacionCuentaFecha(LocalDate.now());
-
-        this.usuarioRepositorio.save(usuario);
-
-
-        //Le añado la lista de "Favoritas" y "Vistas"
-        Set<Lista>listas = new HashSet<>();
-        Lista listaFav = new Lista();
-        listaFav.setNombre(LISTA_FAVORITAS);
-        //añadir descripcion y foto aqui
-        listaFav.setDescripcion("Lista de películas favoritas");
-        listaFav.setIdUsuario(usuario);
-        listaFav.setPeliculas(new HashSet<>());
-        listas.add(listaFav);
-
-        Lista listaVistas = new Lista();
-        listaVistas.setNombre(LISTA_VISTAS);
-        //añadir descripcion y foto aqui
-        listaVistas.setDescripcion("Lista de películas vistas");
-        listaVistas.setIdUsuario(usuario);
-        listaVistas.setPeliculas(new HashSet<>());
-        listas.add(listaVistas);
-
-        this.listaRepository.save(listaVistas);
-        this.listaRepository.save(listaFav);
+<<<<<<< Updated upstream
+        loginService.crearCuenta(nombreUsuario,correoElectronico,contrasena,model);
+        
 
 
         return "redirect:/login";
+=======
+        return loginService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
+>>>>>>> Stashed changes
     }
 }
