@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -103,6 +104,51 @@ public class ListasControlador extends BaseControlador {
         model.addAttribute("usuario", usuario);
 
         return "listasPopulares";
+    }
+
+    @GetMapping("/listasSeguidos")
+    public String listasSeguidos(@RequestParam("id") Integer id,Model model, HttpSession session) {
+        List<Usuario> seguidos = usuarioRepositorio.getSeguidos(id);
+        List<Lista> listasSeguidos = new ArrayList<>();
+        for(Usuario seguido : seguidos) {
+            if(seguido.getListas()!=null){
+                listasSeguidos.addAll(seguido.getListas());
+            }
+        }
+        model.addAttribute("listasSeguidos", listasSeguidos);
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+
+        Usuario usuario = null;
+        if (session != null) {
+            usuario = (Usuario) session.getAttribute("usuario");
+        }
+        model.addAttribute("usuario", usuario);
+
+        return "listasSeguidos";
+    }
+    @GetMapping("/misListas")
+    public String misListas(@RequestParam("id") Integer id,Model model, HttpSession session) {
+        Usuario usuarioP = usuarioRepositorio.getUsuarioById(id);
+        Set<Lista> misListas =  usuarioP.getListas();
+
+        model.addAttribute("misListas", misListas);
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+
+        Usuario usuario = null;
+        if (session != null) {
+            usuario = (Usuario) session.getAttribute("usuario");
+        }
+        model.addAttribute("usuario", usuario);
+
+        return "misListas";
     }
 
     /**

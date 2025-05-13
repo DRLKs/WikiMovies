@@ -18,7 +18,8 @@
 
     <div class="container-header">
         <div>
-            <img src="<%=null != null ? "lista.imagenUrl" : "../../img/default-list.png"%>" alt="<%= lista.getNombre() %>">
+            <img src="<%= lista.getImgURL() != null ? lista.getImgURL() : "../../img/default-list.png" %>"
+                 alt="<%= lista.getNombre() %>">
         </div>
         <div class="info">
             <h1 class="lista-name"><%=lista.getNombre()%></h1>

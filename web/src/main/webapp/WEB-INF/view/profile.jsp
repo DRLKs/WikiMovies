@@ -69,7 +69,8 @@
                     <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
                     <div class="list-card">
                         <div class="list-thumbnail">
-                            <img src="<%=null != null ? "lista.imagenUrl" : "../../img/default-list.png"%>" alt="<%= lista.getNombre() %>">
+                            <img src="<%= lista.getImgURL() != null ? lista.getImgURL() : "../../img/default-list.png" %>"
+                                 alt="<%= lista.getNombre() %>">
                         </div>
                         <div class="list-info">
                             <h3 class="list-title"><%=lista.getNombre()%></h3>

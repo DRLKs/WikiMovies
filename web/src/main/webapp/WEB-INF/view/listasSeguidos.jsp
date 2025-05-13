@@ -9,7 +9,7 @@
 </head>
 
 <%
-    List<Lista> listas = (List<Lista>) request.getAttribute("listas");
+    List<Lista> listas = (List<Lista>) request.getAttribute("listasSeguidos");
 %>
 
 <body>
@@ -26,17 +26,19 @@
 </div>
 
 <div class="todasListas">
-    <h2>Listas más populares</h2>
+    <h2>Listas de tus seguidos</h2>
     <% for (Lista lista : listas) { %>
     <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
         <div class="list-card">
             <div class="list-thumbnail">
                 <img src="<%= lista.getImgURL() != null ? lista.getImgURL() : "../../img/default-list.png" %>"
                      alt="<%= lista.getNombre() %>">
+
             </div>
             <div class="list-info">
                 <h3 class="list-title"><%= lista.getNombre() %></h3>
                 <p class="list-description"><%= lista.getDescripcion() %></p>
+                <p class="list-autor"><%=lista.getIdUsuario().getNombreUsuario()%></p>
                 <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
             </div>
         </div>
