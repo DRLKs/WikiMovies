@@ -27,10 +27,17 @@
             <p class="movie-count" > Número de películas: <%=lista.getPeliculas().size()%></p>
         </div>
         <%if((usuario2 != null && usuario2.getId() == lista.getIdUsuario().getId()) && (!lista.getNombre().equals("Vistas")  && !lista.getNombre().equals("Favoritas"))){%>
-        <form method="post" action="/editarLista?listaId=<%=lista.getId()%>" >
-            <button>Editar lista</button>
-        </form>
+            <form method="post" action="/editarLista?listaId=<%=lista.getId()%>" >
+                <button>Editar lista</button>
+            </form>
         <%}%>
+        <button type="button" class="button-like"
+                data-usuario-id="<%= usuario2.getId() %>"
+                data-lista-id="<%= lista.getId() %>"
+                onclick="toggleLike(this)">
+            <img src="../img/corazon_vacio.png" alt="Me gusta" class="icono-corazon" data-liked="false">
+        </button>
+
 
 
     </div>
@@ -74,4 +81,5 @@
     </table>
 
 </body>
+<script src="../../js/AñadirAMegusta.js"></script>
 </html>

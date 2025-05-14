@@ -230,4 +230,26 @@ public class Controlador extends BaseControlador {
     }
 
 
+    @PostMapping("/likeLista")
+    public String likeLista(
+            @RequestParam("usuarioId") Integer usuarioId,
+            @RequestParam("listaId") Integer listaId,
+            @RequestParam("liked") boolean liked
+    ) {
+        Usuario usuario = usuarioRepositorio.getUsuarioById(usuarioId);
+        Lista lista = listaRepository.findById(listaId).orElse(null);
+
+        //ILLO, EN LA BASE DE DATOS, EL USUARIO DEBE DE TENER UNA LISTA DE LISTAS DENTRO DE SU LISTA DE LISTAS ?
+        
+        // Aquí metes la lógica básica para guardar o quitar el "like"
+        if (liked) {
+
+            // listaService.guardarLike(usuarioId, listaId);
+        }
+
+        return "redirect:/listas"; // Redirige si quieres, o devuelves vacío si es llamada AJAX
+    }
+
+
+
 }
