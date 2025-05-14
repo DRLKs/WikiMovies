@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../../css/mostrarLista.css">
 
     <%
-        Usuario propietario = (Usuario) request.getAttribute("usuarioLista");
+        Usuario usuario2 = (Usuario) request.getAttribute("usuario");
         Lista lista = (Lista) request.getAttribute("lista");
     %>
 
@@ -26,6 +26,11 @@
             <p class="lista-descripcion"><%= lista.getDescripcion() %></p>
             <p class="movie-count" > Número de películas: <%=lista.getPeliculas().size()%></p>
         </div>
+        <%if((usuario2 != null && usuario2.getId() == lista.getIdUsuario().getId()) && (!lista.getNombre().equals("Vistas")  && !lista.getNombre().equals("Favoritas"))){%>
+        <form method="post" action="/editarLista?listaId=<%=lista.getId()%>" >
+            <button>Editar lista</button>
+        </form>
+        <%}%>
 
 
     </div>
@@ -35,7 +40,9 @@
         <tr>
             <td> Nombre Películas </td>
             <td> Duración </td>
+            <%if(usuario2 != null && usuario2.getId() == lista.getIdUsuario().getId()){%>
             <td></td>
+            <%}%>
         </tr>
     <%
         for( Pelicula pelicula : lista.getPeliculas() ){
@@ -51,9 +58,10 @@
                     <%= pelicula.getDuracion() %>
                 </div>
             </td>
-            <%if(propietario != null && usuario.getId() == propietario.getId()){%>
+            <%if(usuario2 != null && usuario2.getId() == lista.getIdUsuario().getId()){%>
                 <td class="delete-cell-wrapper">
-                    <div class="delete-cell" onclick="window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= lista.getId() %>';">
+                    <div class="delete-cell"
+                         onclick="if (confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulo() %>?')) { window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= lista.getId() %>'; }">
                         ✖
                     </div>
                 </td>

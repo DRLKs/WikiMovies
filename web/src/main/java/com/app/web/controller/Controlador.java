@@ -212,7 +212,7 @@ public class Controlador extends BaseControlador {
         if (usuario != null) {
             int idUsuario = usuario.getId();
             usuario = usuarioRepositorio.getUsuarioById(idUsuario); // opcional si quieres recargarlo desde DB
-            model.addAttribute("usuarioLista", usuario);
+            model.addAttribute("usuario", usuario);
         }
 
         Lista lista = listaRepository.findById(listaId).orElse(null);

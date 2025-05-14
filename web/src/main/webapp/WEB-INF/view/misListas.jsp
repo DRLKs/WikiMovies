@@ -27,7 +27,7 @@
 </div>
 
     <div class="todasListas">
-        <h2>Listas de tus seguidos</h2>
+        <h2>Mis listas</h2>
         <% for (Lista lista : listas) { %>
         <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
             <div class="list-card">

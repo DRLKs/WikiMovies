@@ -121,6 +121,7 @@ public class UsuarioService {
         Lista listaFav = new Lista();
         listaFav.setNombre(LISTA_FAVORITAS);
         listaFav.setDescripcion("Lista de películas favoritas");
+        listaFav.setImgURL("https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg=");
         listaFav.setIdUsuario(usuario);
         listaFav.setPeliculas(new HashSet<>());
         listas.add(listaFav);
@@ -128,6 +129,7 @@ public class UsuarioService {
         Lista listaVistas = new Lista();
         listaVistas.setNombre(LISTA_VISTAS);
         listaVistas.setDescripcion("Lista de películas vistas");
+        listaVistas.setImgURL("https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg");
         listaVistas.setIdUsuario(usuario);
         listaVistas.setPeliculas(new HashSet<>());
         listas.add(listaVistas);

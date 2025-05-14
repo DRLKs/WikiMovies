@@ -166,7 +166,9 @@ public class ListasControlador extends BaseControlador {
 
         Lista lista = new Lista();
         lista.setNombre(nuevaLista.getNombre());
-        // añadir foto aqui
+        if(nuevaLista.getFotoUrl() == null || nuevaLista.getFotoUrl().equals("")){
+            lista.setImgURL("https://media.istockphoto.com/id/93986448/es/foto/clapper.jpg?s=612x612&w=0&k=20&c=bbZguzBvEVkMczAm-NCcYKR8FLpsJvfogOEr9J_5WnA=");
+        }
         lista.setDescripcion(nuevaLista.getDescripcion());
         lista.setIdUsuario(usuario);
         Set<Pelicula> pelis = new HashSet<>();
@@ -198,7 +200,42 @@ public class ListasControlador extends BaseControlador {
         lista.setPeliculas(pelis);
         listaRepository.save(lista);
 
+
         return "redirect:/mostrarLista?listaId=" + idLista;
+    }
+
+    @PostMapping("/editarLista")
+    public String editarLista(@RequestParam("listaId") Integer listaId, Model model) {
+
+        Lista lista = listaRepository.findById(listaId).get();
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+
+        NuevaLista editarLista = new NuevaLista();
+        editarLista.setNombre(lista.getNombre());
+        editarLista.setDescripcion(lista.getDescripcion());
+        editarLista.setListaId(lista.getId());
+
+        model.addAttribute("editarLista", editarLista);
+        model.addAttribute("lista", lista);
+
+        return "editarLista";
+    }
+
+    @PostMapping("/guardarCambiosLista")
+    public String guardarCambiosLista(@ModelAttribute("editarLista") NuevaLista editarLista, HttpSession session) {
+        Lista lista = listaRepository.findById(editarLista.getListaId()).get();
+
+        lista.setNombre(editarLista.getNombre());
+        lista.setDescripcion(editarLista.getDescripcion());
+        if(!(editarLista.getFotoUrl() == null || editarLista.getFotoUrl().equals(""))){
+            lista.setImgURL(editarLista.getFotoUrl());
+        }
+        listaRepository.save(lista);
+
+        return "redirect:/mostrarLista?listaId=" + editarLista.getListaId();
     }
 
 }

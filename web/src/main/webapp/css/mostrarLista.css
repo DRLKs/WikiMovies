@@ -197,3 +197,26 @@ tr:not(:first-child) td:first-child {
 }
 
 
+/*Boton editar*/
+.container-header form {
+    margin-left: auto; /* Empuja el botón hacia la derecha */
+}
+
+.container-header button {
+    background-color: var(--color-primary);
+    color: var(--color-text-primary);
+    border: none;
+    padding: 25px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.container-header button:hover {
+    background-color: #e53935; /* Un rojo un poco más oscuro al pasar el mouse */
+    transform: scale(1.05);
+}
+

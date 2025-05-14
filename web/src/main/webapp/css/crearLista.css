@@ -6,6 +6,27 @@ body {
     background-color: #f4f4f4;
 }
 
+.tabla-formulario img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.input-foto-url {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+}
+
+
+
 /* Contenedor del formulario */
 .formulario-crear-lista {
     width: 80%; /* Ajuste para que no llegue a los dos extremos de la pantalla */
