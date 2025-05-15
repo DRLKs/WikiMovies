@@ -83,6 +83,18 @@ h1 {
     margin-bottom: 1rem;
 }
 
+/* Boton para mostrar/ocultar contraseña */
+.password-btn {
+    background-color: #dddddd;
+    cursor: pointer;
+    border: 0.5px solid black;
+    padding:2px;
+}
+
+.password-btn:hover {
+    background-color: #cacaca;
+}
+
 label {
     display: block;
     margin-bottom: 0.5rem;
@@ -138,7 +150,7 @@ input:focus {
     font-size: 14px;
 }
 
-button {
+.submit-btn {
     background-color: #4a90e2;
     color: white;
     border: none;

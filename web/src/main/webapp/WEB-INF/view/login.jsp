@@ -2,8 +2,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
+<head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/signupLogin.css">
+</head>
 
 <body>
 
@@ -32,6 +34,7 @@
         <div class="form-group">
             <label for="password">Contraseña</label>
             <form:password id="password" path="password" placeholder="Ingresa tu contraseña" required="required"/>
+            <button type="button" onclick="togglePassword()" class="password-btn">Mostrar/ocultar contraseña</button>
             <div class="error" id="password-error">Por favor, ingresa tu contraseña</div>
             <form:errors path="password" cssClass="error-message" />
         </div>
@@ -70,5 +73,18 @@
             <% } %>
         });
     </script>
+
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById("password");
+            if (passwordInput) {
+                var currentType = passwordInput.getAttribute("type");
+                passwordInput.setAttribute("type", currentType === "password" ? "text" : "password");
+            } else {
+                console.error("Campo de contraseña no encontrado.");
+            }
+        }
+    </script>
+
 </body>
 </html>

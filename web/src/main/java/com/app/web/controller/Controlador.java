@@ -57,10 +57,12 @@ public class Controlador extends BaseControlador {
 
         if(estaAutenticado(request,session)) {
             Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
-            Lista favoritas = usuarioRepositorio.getListaFavoritas(usuario.getId());
+            Lista favoritas = listaRepository.getListaFavoritas(usuario.getId());
             model.addAttribute("favoritas", favoritas);
-            Lista vistas  = usuarioRepositorio.getListaVistas(usuario.getId());
+            Lista vistas  = listaRepository.getListaVistas(usuario.getId());
             model.addAttribute("vistas", vistas);
+            List<Lista> listasUsuario = listaRepository.getListasUsuario(usuario.getId());
+            model.addAttribute("listasUsuario", listasUsuario);
         }
 
         List<Pelicula> peliculas;
@@ -87,7 +89,7 @@ public class Controlador extends BaseControlador {
      * Controlador, muestra la información de una película concreta
      */
     @GetMapping("/film")
-    public String seeFilm(@RequestParam("id") Integer id, Model model, HttpSession session) {
+    public String mostrarFilm(@RequestParam("id") Integer id, Model model, HttpSession session) {
 
         Pelicula pelicula = peliculasRepositorio.getPeliculaById(id);
 
@@ -106,14 +108,27 @@ public class Controlador extends BaseControlador {
 
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
-            Lista peliculasFavoritas = usuarioRepositorio.getListaFavoritas(usuario.getId());
+            Lista peliculasFavoritas = listaRepository.getListaFavoritas(usuario.getId());
             peliculaFavorita = peliculasFavoritas.getPeliculas().contains(pelicula);
-            Lista peliculasVistas = usuarioRepositorio.getListaVistas(usuario.getId());
+
+            Lista peliculasVistas = listaRepository.getListaVistas(usuario.getId());
             peliculaVista = peliculasVistas.getPeliculas().contains(pelicula);
+
+            List<Lista> listasUsuario = listaRepository.getListasUsuario(usuario.getId()); // Obtiene las listas del usuario (sin contar la de fav y vistas)
+            model.addAttribute("listasUsuario", listasUsuario);
+
+            List<Lista> listasPelicula = new ArrayList<>();
+            for(Lista l : listasUsuario) {
+                if(l.getPeliculas().contains(pelicula)) {
+                    listasPelicula.add(l);
+                }
+            }
+            model.addAttribute("listasPelicula", listasPelicula);
         }
         
         model.addAttribute( "peliculaFavorita", peliculaFavorita);
         model.addAttribute( "peliculaVista", peliculaVista);
+
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
@@ -138,7 +153,7 @@ public class Controlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Lista favoritas = usuarioRepositorio.getListaFavoritas(usuario.getId());
+        Lista favoritas = listaRepository.getListaFavoritas(usuario.getId());
         Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
 
         if( favoritas.getPeliculas().contains(pelicula) ) {   // Ya era favorita y la quitamos
@@ -148,16 +163,20 @@ public class Controlador extends BaseControlador {
         }
 
         // Guardamos los cambios
-        this.usuarioRepositorio.save(usuario);
+        this.listaRepository.save(favoritas);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);
     }
 
+    /**
+     * El controlador recibe la acción de poner como vista para el usuario la película entregada
+     * @param idPelicula El identificador de la película
+     */
     @PostMapping("/seen")
     public String doSeen(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request, HttpSession session) {
 
-        // Un usuario no puede guardarse una películas como favorita si tiene la sesión iniciada
+        // Un usuario no puede guardarse una películas como vistas si tiene la sesión iniciada
         if( !estaAutenticado(request,session) ) {
             return "redirect:/login";
         }
@@ -166,7 +185,7 @@ public class Controlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Lista vistas = usuarioRepositorio.getListaVistas(usuario.getId());
+        Lista vistas = listaRepository.getListaVistas(usuario.getId());
         Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
 
         if( vistas.getPeliculas().contains(pelicula) ) {   // Ya estaba vista y la quitamos
@@ -176,7 +195,47 @@ public class Controlador extends BaseControlador {
         }
 
         // Guardamos los cambios
-        this.usuarioRepositorio.save(usuario);
+        this.listaRepository.save(vistas);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);
+    }
+
+    /**
+     * El controlador recibe la acción de poner como favorita para el usuario la película entregada
+     * @param idPelicula El identificador de la película
+     */
+    @PostMapping("/addToList")
+    public String doAddToList(@RequestParam("idPelicula") Integer idPelicula, @RequestParam(value = "listasSeleccionadas", required = false) List<Integer> listasSeleccionadas, HttpServletRequest request, HttpSession session) {
+
+        if(listasSeleccionadas == null) {
+            listasSeleccionadas = new ArrayList<>();
+        }
+
+        // Un usuario no puede guardarse una película a una lista si tiene la sesión iniciada
+        if( !estaAutenticado(request,session) ) {
+            return "redirect:/login";
+        }
+
+        // Obtenemos los datos del usuario
+        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
+
+        Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
+
+        List<Lista> listasUsuario = listaRepository.getListasUsuario(usuario.getId());
+
+
+        for(Lista l : listasUsuario){
+            if(listasSeleccionadas.contains(l.getId())){
+                l.getPeliculas().add(pelicula);
+            } else {
+                if(l.getPeliculas().contains(pelicula)){
+                    l.getPeliculas().remove(pelicula);
+                }
+            }
+            listaRepository.save(l);
+        }
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);

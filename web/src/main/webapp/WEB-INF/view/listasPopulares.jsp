@@ -13,15 +13,16 @@
 %>
 
 <body>
+
 <%@ include file="barra_navegacion.jsp" %>
 
 <div class="navegar-listas">
     <% if (usuario != null) { %>
-    <a href="/listasPopulares">Listas Populares</a>
+    <a href="/listasPopulares" class="lista-activa">Listas Populares</a>
     <a href="/listasSeguidos?id=<%=usuario.getId()%>">Listas Seguidos</a>
     <a href="/misListas?id=<%=usuario.getId()%>">Mis listas</a>
     <% } else { %>
-    <a href="listas/listasPopulares">Listas Populares</a>
+    <a href="/listasPopulares" class="lista-activa">Listas Populares</a>
     <% } %>
 </div>
 
@@ -35,8 +36,10 @@
                      alt="<%= lista.getNombre() %>">
             </div>
             <div class="list-info">
-                <h3 class="list-title"><%= lista.getNombre() %></h3>
-                <p class="list-description"><%= lista.getDescripcion() %></p>
+                <h3 class="list-title"><%= lista.getNombre() %>
+                </h3>
+                <p class="list-description"><%= lista.getDescripcion() %>
+                </p>
                 <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
             </div>
         </div>

@@ -99,64 +99,6 @@ body {
     margin-top: 10px;
 }
 
-/* PELICULAS VISTAS */
-.seen-form {
-    position: absolute;
-    top: 20px;
-    right: 70px;
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-}
-
-.fa-eye-slash{
-    color: white;
-}
-
-.fa-eye{
-    color: #11f811;
-}
-/* FIN PELICULAS VISTAS */
-
-/* FAVORITOS */
-.favorite-form {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-    margin: 0;
-    padding: 0;
-}
-
-.favorite-button {
-    background: rgba(0, 0, 0, 0.5);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.favorite-button:hover {
-    transform: scale(1.15);
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.heart-icon {
-    color: #ffffff;
-    font-size: 20px;
-    font-style: normal;
-}
-
-.heart-icon.active{
-    color: var(--color-primary);
-}
-/* FIN FAVORITOS */
-
 /* Media query for responsiveness */
 @media (max-width: 768px) {
     .pelicula-content {
@@ -261,3 +203,4 @@ body {
         min-width: 60px;
     }
 }
+

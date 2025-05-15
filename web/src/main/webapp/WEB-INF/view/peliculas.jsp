@@ -9,10 +9,12 @@
         <link rel="stylesheet" href="../../css/peliculas.css">
     </head>
 
-    <%@ include file="barra_navegacion.jsp" %>
     <% List <Pelicula> peliculasTop = (List<Pelicula>) request.getAttribute("peliculas"); %>
 
     <body>
+
+        <%@ include file="barra_navegacion.jsp" %>
+
         <div style="text-align: center; margin-top: 20px;">
             <button onclick="history.back()" class="boton-volver">Volver</button>
         </div>

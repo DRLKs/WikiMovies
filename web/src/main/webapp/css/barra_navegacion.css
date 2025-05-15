@@ -217,6 +217,7 @@
     margin-bottom: 12px !important;
     padding-right: 5px !important; /* Space for scrollbar */
     width: 100% !important;
+    color: white;
 }
 
 .genero-item {
@@ -229,10 +230,10 @@
     width: auto !important;
     font-size: 13px !important;
     flex-direction: row !important; /* Force horizontal layout */
+    cursor: pointer;
 }
 
 .genero-item input[type="checkbox"] {
-    margin-right: 5px !important;
     accent-color: var(--color-primary) !important;
     width: auto !important;
     min-width: 16px !important;

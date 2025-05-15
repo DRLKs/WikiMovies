@@ -80,3 +80,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // (mantengo el código existente para el registro)
 });
 
+

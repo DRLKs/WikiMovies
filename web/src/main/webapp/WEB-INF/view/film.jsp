@@ -1,18 +1,24 @@
 <%@ page import="com.app.web.entity.Pelicula" %>
 <%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="com.app.web.entity.Lista" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/film.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="../../css/botonesPelicula.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          crossorigin="anonymous"/>
 </head>
 
 <%
     boolean peliculaFavorita = (boolean) request.getAttribute("peliculaFavorita");
     boolean peliculaVista = (boolean) request.getAttribute("peliculaVista");
     Pelicula pelicula = (Pelicula) request.getAttribute("pelicula");
+    List<Lista> listasUsuario = (List<Lista>) request.getAttribute("listasUsuario");
+    List<Lista> listasPelicula = (List<Lista>) request.getAttribute("listasPelicula");
 %>
 
 <body>
@@ -24,9 +30,50 @@
         <img src="<%= pelicula.getPoster() %>" alt="No tenemos imagen para esta película">
     </div>
     <div class="informacion-container">
-        <h3><%= pelicula.getTitulo() + "   (" + pelicula.getFechaEstreno().getYear() + ")" %></h3>
-        <i class="eslogan"><%= pelicula.getEslogan() %></i>
+        <h3><%= pelicula.getTitulo() + "   (" + pelicula.getFechaEstreno().getYear() + ")" %>
+        </h3>
+        <i class="eslogan"><%= pelicula.getEslogan() %>
+        </i>
+        <!---------------------------------------------------------->
+        <!-- BOTON DE AÑADIR PELICULA A UNA LISTA -->
+        <%
+            if (usuario != null) {
+        %>
+        <div class="addToList">
+            <button id="addToListBtn" class="addToList-btn">+</button>
 
+            <div id="addToListModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>Añadir "<%= pelicula.getTitulo() %>" a:</h2>
+
+                    <form method="post" action="/addToList">
+                        <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
+                        <%
+                            for (Lista lista : listasUsuario) {
+                        %>
+                            <label>
+                                <input type="checkbox" name="listasSeleccionadas" value="<%=lista.getId()%>"
+                                       <% if(listasPelicula.contains(lista)){%>checked="checked"<%}%>/>
+                            </label>
+                        <%=lista.getNombre()%><br>
+                        <%
+                            }
+                        %>
+
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn">Cancelar</button>
+                            <button type="submit" class="save-btn">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%
+            }
+        %>
+
+        <!---------------------------------------------------------->
         <!-- BOTON PARA AÑADIR PELICULA A LA LISTA DE "VISTAS" -->
         <form action="/seen" method="post" class="seen-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
@@ -35,6 +82,7 @@
             </button>
         </form>
 
+        <!---------------------------------------------------------->
         <!-- BOTON PARA AÑADIR PELICULA A LA LISTA DE "FAVORITAS" -->
         <form action="/favorite" method="post" class="favorite-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
@@ -70,6 +118,7 @@
     </div>
 </div>
 
+<script src="../../js/addToList.js"></script>
 
 </body>
 </html>

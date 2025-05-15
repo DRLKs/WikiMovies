@@ -52,7 +52,7 @@
             <div class="error" id="confirm-password-error">Las contraseñas no coinciden</div>
         </div>
 
-        <form:button type="submit">Registrarse</form:button>
+        <form:button type="submit" class="submit-btn">Registrarse</form:button>
         <div class="success-message" id="success-message">¡Cuenta creada con éxito!</div>
     </form:form>
 
