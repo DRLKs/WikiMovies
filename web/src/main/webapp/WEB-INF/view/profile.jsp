@@ -9,6 +9,7 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/profile.css">
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
 <body>
 

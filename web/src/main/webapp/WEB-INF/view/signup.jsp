@@ -4,7 +4,7 @@
 <html>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/signupLogin.css">
-
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
 <body>
 
 <%

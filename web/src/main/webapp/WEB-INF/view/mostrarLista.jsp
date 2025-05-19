@@ -4,8 +4,12 @@
 <%@ page import="com.app.web.entity.Lista" %>
 
 <html>
-<title> WikiMovies </title>
-<link rel="stylesheet" href="../../css/mostrarLista.css">
+<head>
+    <title> WikiMovies </title>
+    <link rel="stylesheet" href="../../css/mostrarLista.css">
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
+</head>
+
 
     <%
         Usuario usuario2 = (Usuario) request.getAttribute("usuario");
@@ -30,20 +34,17 @@
             <form method="post" action="/editarLista?listaId=<%=lista.getId()%>" >
                 <button>Editar lista</button>
             </form>
+
+            <button type="button" class="button-like"
+                    data-usuario-id="<%= usuario2.getId() %>"
+                    data-lista-id="<%= lista.getId() %>"
+                    onclick="toggleLike(this)">
+                <img src="../img/corazon_vacio.png" alt="Me gusta" class="icono-corazon" data-liked="false">
+            </button>
         <%}%>
-        <button type="button" class="button-like"
-                data-usuario-id="<%= usuario2.getId() %>"
-                data-lista-id="<%= lista.getId() %>"
-                onclick="toggleLike(this)">
-            <img src="../img/corazon_vacio.png" alt="Me gusta" class="icono-corazon" data-liked="false">
-        </button>
-
-
-
     </div>
 
     <table>
-
         <tr>
             <td> Nombre Películas </td>
             <td> Duración </td>

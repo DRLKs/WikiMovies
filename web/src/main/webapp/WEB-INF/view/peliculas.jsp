@@ -7,6 +7,7 @@
         <title> WikiMovies </title>
         <link rel="stylesheet" href="../../css/index.css">
         <link rel="stylesheet" href="../../css/peliculas.css">
+        <link rel="icon" type="image/png" href="../../img/favicon.png">
     </head>
 
     <% List <Pelicula> peliculasTop = (List<Pelicula>) request.getAttribute("peliculas"); %>
@@ -15,9 +16,6 @@
 
         <%@ include file="barra_navegacion.jsp" %>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="history.back()" class="boton-volver">Volver</button>
-        </div>
         <div class="container">
 
             <h3 class="ranking-titulo">ESTA ES LA SELECCIÓN DEL DÍA DE HOY:</h3>
@@ -31,11 +29,11 @@
                 <div class="pelicula-ranking">
                     <div class="ranking-etiqueta <%= top <= 3 ? "podio-" + top : "" %>">TOP <%= top %></div>
                     <h4><%= p.getTitulo() %></h4>
-                    <a href="informacionPelicula?id=<%= p.getId() %>">
+                    <a href="film?id=<%= p.getId() %>">
                         <img src="<%= p.getPoster() %>" alt="Póster de <%= p.getTitulo() %>" class="poster-ranking">
                     </a>
                     <div class="puntuacion">
-                        ⭐ <%= String.format("%.1f", p.getPopularidad()) %>/10
+                        ⭐ <%= String.format("%.1f", p.getMediaVotos()) %>/10
                     </div>
                 </div>
 

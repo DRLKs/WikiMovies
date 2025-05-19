@@ -5,6 +5,7 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/miembros.css">
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
 
 <%

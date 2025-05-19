@@ -5,6 +5,9 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/signupLogin.css">
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          crossorigin="anonymous"/>
 </head>
 
 <body>
@@ -34,7 +37,9 @@
         <div class="form-group">
             <label for="password">Contraseña</label>
             <form:password id="password" path="password" placeholder="Ingresa tu contraseña" required="required"/>
-            <button type="button" onclick="togglePassword()" class="password-btn">Mostrar/ocultar contraseña</button>
+            <button type="button" onclick="togglePassword()" class="password-btn">
+                <i class="fas fa-eye"></i>
+            </button>
             <div class="error" id="password-error">Por favor, ingresa tu contraseña</div>
             <form:errors path="password" cssClass="error-message" />
         </div>
@@ -60,7 +65,7 @@
     <%-- Script para mostrar mensaje de error si viene del servidor --%>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            <% 
+            <%
             String msg = (String) request.getAttribute("mensaje");
             if(msg != null) {
             %>
@@ -76,10 +81,17 @@
 
     <script>
         function togglePassword() {
-            var passwordInput = document.getElementById("password");
+            const passwordInput = document.getElementById("password");
+            const icon = document.querySelector(".fas")
             if (passwordInput) {
-                var currentType = passwordInput.getAttribute("type");
-                passwordInput.setAttribute("type", currentType === "password" ? "text" : "password");
+                const currentType = passwordInput.getAttribute("type");
+                if(currentType === "password"){
+                    passwordInput.setAttribute("type", "text");
+                    icon.setAttribute("class", "fas fa-eye-slash");
+                } else {
+                    passwordInput.setAttribute("type", "password");
+                    icon.setAttribute("class", "fas fa-eye");
+                }
             } else {
                 console.error("Campo de contraseña no encontrado.");
             }

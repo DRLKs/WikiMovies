@@ -85,15 +85,18 @@ h1 {
 
 /* Boton para mostrar/ocultar contraseña */
 .password-btn {
-    background-color: #dddddd;
-    cursor: pointer;
-    border: 0.5px solid black;
+    border: none;
     padding:2px;
+    background-color: transparent;
+    font-size: 18px;
+    transform: translateX(+300px) translateY(-35px);
 }
 
 .password-btn:hover {
-    background-color: #cacaca;
+    cursor: pointer;
+    background-color: transparent;
 }
+/*----------------------------------------*/
 
 label {
     display: block;

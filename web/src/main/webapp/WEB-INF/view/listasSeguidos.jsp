@@ -6,6 +6,7 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/listas.css">
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
 
 <%

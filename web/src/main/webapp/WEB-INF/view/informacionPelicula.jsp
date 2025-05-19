@@ -6,13 +6,12 @@
 <html>
 <head>
     <title><%= pelicula.getTitulo() %> - Detalles</title>
-
     <link rel="stylesheet" href="../../css/informacionPelicula.css">
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
+
 <body>
-<div style="text-align: left; margin-top: 20px;">
-    <button onclick="history.back()" class="boton-volver">Volver</button>
-</div>
+<button onclick="history.back()" class="boton-volver">Volver</button>
 <div class="detalle-container">
     <div class="poster-box">
         <img src="<%= pelicula.getPoster() %>" alt="Póster de <%= pelicula.getTitulo() %>">
@@ -24,7 +23,7 @@
         <div class="campo"><strong>Título original:</strong> <%= pelicula.getTitulooriginal() %></div>
         <div class="campo"><strong>Fecha de estreno:</strong> <%= pelicula.getFechaEstreno() %></div>
         <div class="campo"><strong>Duración:</strong> <%= pelicula.getDuracion() %> min</div>
-        <div class="campo"><strong>Idioma original (ID):</strong> <%= pelicula.getIdiomaOriginal() %></div>
+        <div class="campo"><strong>Idioma original:</strong> <%= pelicula.getIdiomaOriginal().getNombre() %></div>
         <div class="campo"><strong>Popularidad:</strong> <%= pelicula.getPopularidad() %></div>
         <div class="campo"><strong>Estado:</strong> <%= pelicula.getEstatus() %></div>
         <div class="campo"><strong>Presupuesto:</strong> $<%= pelicula.getPresupuesto() %></div>
@@ -36,7 +35,7 @@
             <p><%= pelicula.getDescripcion() %></p>
         </div>
         <div class="campo enlace">
-            <a href="<%= pelicula.getEnlace() %>" target="_blank">Ver más información</a>
+            <a href="<%= pelicula.getEnlace() %>" target="_blank">Ver información en la web TMDB</a>
         </div>
     </div>
 </div>

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../css/botonesPelicula.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
           crossorigin="anonymous"/>
+    <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
 
 <%
@@ -90,10 +91,13 @@
                 <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
             </button>
         </form>
+        <!---------------------------------------------------------->
 
         <div class="descripcion-container">
             <%= pelicula.getDescripcion() %>
         </div>
+
+        <a href="/informacionPelicula?id=<%=pelicula.getId()%>" class="boton-masInfo">Más información</a>
 
         <div class="duration">
             <%= "⏳" + pelicula.getDuracion() + " mins" %>
