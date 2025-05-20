@@ -51,7 +51,7 @@
         <div class="lista-peliculas">
             <%for (Pelicula p : peliculaList) {%>
             <%if (p.getGeneros().contains(g)) {%>
-            <a href="informacionPelicula?id=<%= p.getId() %>">
+            <a href="/film?id=<%= p.getId() %>">
                 <img src="<%= p.getPoster() %>"
                      alt="Póster de <%= p.getTitulo() %>"
                      class="poster-ranking"
