@@ -35,13 +35,14 @@
                 <button>Editar lista</button>
             </form>
 
-            <button type="button" class="button-like"
-                    data-usuario-id="<%= usuario2.getId() %>"
-                    data-lista-id="<%= lista.getId() %>"
-                    onclick="toggleLike(this)">
-                <img src="../img/corazon_vacio.png" alt="Me gusta" class="icono-corazon" data-liked="false">
+        <form action="/favorite" method="post" class="favorite-form">
+            <input type="hidden" name="idPelicula" value="<%= lista.getId() %>">
+            <button type="submit" class="favorite-button">
+                <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
             </button>
+        </form>
         <%}%>
+
     </div>
 
     <table>
@@ -79,6 +80,7 @@
     <%
         }
     %>
+
     </table>
 
 </body>

@@ -151,6 +151,9 @@ public class ListasControlador extends BaseControlador {
         return "misListas";
     }
 
+
+
+
     /**
      * Controlador de la petición para guardar la lista creada por el usuario
      * 
@@ -182,6 +185,7 @@ public class ListasControlador extends BaseControlador {
 
         return "redirect:/";
     }
+
 
     @GetMapping("/quitarPeliLista")
     public String quitarPeliLista(@RequestParam("idPeli") Integer idPeli, @RequestParam("idLista") Integer idLista,

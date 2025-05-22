@@ -24,7 +24,7 @@ import static com.app.web.utils.Constantes.LISTA_VISTAS;
 public class UsuarioService {
 
     @Autowired private UsuariosRepositorio usuarioRepositorio;
-    @Autowired private ListaRepository listaRepository;
+    @Autowired private ListasService listasService;
 
     // Mapa simple para cachear sesiones (en producción usar algo más robusto como Redis)
     private static final Map<String, Usuario> sesionesCache = new ConcurrentHashMap<>();
@@ -134,8 +134,8 @@ public class UsuarioService {
         listaVistas.setPeliculas(new HashSet<>());
         listas.add(listaVistas);
 
-        this.listaRepository.save(listaVistas);
-        this.listaRepository.save(listaFav);
+        this.listasService.guardarPelicula(listaVistas);
+        this.listasService.guardarPelicula(listaFav);
 
         usuario.setListas(listas);
         this.usuarioRepositorio.save(usuario);

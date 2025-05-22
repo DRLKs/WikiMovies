@@ -3,6 +3,7 @@ package com.app.web.controller;
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Genero;
+import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.FiltroBusquedaDTO;
 import com.app.web.ui.UsuarioProfile;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.app.web.utils.Constantes.USUARIO_SESION;

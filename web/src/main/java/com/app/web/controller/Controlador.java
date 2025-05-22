@@ -8,6 +8,8 @@ import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
+import com.app.web.service.ListasService;
+import com.app.web.service.PeliculasService;
 import com.app.web.ui.FiltroBusquedaDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,11 +29,11 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class Controlador extends BaseControlador {
 
-    @Autowired
-    PeliculasRepository peliculasRepositorio;
+    @Autowired PeliculasService peliculasService;
+
     @Autowired UsuariosRepositorio usuarioRepositorio;
     @Autowired GenerosRepository generosRepositorio;
-    @Autowired protected ListaRepository listaRepository;
+    @Autowired protected ListasService listasService;
 
     /**
      * Controlador de la pantalla inicial
@@ -39,7 +41,7 @@ public class Controlador extends BaseControlador {
     @GetMapping("/")
     public String index(Model model) {
 
-        List<Pelicula> peliculas = peliculasRepositorio.findAll();
+        List<Pelicula> peliculas = peliculasService.listarPeliculas();
         model.addAttribute("peliculas", peliculas);
 
         List<Genero> generos = generosRepositorio.findAll();
@@ -57,11 +59,11 @@ public class Controlador extends BaseControlador {
 
         if(estaAutenticado(request,session)) {
             Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
-            Lista favoritas = listaRepository.getListaFavoritas(usuario.getId());
+            Lista favoritas = listasService.getListaFavoritas(usuario.getId());
             model.addAttribute("favoritas", favoritas);
-            Lista vistas  = listaRepository.getListaVistas(usuario.getId());
+            Lista vistas  = listasService.getListaVistas(usuario.getId());
             model.addAttribute("vistas", vistas);
-            List<Lista> listasUsuario = listaRepository.getListasUsuario(usuario.getId());
+            List<Lista> listasUsuario = listasService.getListaUsuario(usuario.getId());
             model.addAttribute("listasUsuario", listasUsuario);
         }
 
@@ -70,9 +72,9 @@ public class Controlador extends BaseControlador {
         String titulo = filtroBusquedaDTO.getTitulo();
 
         if( listaGeneros != null && listaGeneros.length > 0 ) { // Filtro de géneros
-            peliculas = peliculasRepositorio.findByGeneroTitulo(listaGeneros,titulo);
+            peliculas = peliculasService.buscarPeliculaXTituloYGenero(titulo,listaGeneros);
         }else{
-            peliculas = peliculasRepositorio.findByTitulo(titulo);
+            peliculas = peliculasService.buscarPeliculaXTitulo(titulo);
         }
 
         model.addAttribute("titulo", titulo);
@@ -91,7 +93,7 @@ public class Controlador extends BaseControlador {
     @GetMapping("/film")
     public String mostrarFilm(@RequestParam("id") Integer id, Model model, HttpSession session) {
 
-        Pelicula pelicula = peliculasRepositorio.getPeliculaById(id);
+        Pelicula pelicula = peliculasService.buscarPelicula(id);
 
         if (pelicula == null) {
             model.addAttribute("mensaje", "La película solicitada no existe");
@@ -108,13 +110,13 @@ public class Controlador extends BaseControlador {
 
         if( usuario != null ) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
-            Lista peliculasFavoritas = listaRepository.getListaFavoritas(usuario.getId());
+            Lista peliculasFavoritas = listasService.getListaFavoritas(usuario.getId());
             peliculaFavorita = peliculasFavoritas.getPeliculas().contains(pelicula);
 
-            Lista peliculasVistas = listaRepository.getListaVistas(usuario.getId());
+            Lista peliculasVistas = listasService.getListaVistas(usuario.getId());
             peliculaVista = peliculasVistas.getPeliculas().contains(pelicula);
 
-            List<Lista> listasUsuario = listaRepository.getListasUsuario(usuario.getId()); // Obtiene las listas del usuario (sin contar la de fav y vistas)
+            List<Lista> listasUsuario = listasService.getListaUsuario(usuario.getId()); // Obtiene las listas del usuario (sin contar la de fav y vistas)
             model.addAttribute("listasUsuario", listasUsuario);
 
             List<Lista> listasPelicula = new ArrayList<>();
@@ -153,8 +155,8 @@ public class Controlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Lista favoritas = listaRepository.getListaFavoritas(usuario.getId());
-        Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
+        Lista favoritas = listasService.getListaFavoritas(usuario.getId());
+        Pelicula pelicula = peliculasService.buscarPelicula(idPelicula);
 
         if( favoritas.getPeliculas().contains(pelicula) ) {   // Ya era favorita y la quitamos
             favoritas.getPeliculas().remove(pelicula);
@@ -163,7 +165,7 @@ public class Controlador extends BaseControlador {
         }
 
         // Guardamos los cambios
-        this.listaRepository.save(favoritas);
+        this.listasService.guardarPelicula(favoritas);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);
@@ -185,8 +187,8 @@ public class Controlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Lista vistas = listaRepository.getListaVistas(usuario.getId());
-        Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
+        Lista vistas = listasService.getListaVistas(usuario.getId());
+        Pelicula pelicula = peliculasService.buscarPelicula(idPelicula);
 
         if( vistas.getPeliculas().contains(pelicula) ) {   // Ya estaba vista y la quitamos
             vistas.getPeliculas().remove(pelicula);
@@ -195,7 +197,7 @@ public class Controlador extends BaseControlador {
         }
 
         // Guardamos los cambios
-        this.listaRepository.save(vistas);
+        this.listasService.guardarPelicula(vistas);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);
@@ -221,9 +223,9 @@ public class Controlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioRepositorio.getUsuarioById(idUsuario);
 
-        Pelicula pelicula = peliculasRepositorio.getReferenceById(idPelicula);
+        Pelicula pelicula = peliculasService.buscarPelicula(idPelicula);
 
-        List<Lista> listasUsuario = listaRepository.getListasUsuario(usuario.getId());
+        List<Lista> listasUsuario = listasService.getListaUsuario(usuario.getId());
 
 
         for(Lista l : listasUsuario){
@@ -234,7 +236,7 @@ public class Controlador extends BaseControlador {
                     l.getPeliculas().remove(pelicula);
                 }
             }
-            listaRepository.save(l);
+            listasService.guardarPelicula(l);
         }
 
         String referer = request.getHeader("Referer");
@@ -243,7 +245,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/peliculas")
     public String mostrarPeliculas(Model model) {
-        List<Pelicula> peliculas = peliculasRepositorio.findTopPeliculasByPopularidad(PageRequest.of(0, 10));
+        List<Pelicula> peliculas = peliculasService.buscarPeliculaXPopularidad(PageRequest.of(0, 10));
         model.addAttribute("peliculas", peliculas);
 
         // Para que la búsqueda y el filtro funcione
@@ -256,7 +258,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/informacionPelicula")
     public String mostrarInformacionPelicula(@RequestParam("id") Integer id,Model model) {
-        Pelicula pelicula = peliculasRepositorio.getPeliculaById(id);
+        Pelicula pelicula = peliculasService.buscarPelicula(id);
         model.addAttribute("pelicula", pelicula);
 
         return "informacionPelicula";
@@ -274,7 +276,7 @@ public class Controlador extends BaseControlador {
             model.addAttribute("usuario", usuario);
         }
 
-        Lista lista = listaRepository.findById(listaId).orElse(null);
+        Lista lista = listasService.getListabyId(listaId);
         if (lista == null) {
             return "redirect:/error"; // o una página 404
         }
@@ -289,25 +291,6 @@ public class Controlador extends BaseControlador {
     }
 
 
-    @PostMapping("/likeLista")
-    public String likeLista(
-            @RequestParam("usuarioId") Integer usuarioId,
-            @RequestParam("listaId") Integer listaId,
-            @RequestParam("liked") boolean liked
-    ) {
-        Usuario usuario = usuarioRepositorio.getUsuarioById(usuarioId);
-        Lista lista = listaRepository.findById(listaId).orElse(null);
-
-        //ILLO, EN LA BASE DE DATOS, EL USUARIO DEBE DE TENER UNA LISTA DE LISTAS DENTRO DE SU LISTA DE LISTAS ?
-        
-        // Aquí metes la lógica básica para guardar o quitar el "like"
-        if (liked) {
-
-            // listaService.guardarLike(usuarioId, listaId);
-        }
-
-        return "redirect:/listas"; // Redirige si quieres, o devuelves vacío si es llamada AJAX
-    }
 
 
 

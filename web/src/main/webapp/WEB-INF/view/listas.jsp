@@ -14,6 +14,7 @@
         <a href="/listasPopulares">Listas Populares</a>
         <a href="/listasSeguidos?id=<%=usuario.getId()%>">Listas Seguidos</a>
         <a href="/misListas?id=<%=usuario.getId()%>">Mis listas</a>
+
         <%}else{%>
         <a href="/listasPopulares">Listas Populares</a>
         <%}%>
