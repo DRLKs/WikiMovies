@@ -2,6 +2,7 @@ package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.dto.ListaDTO;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
@@ -24,22 +25,22 @@ import java.util.List;
 import static com.app.web.utils.Constantes.USUARIO_SESION;
 
 @Controller
-public class MiembrosControlador extends BaseControlador{
+public class MiembrosControlador extends BaseControlador {
 
-    @Autowired UsuariosRepositorio usuarioRepositorio;
-    @Autowired GenerosRepository generosRepositorio;
-
+    @Autowired
+    UsuariosRepositorio usuarioRepositorio;
+    @Autowired
+    GenerosRepository generosRepositorio;
 
     /**
-     * Controlador de la petición del sistema al cargar todos los miembros de WikiMovies
+     * Controlador de la petición del sistema al cargar todos los miembros de
+     * WikiMovies
      */
     @GetMapping("/miembros")
     public String mostrarMiembros(Model model) {
 
-
-        //List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
+        // List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
         List<Usuario> usuarios = usuarioRepositorio.findAll();
-
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
@@ -50,9 +51,9 @@ public class MiembrosControlador extends BaseControlador{
         return "miembros";
     }
 
-
     /**
      * Controlador de la petición del sistema al cargar el profile de un usuario
+     * 
      * @param id Identificador del usuario del profile
      * @return JSP de envío
      */
@@ -72,8 +73,17 @@ public class MiembrosControlador extends BaseControlador{
         usuarioProfile.setBiografia(usuario.getBiografia());
         usuarioProfile.setNombreUsuario(usuario.getNombreUsuario());
         usuarioProfile.setGenero(usuario.getGenero());
-        usuarioProfile.setFechaNacimiento( usuario.getNacimientoFecha() );
+        usuarioProfile.setFechaNacimiento(usuario.getNacimientoFecha());
         model.addAttribute("usuarioProfile", usuarioProfile);
+
+        // Convertir las listas del usuario a DTOs
+        List<ListaDTO> listasDTO = new ArrayList<>();
+        if (usuario.getListas() != null) {
+            for (Lista lista : usuario.getListas()) {
+                listasDTO.add(lista.toDTO());
+            }
+        }
+        model.addAttribute("listasDTO", listasDTO);
 
         List<Usuario> seguidos = usuarioRepositorio.getSeguidos(id);
         model.addAttribute("seguidos", seguidos.size());
@@ -83,14 +93,15 @@ public class MiembrosControlador extends BaseControlador{
 
     /**
      * Controlador del formulario de actualización del Profile del Usuario
+     * 
      * @param usuarioProfile Usuario del profile
      * @return JSP
      */
     @PostMapping("/profile/update")
     public String doUpdateProfile(@ModelAttribute() UsuarioProfile usuarioProfile, Model model,
-                                  HttpServletRequest request, HttpSession session) {
+            HttpServletRequest request, HttpSession session) {
 
-        if( !estaAutenticado(request,session) ) {
+        if (!estaAutenticado(request, session)) {
             return "redirect:/login";
         }
 
@@ -108,7 +119,8 @@ public class MiembrosControlador extends BaseControlador{
                 usuario.setAvatarUrl(avatar);
             }
 
-            if (nombreUsuario != null && !nombreUsuario.isEmpty() && !nombreUsuario.equals(usuario.getNombreUsuario())) {
+            if (nombreUsuario != null && !nombreUsuario.isEmpty()
+                    && !nombreUsuario.equals(usuario.getNombreUsuario())) {
                 usuario.setNombreUsuario(nombreUsuario);
             }
 
@@ -116,16 +128,16 @@ public class MiembrosControlador extends BaseControlador{
                 usuario.setBiografia(biografia);
             }
 
-            if( fechaNacimiento != null) {
+            if (fechaNacimiento != null) {
 
                 usuario.setNacimientoFecha(fechaNacimiento);
             }
 
-            if( genero != null ) {
+            if (genero != null) {
                 usuario.setGenero(genero);
             }
 
-        }catch (Exception e) {      // A veces, las URLS son muy largas y da errores
+        } catch (Exception e) { // A veces, las URLS son muy largas y da errores
             model.addAttribute("usuario", usuario);
             return "redirect:/profile?id=" + usuario.getId();
         }
@@ -136,7 +148,8 @@ public class MiembrosControlador extends BaseControlador{
     }
 
     @GetMapping("/seguir")
-    public String seguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session, HttpServletRequest request) {
+    public String seguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session,
+            HttpServletRequest request) {
         Usuario usuarioSeguido = usuarioRepositorio.findById(idSeguido).get();
         Usuario yo = (Usuario) session.getAttribute("usuario");
         usuarioSeguido.getSeguidores().add(yo);
@@ -147,7 +160,8 @@ public class MiembrosControlador extends BaseControlador{
     }
 
     @GetMapping("/dejarSeguir")
-    public String dejarSeguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session, HttpServletRequest request) {
+    public String dejarSeguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session,
+            HttpServletRequest request) {
         Usuario usuarioSeguido = usuarioRepositorio.findById(idSeguido).get();
         Usuario yo = (Usuario) session.getAttribute("usuario");
         usuarioSeguido.getSeguidores().remove(yo);

@@ -1,6 +1,5 @@
 package com.app.web.service;
 
-import com.app.web.dao.ListaRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
@@ -8,14 +7,11 @@ import com.app.web.utils.Hash;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.app.web.utils.Constantes.LISTA_FAVORITAS;
@@ -134,12 +130,28 @@ public class UsuarioService {
         listaVistas.setPeliculas(new HashSet<>());
         listas.add(listaVistas);
 
-        this.listasService.guardarPelicula(listaVistas);
-        this.listasService.guardarPelicula(listaFav);
+        this.listasService.guardarLista(listaVistas);
+        this.listasService.guardarLista(listaFav);
 
         usuario.setListas(listas);
         this.usuarioRepositorio.save(usuario);
 
         return "redirect:/login";
+    }
+
+    public Usuario buscarUsuario(Integer idUsuario) {
+        Usuario usuario = null;
+        if(idUsuario > 0){
+            usuario = usuarioRepositorio.findById(idUsuario).orElse(null);
+        }
+        return usuario;
+    }
+
+    public List<Usuario> usuarioSeguidos(int id){
+        List<Usuario> seguidos = new ArrayList<>();
+        if(id > 0){
+            seguidos = usuarioRepositorio.getSeguidos(id);
+        }
+        return seguidos;
     }
 }

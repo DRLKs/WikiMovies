@@ -1,8 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.app.web.entity.Lista" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="com.app.web.entity.Pelicula" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.app.web.entity.Pelicula" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -19,7 +20,7 @@
 <%
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
     Set<Pelicula> peliculasFavoritas =  userProfile.getPeliculasFavoritas();
-    Set<Lista> listas = userProfile.getListas();
+    List<ListaDTO> listasDTO = (List<ListaDTO>) request.getAttribute("listasDTO");
     Usuario user = (Usuario)session.getAttribute("usuario");
     Integer seguidos = (Integer) request.getAttribute("seguidos");
 %>
@@ -58,31 +59,29 @@
             <span class="stat-label">Siguiendo</span>
         </div>
         <div class="stat-box">
-            <span class="stat-count"><%= userProfile.getListas().size() %></span>
+            <span class="stat-count"><%= listasDTO != null ? listasDTO.size() : 0 %></span>
             <span class="stat-label">Listas</span>
         </div>
     </div>
-    
-    <div class="profile-lists">
+      <div class="profile-lists">
         <h2>Listas de <%= userProfile.getNombreUsuario() %> </h2>
         <div class="lists-container">
-            <% if ( listas  != null  && !listas.isEmpty() ) { %>
-                <% for (Lista lista : listas ) { %>
+            <% if (listasDTO != null && !listasDTO.isEmpty()) { %>
+                <% for (ListaDTO lista : listasDTO) { %>
                     <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
                     <div class="list-card">
                         <div class="list-thumbnail">
-                            <img src="<%= lista.getImgURL() != null ? lista.getImgURL() : "../../img/default-list.png" %>"
+                            <img src="<%= lista.getFotoUrl() != null ? lista.getFotoUrl() : "../../img/default-list.png" %>"
                                  alt="<%= lista.getNombre() %>">
                         </div>
                         <div class="list-info">
-                            <h3 class="list-title"><%=lista.getNombre()%></h3>
-                            <p class="list-description"><%=lista.getDescripcion() %></p>
-                            <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
+                            <h3 class="list-title"><%= lista.getNombre() %></h3>
+                            <p class="list-description"><%= lista.getDescripcion() %></p>
+                            <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
                         </div>
                     </div>
                     </a>
                 <% } %>
-                <%listas.add(new Lista());%>
             <% } %>
             </div>
         </div>

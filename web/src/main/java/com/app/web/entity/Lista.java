@@ -1,5 +1,7 @@
 package com.app.web.entity;
 
+import com.app.web.dto.DTO;
+import com.app.web.dto.ListaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "lista")
-public class Lista {
+public class Lista implements DTO<ListaDTO> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +28,7 @@ public class Lista {
     private String nombre;
 
     @ManyToMany
-    @JoinTable(name = "lista_peliculas",
-            joinColumns = @JoinColumn(name = "id_lista"),
-            inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
+    @JoinTable(name = "lista_peliculas", joinColumns = @JoinColumn(name = "id_lista"), inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
     private Set<Pelicula> peliculas = new LinkedHashSet<>();
 
     @Column(name = "descripcion", nullable = false, length = 400)
@@ -36,5 +36,21 @@ public class Lista {
 
     @Column(name = "imgURL", length = 250)
     private String imgURL;
+
+    public ListaDTO toDTO() {
+        ListaDTO listaDTO = new ListaDTO();
+        listaDTO.setId(this.id);
+        listaDTO.setDescripcion(this.descripcion);
+        listaDTO.setNombre(this.nombre);
+        listaDTO.setFotoUrl(this.imgURL);
+        // Añadir información del usuario creador
+        if (this.idUsuario != null) {
+            listaDTO.setUsuarioId(this.idUsuario.getId());
+            listaDTO.setNombreUsuario(this.idUsuario.getNombreUsuario());
+        }
+        // Convertir los IDs de películas
+        this.peliculas.forEach(pelicula -> listaDTO.getPeliculasId().add(pelicula.getId()));
+        return listaDTO;
+    }
 
 }

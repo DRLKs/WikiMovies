@@ -2,6 +2,7 @@
 <%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
@@ -11,7 +12,7 @@
 </head>
 
 <%
-    Set<Lista> listas = (Set<Lista>) request.getAttribute("misListas");
+    Set<ListaDTO> listas = (Set<ListaDTO>) request.getAttribute("misListas");
 %>
 
 <body>
@@ -27,21 +28,20 @@
     <% } %>
 </div>
 
-    <div class="todasListas">
-        <h2>Mis listas</h2>
-        <% for (Lista lista : listas) { %>
+    <div class="todasListas">        <h2>Mis listas</h2>
+        <% for (ListaDTO lista : listas) { %>
         <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
             <div class="list-card">
                 <div class="list-thumbnail">
-                    <img src="<%= lista.getImgURL() != null ? lista.getImgURL() : "../../img/default-list.png" %>"
+                    <img src="<%= lista.getFotoUrl() != null ? lista.getFotoUrl() : "../../img/default-list.png" %>"
                          alt="<%= lista.getNombre() %>">
 
                 </div>
                 <div class="list-info">
                     <h3 class="list-title"><%= lista.getNombre() %></h3>
                     <p class="list-description"><%= lista.getDescripcion() %></p>
-                    <p class="list-autor"><%=lista.getIdUsuario().getNombreUsuario()%></p>
-                    <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
+                    <!-- El DTO no tiene usuario, así que no mostramos el nombre -->
+                    <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
                 </div>
             </div>
         </a>

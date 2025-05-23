@@ -1,4 +1,4 @@
-<%@ page import="com.app.web.entity.Lista" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -10,7 +10,7 @@
 </head>
 
 <%
-    List<Lista> listas = (List<Lista>) request.getAttribute("listas");
+    List<ListaDTO> listas = (List<ListaDTO>) request.getAttribute("listas");
 %>
 
 <body>
@@ -29,11 +29,11 @@
 
 <div class="todasListas">
     <h2>Listas más populares</h2>
-    <% for (Lista lista : listas) { %>
+    <% for (ListaDTO lista : listas) { %>
     <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="lista-link">
         <div class="list-card">
             <div class="list-thumbnail">
-                <img src="<%= lista.getImgURL() != null ? lista.getImgURL() : "../../img/default-list.png" %>"
+                <img src="<%= lista.getFotoUrl() != null ? lista.getFotoUrl() : "../../img/default-list.png" %>"
                      alt="<%= lista.getNombre() %>">
             </div>
             <div class="list-info">
@@ -41,7 +41,7 @@
                 </h3>
                 <p class="list-description"><%= lista.getDescripcion() %>
                 </p>
-                <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
+                <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
             </div>
         </div>
     </a>
