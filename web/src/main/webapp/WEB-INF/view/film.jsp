@@ -1,6 +1,6 @@
-<%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="com.app.web.entity.Genero" %>
-<%@ page import="com.app.web.entity.Lista" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -17,9 +17,9 @@
 <%
     boolean peliculaFavorita = (boolean) request.getAttribute("peliculaFavorita");
     boolean peliculaVista = (boolean) request.getAttribute("peliculaVista");
-    Pelicula pelicula = (Pelicula) request.getAttribute("pelicula");
-    List<Lista> listasUsuario = (List<Lista>) request.getAttribute("listasUsuario");
-    List<Lista> listasPelicula = (List<Lista>) request.getAttribute("listasPelicula");
+    PeliculaDTO pelicula = (PeliculaDTO) request.getAttribute("pelicula");
+    List<ListaDTO> listasUsuario = (List<ListaDTO>) request.getAttribute("listasUsuario");
+    List<ListaDTO> listasPelicula = (List<ListaDTO>) request.getAttribute("listasPelicula");
 %>
 
 <body>

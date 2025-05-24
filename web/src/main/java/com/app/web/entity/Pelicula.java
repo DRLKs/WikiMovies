@@ -1,5 +1,7 @@
 package com.app.web.entity;
 
+import com.app.web.dto.ListaDTO;
+import com.app.web.dto.PeliculaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +15,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "peliculas")
-public class Pelicula {
-
+public class Pelicula implements com.app.web.dto.DTO<PeliculaDTO> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,14 +90,13 @@ public class Pelicula {
     private Set<Paisproduccion> paisproduccions = new LinkedHashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "pelicula_productora",
-            joinColumns = @JoinColumn(name = "id_pelicula"),
-            inverseJoinColumns = @JoinColumn(name = "id_productora"))
+    @JoinTable(name = "pelicula_productora", joinColumns = @JoinColumn(name = "id_pelicula"), inverseJoinColumns = @JoinColumn(name = "id_productora"))
     private Set<Productora> productoras = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Pelicula pelicula = (Pelicula) o;
         return Objects.equals(id, pelicula.id);
     }
@@ -104,5 +104,49 @@ public class Pelicula {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public PeliculaDTO toDTO() {
+        PeliculaDTO peliculaDTO = new PeliculaDTO();
+        peliculaDTO.setId(id);
+        peliculaDTO.setTitulo(titulo);
+        peliculaDTO.setFechaEstreno(fechaEstreno);
+        peliculaDTO.setPresupuesto(presupuesto);
+        peliculaDTO.setIngresos(ingresos);
+        peliculaDTO.setDuracion(duracion);
+        peliculaDTO.setDescripcion(descripcion);
+        peliculaDTO.setEnlace(enlace);
+        peliculaDTO.setIdiomaOriginal(idiomaOriginal);
+        peliculaDTO.setPopularidad(popularidad);
+        peliculaDTO.setEstatus(estatus);
+        peliculaDTO.setEslogan(eslogan);
+        peliculaDTO.setTitulooriginal(titulooriginal);
+        peliculaDTO.setMediaVotos(mediaVotos);
+        peliculaDTO.setNumeroVotos(numeroVotos);
+        peliculaDTO.setPoster(poster);
+
+        // Convertir relaciones a IDs
+        if (crews != null) {
+            crews.forEach(crew -> peliculaDTO.getCrewsId().add(crew.getId()));
+        }
+
+        if (usuarios != null) {
+            usuarios.forEach(usuario -> peliculaDTO.getUsuariosId().add(usuario.getId()));
+        }
+
+        if (listas != null) {
+            listas.forEach(lista -> peliculaDTO.getListasId().add(lista.getId()));
+        }
+
+        if (etiquetas != null) {
+            etiquetas.forEach(etiqueta -> peliculaDTO.getEtiquetasId().add(etiqueta.getId()));
+        }
+
+        // Pasar relaciones ligeras directamente
+        peliculaDTO.setGeneros(generos);
+        peliculaDTO.setIdiomas(idiomas);
+        peliculaDTO.setPaisproduccions(paisproduccions);
+
+        return peliculaDTO;
     }
 }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%
-    Pelicula pelicula = (Pelicula) request.getAttribute("pelicula");
+    PeliculaDTO pelicula = (PeliculaDTO) request.getAttribute("pelicula");
 %>
 <html>
 <head>

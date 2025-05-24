@@ -1,5 +1,5 @@
-<%@ page import="com.app.web.entity.Pelicula" %>
-<%@ page import="com.app.web.entity.Lista" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -15,12 +15,12 @@
 
 <%
     String titulo = (String) request.getAttribute("titulo");
-    List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
-    Lista favoritas = (Lista) request.getAttribute("favoritas");
-    Lista vistas = (Lista) request.getAttribute("vistas");
+    List<PeliculaDTO> peliculas = (List<PeliculaDTO>) request.getAttribute("peliculas");
+    ListaDTO favoritas = (ListaDTO) request.getAttribute("favoritas");
+    ListaDTO vistas = (ListaDTO) request.getAttribute("vistas");
     boolean peliculaFavorita = false;
     boolean peliculaVista = false;
-    List<Lista> listasUsuario = (List<Lista>) request.getAttribute("listasUsuario");
+    List<ListaDTO> listasUsuario = (List<ListaDTO>) request.getAttribute("listasUsuario");
 %>
 
 <body>
@@ -39,14 +39,12 @@
     %>
     <h1> No hay películas con este filtro </h1>
     <%
-        }
-
-        for (Pelicula pelicula : peliculas) {
+        }        for (PeliculaDTO pelicula : peliculas) {
             if (vistas != null) {
-                peliculaVista = vistas.getPeliculas().contains(pelicula);
+                peliculaVista = vistas.getPeliculasId().contains(pelicula.getId());
             }
             if (favoritas != null) {
-                peliculaFavorita = favoritas.getPeliculas().contains(pelicula);
+                peliculaFavorita = favoritas.getPeliculasId().contains(pelicula.getId());
             }
     %>
 

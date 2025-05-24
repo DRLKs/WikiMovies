@@ -2,6 +2,7 @@ package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dto.ListaDTO;
+import com.app.web.dto.PeliculaDTO;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Pelicula;
@@ -45,7 +46,7 @@ public class Controlador extends BaseControlador {
     @GetMapping("/")
     public String index(Model model) {
 
-        List<Pelicula> peliculas = peliculasService.listarPeliculas();
+        List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();
         model.addAttribute("peliculas", peliculas);
 
         List<Genero> generos = generosRepositorio.findAll();
@@ -70,14 +71,14 @@ public class Controlador extends BaseControlador {
             model.addAttribute("listasUsuario", listasService.getListasDTOByUsuario(usuario.getId()));
         }
 
-        List<Pelicula> peliculas;
+        List<PeliculaDTO> peliculas;
         Integer[] listaGeneros = filtroBusquedaDTO.getGeneros();
         String titulo = filtroBusquedaDTO.getTitulo();
 
         if (listaGeneros != null && listaGeneros.length > 0) { // Filtro de géneros
-            peliculas = peliculasService.buscarPeliculaXTituloYGenero(titulo, listaGeneros);
+            peliculas = peliculasService.getAllPeliculasDTOByTituloYGenero(titulo, listaGeneros);
         } else {
-            peliculas = peliculasService.buscarPeliculaXTitulo(titulo);
+            peliculas = peliculasService.getAllPeliculasDTOByTitulo(titulo);
         }
 
         model.addAttribute("titulo", titulo);
@@ -96,7 +97,7 @@ public class Controlador extends BaseControlador {
     @GetMapping("/film")
     public String mostrarFilm(@RequestParam("id") Integer id, Model model, HttpSession session) {
 
-        Pelicula pelicula = peliculasService.buscarPelicula(id);
+        PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(id);
 
         if (pelicula == null) {
             model.addAttribute("mensaje", "La película solicitada no existe");
@@ -275,7 +276,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/peliculas")
     public String mostrarPeliculas(Model model) {
-        List<Pelicula> peliculas = peliculasService.buscarPeliculaXPopularidad(PageRequest.of(0, 10));
+        List<PeliculaDTO> peliculas = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
         model.addAttribute("peliculas", peliculas);
 
         // Para que la búsqueda y el filtro funcione
@@ -288,7 +289,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/informacionPelicula")
     public String mostrarInformacionPelicula(@RequestParam("id") Integer id, Model model) {
-        Pelicula pelicula = peliculasService.buscarPelicula(id);
+        PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(id);
         model.addAttribute("pelicula", pelicula);
 
         return "informacionPelicula";
