@@ -165,22 +165,22 @@ public class Controlador extends BaseControlador {
 
         // Obtenemos los datos del usuario
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
-        Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
-        // Obtenemos la lista de favoritas como entidad (el servicio maneja internamente
-        // la conversión)
-        Lista favoritas = listasService.getListaFavoritas(usuario.getId());
-        Pelicula pelicula = peliculasService.buscarPelicula(idPelicula);
+        // Obtenemos la lista de favoritas como DTO
+        ListaDTO favoritasDTO = listasService.getListaFavoritasDTO(idUsuario);
 
-        if (favoritas != null && favoritas.getPeliculas().contains(pelicula)) { // Ya era favorita y la quitamos
-            favoritas.getPeliculas().remove(pelicula);
-        } else if (favoritas != null) { // La introducimos como favorita
-            favoritas.getPeliculas().add(pelicula);
-        }
+        if (favoritasDTO != null) {
+            // Comprobar si la película ya está en favoritos
+            if (favoritasDTO.getPeliculasId().contains(idPelicula)) {
+                // Ya era favorita y la quitamos
+                favoritasDTO.getPeliculasId().remove(idPelicula);
+            } else {
+                // La introducimos como favorita
+                favoritasDTO.getPeliculasId().add(idPelicula);
+            }
 
-        // Guardamos los cambios y obtenemos el DTO
-        if (favoritas != null) {
-            this.listasService.guardarListaDTO(favoritas);
+            // Guardamos los cambios usando el DTO
+            this.listasService.guardarListaDTO(favoritasDTO);
         }
 
         String referer = request.getHeader("Referer");
@@ -205,21 +205,22 @@ public class Controlador extends BaseControlador {
 
         // Obtenemos los datos del usuario
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
-        Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
-        // Usar el método específico para listas vistas
-        Lista vistas = listasService.getListaVistas(usuario.getId());
-        Pelicula pelicula = peliculasService.buscarPelicula(idPelicula);
+        // Usar el método que devuelve DTO para listas vistas
+        ListaDTO vistasDTO = listasService.getListaVistasDTO(idUsuario);
 
-        if (vistas != null && vistas.getPeliculas().contains(pelicula)) { // Ya estaba vista y la quitamos
-            vistas.getPeliculas().remove(pelicula);
-        } else if (vistas != null) { // La introducimos como vista
-            vistas.getPeliculas().add(pelicula);
-        }
+        if (vistasDTO != null) {
+            // Comprobar si la película ya está en vistas
+            if (vistasDTO.getPeliculasId().contains(idPelicula)) {
+                // Ya estaba vista y la quitamos
+                vistasDTO.getPeliculasId().remove(idPelicula);
+            } else {
+                // La introducimos como vista
+                vistasDTO.getPeliculasId().add(idPelicula);
+            }
 
-        // Guardamos los cambios usando el método DTO
-        if (vistas != null) {
-            this.listasService.guardarListaDTO(vistas);
+            // Guardamos los cambios usando el DTO
+            this.listasService.guardarListaDTO(vistasDTO);
         }
 
         String referer = request.getHeader("Referer");
@@ -245,29 +246,24 @@ public class Controlador extends BaseControlador {
         // iniciada
         if (!estaAutenticado(request, session)) {
             return "redirect:/login";
-        }
-
-        // Obtenemos los datos del usuario
+        } // Obtenemos los datos del usuario
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
-        Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
-        Pelicula pelicula = peliculasService.buscarPelicula(idPelicula);
+        // Obtenemos todas las listas como DTOs
+        List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(idUsuario);
 
-        // Obtenemos las listas como entidades (en este caso es mejor trabajar con
-        // entidades
-        // ya que necesitamos modificar colecciones)
-        List<Lista> listasUsuario = listasService.getListasByUsuario(usuario.getId());
-
-        for (Lista l : listasUsuario) {
-            if (listasSeleccionadas.contains(l.getId())) {
-                l.getPeliculas().add(pelicula);
-            } else {
-                if (l.getPeliculas().contains(pelicula)) {
-                    l.getPeliculas().remove(pelicula);
+        for (ListaDTO lista : listasUsuarioDTO) {
+            if (listasSeleccionadas.contains(lista.getId())) {
+                // Si la lista está seleccionada, añadimos la película si no está ya
+                if (!lista.getPeliculasId().contains(idPelicula)) {
+                    lista.getPeliculasId().add(idPelicula);
                 }
+            } else {
+                // Si la lista no está seleccionada, quitamos la película si está
+                lista.getPeliculasId().remove(idPelicula);
             }
-            // Usar el método DTO para guardar cambios
-            listasService.guardarListaDTO(l);
+            // Guardamos los cambios usando el método DTO
+            listasService.guardarListaDTO(lista);
         }
 
         String referer = request.getHeader("Referer");

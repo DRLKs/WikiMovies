@@ -1,4 +1,4 @@
-<%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -10,7 +10,7 @@
         <link rel="icon" type="image/png" href="../../img/favicon.png">
     </head>
 
-    <% List <Pelicula> peliculasTop = (List<Pelicula>) request.getAttribute("peliculas"); %>
+    <% List <PeliculaDTO> peliculasTop = (List<PeliculaDTO>) request.getAttribute("peliculas"); %>
 
     <body>
 
@@ -20,11 +20,10 @@
 
             <h3 class="ranking-titulo">ESTA ES LA SELECCIÓN DEL DÍA DE HOY:</h3>
 
-            <div class="ranking-container">
-                <%
+            <div class="ranking-container">                <%
                     int top = 1;
                     for (int i = 0; i < peliculasTop.size(); i++) {
-                        Pelicula p = peliculasTop.get(i);
+                        PeliculaDTO p = peliculasTop.get(i);
                 %>
                 <div class="pelicula-ranking">
                     <div class="ranking-etiqueta <%= top <= 3 ? "podio-" + top : "" %>">TOP <%= top %></div>

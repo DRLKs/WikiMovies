@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Capa de servicio para operaciones de Listas
@@ -23,6 +25,8 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     private ListaRepository listaRepository;
     @Autowired
     private UsuariosRepositorio usuariosRepositorio;
+    @Autowired
+    private com.app.web.dao.PeliculasRepository peliculaRepository;
 
     /**
      * Obtener todas las listas como DTOs
@@ -293,5 +297,52 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         }
 
         return null;
+    }
+
+    /**
+     * Guardar o actualizar una lista a partir de un DTO
+     * 
+     * @param listaDTO DTO de Lista a guardar
+     * @return El DTO de la lista guardada
+     */
+    public ListaDTO guardarListaDTO(ListaDTO listaDTO) {
+        if (listaDTO == null) {
+            throw new IllegalArgumentException("La listaDTO no puede ser nula");
+        }
+
+        // Buscar la lista existente o crear una nueva
+        Lista lista = listaDTO.getId() != null ? listaRepository.findById(listaDTO.getId()).orElse(new Lista())
+                : new Lista();
+
+        // Copiar propiedades básicas del DTO a la entidad
+        lista.setId(listaDTO.getId());
+        lista.setNombre(listaDTO.getNombre());
+        lista.setDescripcion(listaDTO.getDescripcion());
+        lista.setImgURL(listaDTO.getFotoUrl());
+
+        // Buscar el usuario si tenemos un ID
+        if (listaDTO.getUsuarioId() != null) {
+            Usuario usuario = usuariosRepositorio.findById(listaDTO.getUsuarioId()).orElse(null);
+            lista.setIdUsuario(usuario);
+        }
+
+        // Procesar las películas - esto requiere cargarlas por ID
+        // Esta implementación podría necesitar optimización si hay muchas películas
+        Set<Pelicula> peliculasSet = new LinkedHashSet<>();
+        if (listaDTO.getPeliculasId() != null) {
+            for (Integer peliculaId : listaDTO.getPeliculasId()) {
+                // Esto asume que hay un método para obtener películas por ID
+                // Se debería inyectar el servicio de películas si es necesario
+                Pelicula pelicula = peliculaRepository.findById(peliculaId).orElse(null);
+                if (pelicula != null) {
+                    peliculasSet.add(pelicula);
+                }
+            }
+            lista.setPeliculas(peliculasSet);
+        }
+
+        // Guardar la lista actualizada
+        Lista guardada = listaRepository.save(lista);
+        return guardada.toDTO();
     }
 }

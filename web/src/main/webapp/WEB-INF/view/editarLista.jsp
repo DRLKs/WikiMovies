@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%@ page import="com.app.web.entity.Lista" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <html>
 <head>
     <title> WikiMovies </title>
@@ -9,7 +9,7 @@
 </head>
 
 <%
-    Lista lista = (Lista) request.getAttribute("lista");
+    ListaDTO lista = (ListaDTO) request.getAttribute("lista");
 %>
 <body>
 <%@ include file="barra_navegacion.jsp" %>
@@ -19,7 +19,7 @@
     <form:hidden path="listaId"></form:hidden>
     <table class="tabla-formulario">
         <tr>
-            <img src="<%=lista.getImgURL()%>" alt="Foto de <%=lista.getNombre()%>">
+            <img src="<%=lista.getFotoUrl()%>" alt="Foto de <%=lista.getNombre()%>">
         </tr>
         <tr>
             <td class="label">Imagen (URL):</td>

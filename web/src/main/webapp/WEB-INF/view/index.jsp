@@ -1,4 +1,4 @@
-<%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.entity.Genero" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -11,7 +11,7 @@
 </head>
 
 <%
-    List<Pelicula> peliculaList = (List<Pelicula>) request.getAttribute("peliculas");
+    List<PeliculaDTO> peliculaList = (List<PeliculaDTO>) request.getAttribute("peliculas");
     List<Genero> generos = (List<Genero>) request.getAttribute("generos");
 %>
 
@@ -22,10 +22,8 @@
 <div class="peliculas-container">
     <div class="peliculas-recomendadas">
         <h3> ¿Qué te apetece ver hoy? </h3>
-        <div class="lista-peliculas">
-
-            <%
-                for (Pelicula p : peliculaList) {
+        <div class="lista-peliculas">            <%
+                for (PeliculaDTO p : peliculaList) {
             %>
             <a href="/film?id=<%= p.getId() %>">
                 <img src="<%= p.getPoster() %>"
@@ -43,13 +41,12 @@
 
 
         </div>
-    </div>
-    <%for (Genero g : generos) {%>
+    </div>    <%for (Genero g : generos) {%>
     <div class="peliculas-generos">
         <h3> Peliculas de <%=g.getNombre()%>
         </h3>
         <div class="lista-peliculas">
-            <%for (Pelicula p : peliculaList) {%>
+            <%for (PeliculaDTO p : peliculaList) {%>
             <%if (p.getGeneros().contains(g)) {%>
             <a href="/film?id=<%= p.getId() %>">
                 <img src="<%= p.getPoster() %>"

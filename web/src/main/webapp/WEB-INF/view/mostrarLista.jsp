@@ -1,10 +1,9 @@
-<%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="com.app.web.entity.Usuario" %>
-<%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="com.app.web.service.PeliculasService" %>
 <%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
 
@@ -52,10 +51,9 @@
             <%if(usuario2 != null){%>
             <td></td>
             <%}%>
-        </tr>
-    <%
+        </tr>    <%
         for(Integer peliculaId : listaDTO.getPeliculasId()){
-            Pelicula pelicula = peliculasService.buscarPelicula(peliculaId);
+            PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(peliculaId);
             if(pelicula != null) {
     %>
         <tr>

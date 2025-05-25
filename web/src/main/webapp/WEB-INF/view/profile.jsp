@@ -1,9 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.app.web.entity.Pelicula" %>
+<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -19,7 +18,7 @@
 
 <%
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
-    Set<Pelicula> peliculasFavoritas =  userProfile.getPeliculasFavoritas();
+    // Ya no necesitamos obtener directamente las películas favoritas como entidades
     List<ListaDTO> listasDTO = (List<ListaDTO>) request.getAttribute("listasDTO");
     Usuario user = (Usuario)session.getAttribute("usuario");
     Integer seguidos = (Integer) request.getAttribute("seguidos");

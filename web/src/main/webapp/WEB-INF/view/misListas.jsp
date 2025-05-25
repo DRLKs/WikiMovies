@@ -1,4 +1,3 @@
-<%@ page import="com.app.web.entity.Lista" %>
 <%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Set" %>

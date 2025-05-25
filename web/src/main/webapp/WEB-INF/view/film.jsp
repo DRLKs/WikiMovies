@@ -49,9 +49,8 @@
                     <h2>Añadir "<%= pelicula.getTitulo() %>" a:</h2>
 
                     <form method="post" action="/addToList">
-                        <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-                        <%
-                            for (Lista lista : listasUsuario) {
+                        <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">                        <%
+                            for (ListaDTO lista : listasUsuario) {
                         %>
                             <label>
                                 <input type="checkbox" name="listasSeleccionadas" value="<%=lista.getId()%>"
