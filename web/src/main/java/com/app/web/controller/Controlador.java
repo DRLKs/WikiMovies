@@ -297,14 +297,6 @@ public class Controlador extends BaseControlador {
 
         Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
-        // Esto lo he añadido, puede que de fallo REVISAR
-        if (usuario != null) {
-            int idUsuario = usuario.getId();
-            usuario = usuarioService.buscarUsuario(idUsuario);
-            // opcional si quieres recargarlo desde DB
-            model.addAttribute("usuario", usuario);
-        }
-
         // Usar el método que devuelve DTO en lugar de entidad
         ListaDTO listaDTO = listasService.getListaDTOById(listaId);
         if (listaDTO == null) {

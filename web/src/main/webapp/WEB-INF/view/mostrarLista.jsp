@@ -14,7 +14,6 @@
     <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
     <%
-        Usuario usuario2 = (Usuario) request.getAttribute("usuario");
         ListaDTO listaDTO = (ListaDTO) request.getAttribute("listaDTO");
         PeliculasService peliculasService = (PeliculasService) request.getAttribute("peliculasService");
         Boolean peliculaFavorita = (Boolean) request.getAttribute("peliculaFavorita");
@@ -31,7 +30,9 @@
             <h1 class="lista-name"><%=listaDTO.getNombre()%></h1>
             <p class="lista-descripcion"><%= listaDTO.getDescripcion() %></p>
             <p class="movie-count" > Número de películas: <%=listaDTO.getPeliculasId().size()%></p>
-        </div>        <%if((usuario2 != null) && (!listaDTO.getNombre().equals("Vistas") && !listaDTO.getNombre().equals("Favoritas"))){%>
+        </div>
+        <%if( usuario != null && (usuario.getId().equals(listaDTO.getUsuarioId()) ) && (!listaDTO.getNombre().equals("Vistas") && !listaDTO.getNombre().equals("Favoritas"))){%>
+
             <form method="post" action="/editarLista?listaId=<%=listaDTO.getId()%>" >
                 <button>Editar lista</button>
             </form>
@@ -48,7 +49,7 @@
         <tr>
             <td> Nombre Películas </td>
             <td> Duración </td>
-            <%if(usuario2 != null){%>
+            <%if(usuario != null){%>
             <td></td>
             <%}%>
         </tr>    <%
@@ -67,7 +68,7 @@
                     <%= pelicula.getDuracion() %>
                 </div>
             </td>
-            <%if(usuario2 != null){%>
+            <%if(usuario != null && listaDTO.getUsuarioId().equals(usuario.getId())){%>
                 <td class="delete-cell-wrapper">
                     <div class="delete-cell"
                          onclick="if (confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulo() %>?')) { window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= listaDTO.getId() %>'; }">
