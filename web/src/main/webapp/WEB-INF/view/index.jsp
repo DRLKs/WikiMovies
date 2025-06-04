@@ -7,12 +7,15 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/peliculas.css">
     <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
 
 <%
     List<PeliculaDTO> peliculaList = (List<PeliculaDTO>) request.getAttribute("peliculas");
     List<Genero> generos = (List<Genero>) request.getAttribute("generos");
+    List<PeliculaDTO> peliculasTop =(List<PeliculaDTO>) request.getAttribute("peliculasRanking");
+
 %>
 
 <body>
@@ -21,25 +24,32 @@
 
 <div class="peliculas-container">
     <div class="peliculas-recomendadas">
-        <h3> ¿Qué te apetece ver hoy? </h3>
-        <div class="lista-peliculas">            <%
-                for (PeliculaDTO p : peliculaList) {
+        <div class="container">
+
+            <h4 class="ranking-titulo">ESTA ES LA SELECCIÓN DEL DÍA DE HOY:</h4>
+
+            <div class="ranking-container">                <%
+                int top = 1;
+                for (int i = 0; i < peliculasTop.size(); i++) {
+                    PeliculaDTO p = peliculasTop.get(i);
             %>
-            <a href="/film?id=<%= p.getId() %>">
-                <img src="<%= p.getPoster() %>"
-                     alt="Cartel de <%= p.getTitulo() %>"
-                     title="<%= p.getTitulo() %>"
-                     class="poster-ranking"
-                >
-            </a>
-            <!-- ¿Agregar botones de añadir a favoritas/vistas? -->
+                <div class="pelicula-ranking">
+                    <div class="ranking-etiqueta <%= top <= 3 ? "podio-" + top : "" %>">TOP <%= top %></div>
+                    <h4><%= p.getTitulo() %></h4>
+                    <a href="film?id=<%= p.getId() %>">
+                        <img src="<%= p.getPoster() %>" alt="Póster de <%= p.getTitulo() %>" class="poster-ranking">
+                    </a>
+                    <div class="puntuacion">
+                        ⭐ <%= String.format("%.1f", p.getMediaVotos()) %>/10
+                    </div>
+                </div>
 
+                <%
+                        top++;
+                    }
+                %>
 
-            <%
-                }
-            %>
-
-
+            </div>
         </div>
     </div>    <%for (Genero g : generos) {%>
     <div class="peliculas-generos">

@@ -51,6 +51,9 @@ public class Controlador extends BaseControlador {
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
+        List<PeliculaDTO> peliculasRanking = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
+        model.addAttribute("peliculasRanking", peliculasRanking);
+
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "index";
