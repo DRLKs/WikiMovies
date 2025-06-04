@@ -75,11 +75,13 @@ public class ListasControlador extends BaseControlador {
             int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
             usuario = usuarioService.buscarUsuario(idUsuario);
         }
+        List<ListaDTO> listas = listasService.getAllListasDTO();
+        model.addAttribute("listas", listas);
 
         loadCommonModelAttributes(model, session);
         model.addAttribute("usuario", usuario);
 
-        return "listas";
+        return "listasPopulares";
     }
 
     /**
@@ -106,19 +108,7 @@ public class ListasControlador extends BaseControlador {
         return "crearLista";
     }
 
-    /**
-     * Controlador para mostrar listas populares
-     */
-    @GetMapping("/listasPopulares")
-    public String listasPopulares(Model model, HttpSession session) {
-        // Obtener todas las listas como DTOs
-        List<ListaDTO> listas = listasService.getAllListasDTO();
-        model.addAttribute("listas", listas);
 
-        loadCommonModelAttributes(model, session);
-
-        return "listasPopulares";
-    }
 
     /**
      * Controlador para mostrar listas de usuarios seguidos
