@@ -71,9 +71,6 @@ public class Pelicula implements com.app.web.dto.DTO<PeliculaDTO> {
     @OneToMany(mappedBy = "idPelicula")
     private Set<Crew> crews = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "peliculasFavoritas")
-    private Set<Usuario> usuarios = new LinkedHashSet<>();
-
     @ManyToMany(mappedBy = "peliculas")
     private Set<Lista> listas = new LinkedHashSet<>();
 
@@ -128,10 +125,6 @@ public class Pelicula implements com.app.web.dto.DTO<PeliculaDTO> {
         // Convertir relaciones a IDs
         if (crews != null) {
             crews.forEach(crew -> peliculaDTO.getCrewsId().add(crew.getId()));
-        }
-
-        if (usuarios != null) {
-            usuarios.forEach(usuario -> peliculaDTO.getUsuariosId().add(usuario.getId()));
         }
 
         if (listas != null) {

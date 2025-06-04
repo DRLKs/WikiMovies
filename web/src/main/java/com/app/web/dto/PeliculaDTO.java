@@ -30,7 +30,6 @@ public class PeliculaDTO {
       // Para mantener las relaciones, guardamos los IDs y nombres cuando sea
       // necesario
       private Set<Integer> crewsId = new LinkedHashSet<>();
-      private Set<Integer> usuariosId = new LinkedHashSet<>();
       private Set<Integer> listasId = new LinkedHashSet<>();
       private Set<Integer> etiquetasId = new LinkedHashSet<>();
 

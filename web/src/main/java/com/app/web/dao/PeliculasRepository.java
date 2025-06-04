@@ -31,13 +31,7 @@ public interface PeliculasRepository extends JpaRepository<Pelicula, Integer> {
     @Query("SELECT p FROM Pelicula p ORDER BY p.popularidad DESC")
     List<Pelicula> findTopPeliculasByPopularidad(PageRequest pageable);
 
-    /**
-     * Devuelve la lista de películas favoritas del usuario
-     * @param usuario Usuario
-     * @return Lista de películas favoritas
-     */
-    @Query("SELECT P FROM Pelicula P JOIN P.usuarios users WHERE :usuario = users.id")
-    List<Pelicula> findPeliculasFavoritasByUsuario(int usuario);
+
 
     @Query("SELECT p FROM Pelicula p WHERE :genero MEMBER OF p.generos ORDER BY p.popularidad DESC, p.mediaVotos DESC")
     List<Pelicula> findPeliculasByGenero(@Param("genero") Genero genero, PageRequest pageable);

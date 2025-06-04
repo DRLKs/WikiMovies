@@ -3,6 +3,7 @@ package com.app.web.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -29,11 +30,6 @@ public class Usuario {
     @Column(name = "contrasena_hash")
     private String contrasenaHash;
 
-    @Column(name = "rol")
-    private Integer rol;
-
-    @Column(name = "avatarUrl", length = 200)
-    private String avatarUrl;
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<Lista> listas = new LinkedHashSet<>();
@@ -61,6 +57,19 @@ public class Usuario {
 
     @Column(name = "creacionCuentaFecha", nullable = false)
     private LocalDate creacionCuentaFecha;
+
+    /**
+     *  ROL 0: Usuario normal
+     * 	ROL 1: Usuario premium
+     * 	ROL 2: Usuario editor de películas
+     * 	ROL 3: Usuario editor de usuarios
+     */
+    @ColumnDefault("0")
+    @Column(name = "rol")
+    private Integer rol;
+
+    @Column(name = "avatarUrl", length = 600)
+    private String avatarUrl;
 
     public String getTiempoRegistrado(){
 

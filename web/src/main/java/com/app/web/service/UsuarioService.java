@@ -108,6 +108,7 @@ public class UsuarioService {
         usuario.setContrasenaHash( Hash.obtenerSHA256(contrasena) );
         usuario.setBiografia(""); //añadido
         usuario.setCreacionCuentaFecha(LocalDate.now());
+        usuario.setRol(0);      // El rol 0, indica el rol "normal"
 
         this.usuarioRepositorio.save(usuario);
 

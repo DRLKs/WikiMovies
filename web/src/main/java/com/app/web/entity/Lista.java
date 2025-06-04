@@ -34,8 +34,9 @@ public class Lista implements DTO<ListaDTO> {
     @Column(name = "descripcion", nullable = false, length = 400)
     private String descripcion;
 
-    @Column(name = "imgURL", length = 250)
+    @Column(name = "imgURL", length = 600)
     private String imgURL;
+
 
     public ListaDTO toDTO() {
         ListaDTO listaDTO = new ListaDTO();
