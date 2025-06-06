@@ -5,6 +5,8 @@ import com.app.web.dto.ListaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -20,10 +22,6 @@ public class Lista implements DTO<ListaDTO> {
     @Column(name = "id_lista", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario idUsuario;
-
     @Column(name = "nombre", length = 100)
     private String nombre;
 
@@ -36,6 +34,11 @@ public class Lista implements DTO<ListaDTO> {
 
     @Column(name = "imgURL", length = 600)
     private String imgURL;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario idUsuario;
 
 
     public ListaDTO toDTO() {

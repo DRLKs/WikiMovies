@@ -3,6 +3,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
+<%@ page import="static com.app.web.utils.Constantes.USER_ADMIN" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -18,9 +19,7 @@
 
 <%
     Usuario userProfile = (Usuario) request.getAttribute("usuario");
-    // Ya no necesitamos obtener directamente las películas favoritas como entidades
     List<ListaDTO> listasDTO = (List<ListaDTO>) request.getAttribute("listasDTO");
-    Usuario user = (Usuario)session.getAttribute("usuario");
     Integer seguidos = (Integer) request.getAttribute("seguidos");
 %>
 
@@ -34,8 +33,8 @@
             <p class="profile-bio"><%=userProfile.getGenero() != null && !userProfile.getBiografia().isEmpty() ? userProfile.getBiografia() : "Sin biografía"%></p>
 
             <%
-                if(user != null && userProfile.getId() != user.getId()){
-                    if(user.sigueA(userProfile)) { %>
+                if(usuario != null && userProfile.getId() != usuario.getId()){
+                    if(usuario.sigueA(userProfile)) { %>
                         <a class="unfollow-btn" href="/dejarSeguir?id=<%= userProfile.getId() %>">Dejar de seguir</a>
                     <% } else { %>
                         <a class="follow-btn" href="/seguir?id=<%= userProfile.getId() %>">Seguir</a>
@@ -87,7 +86,7 @@
     </div>
 
     <%
-        if ( usuario != null && usuario.getId() == userProfile.getId()){
+        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || usuario.getId() == userProfile.getId())){
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
@@ -150,6 +149,14 @@
     <%
         }
     %>
+
+    <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
+        <form method="post" action="eliminar?id=<%=userProfile.getId()%>">
+
+        <button type="submit" class="edit-profile-btn">Eliminar perfil</button>
+        </form>
+    <% } %>
+
 
 
 <script type="text/javascript" src="../../js/updateProfile.js"></script>

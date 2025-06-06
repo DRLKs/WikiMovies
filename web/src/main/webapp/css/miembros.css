@@ -1,4 +1,14 @@
 
+#filtroMiembros {
+    position: fixed;       /* o 'fixed' si quieres que se mantenga en pantalla al hacer scroll */
+    top: 100px;                /* Altura de la barra de navegación */
+    left: 0;
+    padding: 8px 12px;        /* Espaciado interno opcional */
+    color: white;
+    border-radius: 4px;
+    z-index: 1000;            /* Asegura que quede por encima de otros elementos */
+}
+
 .miembros-container {
     margin-top: 130px; /* Centrado horizontalmente con margen superior e inferior */
 }

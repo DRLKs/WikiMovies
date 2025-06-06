@@ -27,10 +27,8 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class MiembrosControlador extends BaseControlador {
 
-    @Autowired
-    UsuariosRepositorio usuarioRepositorio;
-    @Autowired
-    GenerosRepository generosRepositorio;
+    @Autowired UsuariosRepositorio usuarioRepositorio;
+    @Autowired GenerosRepository generosRepositorio;
 
     /**
      * Controlador de la petición del sistema al cargar todos los miembros de
@@ -41,6 +39,21 @@ public class MiembrosControlador extends BaseControlador {
 
         // List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
         List<Usuario> usuarios = usuarioRepositorio.findAll();
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        model.addAttribute("miembros", usuarios);
+
+        return "miembros";
+    }
+
+    @GetMapping("/miembros/filtro")
+    public String mostrarFiltro(@RequestParam("nombre") String nombre,  Model model) {
+
+        // List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
+        List<Usuario> usuarios = usuarioRepositorio.findByNombre(nombre);
 
         List<Genero> generos = generosRepositorio.findAll();
         model.addAttribute("generos", generos);
@@ -150,7 +163,7 @@ public class MiembrosControlador extends BaseControlador {
     @GetMapping("/seguir")
     public String seguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session,
             HttpServletRequest request) {
-        Usuario usuarioSeguido = usuarioRepositorio.findById(idSeguido).get();
+        Usuario usuarioSeguido = usuarioRepositorio.getReferenceById(idSeguido);
         Usuario yo = (Usuario) session.getAttribute("usuario");
         usuarioSeguido.getSeguidores().add(yo);
         usuarioRepositorio.save(usuarioSeguido);
@@ -162,12 +175,22 @@ public class MiembrosControlador extends BaseControlador {
     @GetMapping("/dejarSeguir")
     public String dejarSeguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session,
             HttpServletRequest request) {
-        Usuario usuarioSeguido = usuarioRepositorio.findById(idSeguido).get();
+        Usuario usuarioSeguido = usuarioRepositorio.getReferenceById(idSeguido);
         Usuario yo = (Usuario) session.getAttribute("usuario");
         usuarioSeguido.getSeguidores().remove(yo);
         usuarioRepositorio.save(usuarioSeguido);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/miembros");
+    }
+
+
+    @PostMapping("/eliminar")
+    public String eliminarUsuario(@RequestParam("id") Integer idUsuario){
+
+        Usuario usuario = usuarioRepositorio.getReferenceById(idUsuario);
+        usuarioRepositorio.delete(usuario);
+
+        return "redirect:/miembros";
     }
 }

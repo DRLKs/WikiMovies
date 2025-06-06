@@ -25,4 +25,7 @@ public interface UsuariosRepositorio extends JpaRepository<Usuario, Integer> {
 
     @Query("SELECT U FROM Usuario U JOIN U.seguidores S GROUP BY U ORDER BY COUNT(S) ASC")
     List<Usuario> usuariosOrdenadosPorSeguidores();
+
+    @Query("SELECT U FROM Usuario U WHERE lower( U.nombreUsuario ) like lower( concat( '%', :nombre, '%')) ")
+    List<Usuario> findByNombre(@Param("nombre") String nombre);
 }

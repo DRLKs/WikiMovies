@@ -35,12 +35,6 @@ public class Usuario {
     private Set<Lista> listas = new LinkedHashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "favoritos",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
-    private Set<Pelicula> peliculasFavoritas = new LinkedHashSet<>();
-
-    @ManyToMany
     @JoinTable(name = "seguidores",
             joinColumns = @JoinColumn(name = "idUsuario1"),
             inverseJoinColumns = @JoinColumn(name = "idUsuario2"))

@@ -180,10 +180,10 @@ CREATE TABLE `lista` (
   `id_usuario` int NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(400) NOT NULL,
-  `imgURL` varchar(250) DEFAULT NULL,
+  `imgURL` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id_lista`),
   KEY `FK_Lista_Usuario` (`id_usuario`),
-  CONSTRAINT `FK_Lista_Usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
+  CONSTRAINT `FK_Lista_Usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -193,7 +193,7 @@ CREATE TABLE `lista` (
 
 LOCK TABLES `lista` WRITE;
 /*!40000 ALTER TABLE `lista` DISABLE KEYS */;
-INSERT INTO `lista` VALUES (1,10,'','',NULL),(2,10,'ListaNueva','',NULL),(3,14,'Vistas','Lista de películas vistas',NULL),(4,14,'Favoritas','Lista de películas favoritas',NULL),(5,15,'Vistas','Lista de películas vistas',NULL),(6,15,'Favoritas','Lista de películas favoritas',NULL),(7,16,'Vistas','Lista de películas vistas',NULL),(8,16,'Favoritas','Lista de películas favoritas',NULL),(9,17,'Vistas','Lista de películas vistas',NULL),(10,17,'Favoritas','Lista de películas favoritas',NULL),(11,18,'Vistas','Lista de películas vistas',NULL),(12,18,'Favoritas','Lista de películas favoritas',NULL),(13,19,'Vistas','Lista de películas vistas',NULL),(14,19,'Favoritas','Lista de películas favoritas',NULL),(15,11,'a','a','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s'),(16,20,'Vistas','Lista de películas vistas','https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg'),(17,20,'Favoritas','Lista de películas favoritas','https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg=');
+INSERT INTO `lista` VALUES (1,10,'','',NULL),(2,10,'ListaNueva','',NULL),(3,14,'Vistas','Lista de películas vistas',NULL),(4,14,'Favoritas','Lista de películas favoritas',NULL),(5,15,'Vistas','Lista de películas vistas',NULL),(6,15,'Favoritas','Lista de películas favoritas',NULL),(11,18,'Vistas','Lista de películas vistas',NULL),(12,18,'Favoritas','Lista de películas favoritas',NULL),(13,19,'Vistas','Lista de películas vistas',NULL),(14,19,'Favoritas','Lista de películas favoritas',NULL),(15,11,'a','a','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s'),(16,20,'Vistas','Lista de películas vistas','https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg'),(17,20,'Favoritas','Lista de películas favoritas','https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg=');
 /*!40000 ALTER TABLE `lista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -488,7 +488,7 @@ CREATE TABLE `seguidores` (
 
 LOCK TABLES `seguidores` WRITE;
 /*!40000 ALTER TABLE `seguidores` DISABLE KEYS */;
-INSERT INTO `seguidores` VALUES (11,10),(12,10),(13,10),(14,10),(15,10),(10,11),(12,11),(13,11),(14,11),(15,11),(10,15),(11,15),(12,15),(13,15),(14,15),(10,16),(10,19),(12,20),(13,20);
+INSERT INTO `seguidores` VALUES (11,10),(12,10),(13,10),(14,10),(15,10),(10,11),(12,11),(13,11),(14,11),(15,11),(10,15),(11,15),(12,15),(13,15),(14,15),(10,19),(12,20),(13,20);
 /*!40000 ALTER TABLE `seguidores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -545,7 +545,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (10,'David','david@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,'https://hips.hearstapps.com/hmg-prod/images/chris-bumstead-competes-in-the-classic-physique-event-news-photo-1730192136.jpg?crop=1xw:0.84334xh;center,top&resize=1200:*',NULL,'2025-05-15',NULL,'2022-01-01'),(11,'Cristobal','cbarba@uma.es','c31febb2564abe57222be150a26b16fb1fbf00a17c6c439faa67eec03643ccd9',NULL,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s','Sí',NULL,1,'2025-04-30'),(12,'PRUEBA','1@a','6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b',NULL,NULL,NULL,NULL,NULL,'2025-04-30'),(13,'DavidNuevoUsuario','davidNuevo@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(14,'DavidNuevo2','david@uma13.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(15,'David','d@1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,'https://media.revistagq.com/photos/5ca5f6a77a3aec0df5496c59/master/w_1600%2Cc_limit/bob_esponja_9564.png','',NULL,NULL,'2025-05-12'),(16,'FranCatetoDeObra','fran1@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(17,'fran2','fran2@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(18,'fran3','fran3@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(19,'fran4','fran4@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(20,'USUARIONUEVO1','USUARIONUEVO1@uma.es','f3ff36b45021a3df440b2372e3cc14928943f25d384ff774ce966639f0c17c26',NULL,NULL,'',NULL,NULL,'2025-06-04');
+INSERT INTO `usuarios` VALUES (10,'Cristobal2','david@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',3,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s','Sí','2025-05-15',1,'2022-01-01'),(11,'Cristobal','cbarba@uma.es','c31febb2564abe57222be150a26b16fb1fbf00a17c6c439faa67eec03643ccd9',NULL,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s','Sí',NULL,1,'2025-04-30'),(12,'PRUEBA','1@a','6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b',NULL,NULL,NULL,NULL,NULL,'2025-04-30'),(13,'DavidNuevoUsuario','davidNuevo@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(14,'DavidNuevo2','david@uma13.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(15,'David','d@1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,'https://media.revistagq.com/photos/5ca5f6a77a3aec0df5496c59/master/w_1600%2Cc_limit/bob_esponja_9564.png','',NULL,NULL,'2025-05-12'),(18,'fran3','fran3@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(19,'fran4','fran4@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',NULL,NULL,'',NULL,NULL,'2025-05-12'),(20,'USUARIONUEVO1','USUARIONUEVO1@uma.es','f3ff36b45021a3df440b2372e3cc14928943f25d384ff774ce966639f0c17c26',NULL,NULL,'',NULL,NULL,'2025-06-04');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -558,4 +558,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-04 12:02:00
+-- Dump completed on 2025-06-06 18:03:59

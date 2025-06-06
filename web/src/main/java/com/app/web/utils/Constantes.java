@@ -17,4 +17,9 @@ public class Constantes {
      * Nombre que tendrá la lista de películas vistas
      */
     public static final String LISTA_VISTAS = "Vistas";
+
+    /**
+     * Valor que indica que el usuario es administrador de cuentas
+     */
+    public static final int USER_ADMIN = 3;
 }
