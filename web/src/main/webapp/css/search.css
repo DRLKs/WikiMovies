@@ -22,7 +22,7 @@ body {
 }
 
 .info-busqueda-container {
-    margin-top: 100px;
+    margin-top: 140px; /* Margin-top más alto */
     text-align: center;
     padding: 30px;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), var(--color-background));
@@ -38,15 +38,14 @@ body {
 
 .peliculas-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 40px auto 0 auto; /* Margin-top más alto */
     display: flex;
     flex-direction: column;
     gap: 30px;
     padding: 40px 20px;
 }
 
-
-
+/* Diseño uniforme para todos los usuarios (póster + información) */
 .pelicula-container {
     background-color: var(--color-card-bg);
     border-radius: var(--border-radius);
@@ -67,16 +66,27 @@ body {
 }
 
 .pancarta-container {
-    width: 22%;
+    width: 200px; /* Tamaño fijo estandarizado */
+    height: 300px; /* Altura fija estandarizada */
     margin-right: 30px;
+    flex-shrink: 0; /* Evita que se reduzca */
+    overflow: hidden; /* Oculta cualquier parte de la imagen que sobresalga */
+    border-radius: 8px; /* Bordes redondeados consistentes */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.pancarta-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
 }
 
 .pancarta-container img {
     width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantiene las proporciones y llena el contenedor */
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
-    object-fit: cover;
 }
 
 .pelicula-container:hover .pancarta-container img {
@@ -107,11 +117,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-.informacion-basica-container {
-    color: var(--color-accent);
-    font-weight: 500;
-}
-
 .descripcion-container {
     color: var(--color-text-secondary);
     font-size: 16px;
@@ -127,15 +132,9 @@ body {
     }
     
     .pancarta-container {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 20px;
-    }
-    
-    .pancarta-container img {
-        max-width: 220px;
-        margin: 0 auto;
-        display: block;
+        width: 200px; /* Mantener tamaño estandarizado */
+        height: 300px; /* Mantener tamaño estandarizado */
+        margin: 0 auto 20px auto;
     }
     
     .info-busqueda-container h2 {
@@ -143,7 +142,18 @@ body {
     }
 }
 
-/* Add to your search.css file */
+@media (max-width: 576px) {
+    .pancarta-container {
+        width: 180px; /* Tamaño más pequeño para móviles */
+        height: 270px; /* Mantener proporción */
+    }
+    
+    .peliculas-container {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+}
+
 .pelicula-link {
     text-decoration: none;
     color: inherit;
@@ -157,18 +167,19 @@ body {
     color: inherit;
 }
 
-/* IMAGEN */
+/* IMAGEN - Regla general para todas las imágenes */
 img {
-    width: 200px;         /* o cualquier tamaño consistente */
-    height: 300px;        /* proporción similar a póster de película */
-    object-fit: cover;    /* mantiene el recorte centrado sin deformar */
-    border-radius: 10px;  /* esquinas redondeadas */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* sombra para destacar */
+    width: 200px; /* Tamaño estandarizado para todas las imágenes */
+    height: 300px; /* Tamaño estandarizado para todas las imágenes */
+    object-fit: cover; /* Mantiene el recorte centrado sin deformar */
+    border-radius: 8px; /* Esquinas redondeadas consistentes */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra para destacar */
     transition: transform 0.3s ease;
 }
 
 img:hover {
-    transform: scale(1.05); /* efecto de ampliación al pasar el mouse */
+    transform: scale(1.05); /* Efecto de ampliación al pasar el mouse */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
 }
 /* FIN IMAGEN */
 

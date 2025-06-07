@@ -13,7 +13,7 @@
 .container {
     width: 90%;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 60px auto 0 auto; /* Margin-top más alto */
     padding: 20px;
     background-color: #121212; /* Fondo oscuro, más profundo para profesionalidad */
     border-radius: 12px;
@@ -53,7 +53,7 @@
 /* Estilo de la imagen de la película */
 .poster-ranking {
     width: 200px;
-    height: 280px;
+    height: 300px; /* Tamaño estandarizado */
     object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
@@ -94,11 +94,9 @@
     .ranking-container {
         grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
         gap: 20px;
-    }
-
-    .poster-ranking {
-        width: 180px;
-        height: 240px;
+    }    .poster-ranking {
+        width: 200px;
+        height: 300px; /* Mantener proporción estandarizada */
     }
 
     .pelicula-ranking h4 {
@@ -115,11 +113,9 @@
     .ranking-container {
         grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
         gap: 15px;
-    }
-
-    .poster-ranking {
-        width: 160px;
-        height: 220px;
+    }    .poster-ranking {
+        width: 180px;
+        height: 270px; /* Proporcional al tamaño estandarizado */
     }
 
     .pelicula-ranking h4 {

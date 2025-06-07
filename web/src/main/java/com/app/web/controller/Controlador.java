@@ -68,7 +68,7 @@ public class Controlador extends BaseControlador {
      */
     @GetMapping("/search")
     public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO, Model model, HttpServletRequest request,
-                         HttpSession session) {
+            HttpSession session) {
 
         if (estaAutenticado(request, session)) {
             Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
@@ -162,7 +162,7 @@ public class Controlador extends BaseControlador {
      */
     @PostMapping("/favorite")
     public String doFavorite(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request,
-                             HttpSession session) {
+            HttpSession session) {
 
         // Un usuario no puede guardarse una película como favorita si tiene la sesión
         // iniciada
@@ -202,7 +202,7 @@ public class Controlador extends BaseControlador {
      */
     @PostMapping("/seen")
     public String doSeen(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request,
-                         HttpSession session) {
+            HttpSession session) {
 
         // Un usuario no puede guardarse una películas como vistas si tiene la sesión
         // iniciada
@@ -242,8 +242,8 @@ public class Controlador extends BaseControlador {
      */
     @PostMapping("/addToList")
     public String doAddToList(@RequestParam("idPelicula") Integer idPelicula,
-                              @RequestParam(value = "listasSeleccionadas", required = false) List<Integer> listasSeleccionadas,
-                              HttpServletRequest request, HttpSession session) {
+            @RequestParam(value = "listasSeleccionadas", required = false) List<Integer> listasSeleccionadas,
+            HttpServletRequest request, HttpSession session) {
 
         if (listasSeleccionadas == null) {
             listasSeleccionadas = new ArrayList<>();
@@ -278,9 +278,21 @@ public class Controlador extends BaseControlador {
     }
 
     @GetMapping("/peliculas")
-    public String mostrarPeliculas(Model model) {
+    public String mostrarPeliculas(Model model, HttpSession session) {
         List<PeliculaDTO> peliculas = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
         model.addAttribute("peliculas", peliculas);
+
+        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+
+        // Solo cargar las listas de favoritas y vistas si el usuario está autenticado
+        if (usuario != null) {
+            model.addAttribute("favoritas", listasService.getListaFavoritasDTO(usuario.getId()));
+            model.addAttribute("vistas", listasService.getListaVistasDTO(usuario.getId()));
+        } else {
+            // Para usuarios no autenticados, pasar null o listas vacías
+            model.addAttribute("favoritas", null);
+            model.addAttribute("vistas", null);
+        }
 
         // Para que la búsqueda y el filtro funcione
         List<Genero> generos = generosRepositorio.findAll();
@@ -300,7 +312,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/mostrarLista")
     public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request,
-                               HttpSession session) {
+            HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
@@ -361,19 +373,19 @@ public class Controlador extends BaseControlador {
 
     @PostMapping("/guardarPelicula")
     public String guardarPelicula(@RequestParam("idPelicula") Integer idPelicula,
-                                  @RequestParam("titulo") String titulo,
-                                  @RequestParam("fecha_estreno") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_estreno,
-                                  @RequestParam("presupuesto") Integer presupuesto,
-                                  @RequestParam("ingresos") Integer ingresos,
-                                  @RequestParam("duracion") Integer duracion,
-                                  @RequestParam("descripcion") String descripcion,
-                                  @RequestParam("enlace") String enlace,
-                                  @RequestParam("idioma_original") Integer idioma_original,
-                                  @RequestParam("estatus") String estatus,
-                                  @RequestParam("eslogan") String eslogan,
-                                  @RequestParam("poster") String poster,
-                                  @RequestParam("generos") List<Integer> idGeneros,
-                                  Model model, HttpServletRequest request) {
+            @RequestParam("titulo") String titulo,
+            @RequestParam("fecha_estreno") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_estreno,
+            @RequestParam("presupuesto") Integer presupuesto,
+            @RequestParam("ingresos") Integer ingresos,
+            @RequestParam("duracion") Integer duracion,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("enlace") String enlace,
+            @RequestParam("idioma_original") Integer idioma_original,
+            @RequestParam("estatus") String estatus,
+            @RequestParam("eslogan") String eslogan,
+            @RequestParam("poster") String poster,
+            @RequestParam("generos") List<Integer> idGeneros,
+            Model model, HttpServletRequest request) {
         PeliculaDTO peliculaDTO = null;
         if (idPelicula == -1) { // Queremos crear una pelicula
             peliculaDTO = new PeliculaDTO();
@@ -395,7 +407,7 @@ public class Controlador extends BaseControlador {
         peliculaDTO.setEslogan(eslogan);
         peliculaDTO.setPoster(poster);
         Set<Genero> generos = new HashSet<>();
-        for(Integer id: idGeneros){
+        for (Integer id : idGeneros) {
             Genero genero = generosRepositorio.findById(id).orElse(null);
             generos.add(genero);
         }
