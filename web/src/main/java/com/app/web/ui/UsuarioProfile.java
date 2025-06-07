@@ -8,6 +8,11 @@ import java.time.LocalDate;
 public class UsuarioProfile {
 
     /**
+     *
+     */
+    protected Integer id;
+
+    /**
      * Nombre de usuario
      */
     protected String nombreUsuario;
@@ -36,4 +41,9 @@ public class UsuarioProfile {
      * Fecha de nacimiento del usuario
      */
     protected LocalDate fechaNacimiento;
+
+    /**
+     *
+     */
+    protected Integer rol;
 }

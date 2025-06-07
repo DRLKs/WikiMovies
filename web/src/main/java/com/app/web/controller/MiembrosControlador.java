@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.app.web.utils.Constantes.USUARIO_SESION;
+import static com.app.web.utils.Constantes.USER_ADMIN;
 
 @Controller
 public class MiembrosControlador extends BaseControlador {
@@ -82,11 +84,13 @@ public class MiembrosControlador extends BaseControlador {
 
         // Introducimos los datos necesarios en el DTO
         UsuarioProfile usuarioProfile = new UsuarioProfile();
+        usuarioProfile.setId(usuario.getId());
         usuarioProfile.setAvatar(usuario.getAvatarUrl());
         usuarioProfile.setBiografia(usuario.getBiografia());
         usuarioProfile.setNombreUsuario(usuario.getNombreUsuario());
         usuarioProfile.setGenero(usuario.getGenero());
         usuarioProfile.setFechaNacimiento(usuario.getNacimientoFecha());
+        usuarioProfile.setRol(usuario.getRol());
         model.addAttribute("usuarioProfile", usuarioProfile);
 
         // Convertir las listas del usuario a DTOs
@@ -118,13 +122,29 @@ public class MiembrosControlador extends BaseControlador {
             return "redirect:/login";
         }
 
+        // Comprobamos que el usuario tenga permisos para editar un perfil
+        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+        Integer idUsuarioProfile = usuarioProfile.getId();
+
+
+        if( !usuario.getId().equals(idUsuarioProfile) ) {
+            if( usuario.getRol() != USER_ADMIN ) {
+                // Alguien sin permisos intenta ajustar una cuenta
+                return "redirect:/profile?id=" + idUsuarioProfile;
+            }
+            // El administrador ajusta una cuenta que no es la suya
+            usuario = usuarioRepositorio.getReferenceById(idUsuarioProfile);
+        }
+
+
+
         String avatar = usuarioProfile.getAvatar();
         String nombreUsuario = usuarioProfile.getNombreUsuario();
         String biografia = usuarioProfile.getBiografia();
         LocalDate fechaNacimiento = usuarioProfile.getFechaNacimiento();
         Integer genero = usuarioProfile.getGenero();
+        Integer rol = usuarioProfile.getRol();
 
-        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
         try {
 
@@ -150,14 +170,17 @@ public class MiembrosControlador extends BaseControlador {
                 usuario.setGenero(genero);
             }
 
-        } catch (Exception e) { // A veces, las URLS son muy largas y da errores
-            model.addAttribute("usuario", usuario);
-            return "redirect:/profile?id=" + usuario.getId();
+            if( rol != null ){
+                usuario.setRol(rol);
+            }
+
+        } catch (Exception e) {
+            return "redirect:/profile?id=" + idUsuarioProfile;
         }
 
         this.usuarioRepositorio.save(usuario);
 
-        return "redirect:/profile?id=" + usuario.getId();
+        return "redirect:/profile?id=" + idUsuarioProfile;
     }
 
     @GetMapping("/seguir")
@@ -193,4 +216,5 @@ public class MiembrosControlador extends BaseControlador {
 
         return "redirect:/miembros";
     }
+
 }

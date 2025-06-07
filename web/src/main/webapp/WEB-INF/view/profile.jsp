@@ -1,8 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
-<%@ page import="java.util.Set" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="static com.app.web.utils.Constantes.USER_ADMIN" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -97,6 +95,8 @@
                 <h2>Editar tu perfil</h2>
                 <form:form id="editProfileForm" action="/profile/update" method="POST" enctype="multipart/form-data" modelAttribute="usuarioProfile" >
 
+                    <form:hidden path="id" />
+
                     <div class="form-group">
                         <label for="avatar">Foto de perfil:</label>
                         <div class="avatar-preview">
@@ -121,15 +121,15 @@
                         <label for="generos">Género:</label>
 
                         <label class="radio-label">
-                            <form:radiobutton path="genero" value="1"/> Hombre
+                            <form:radiobutton id="generos" path="genero" value="1"/> Hombre
                         </label>
 
                         <label class="radio-label">
-                            <form:radiobutton path="genero" value="2"/> Mujer
+                            <form:radiobutton id="generos" path="genero" value="2"/> Mujer
                         </label>
 
                         <label class="radio-label">
-                            <form:radiobutton path="genero" value="3" /> Otro
+                            <form:radiobutton id="generos" path="genero" value="3" /> Otro
                         </label>
                     </div>
 
@@ -138,10 +138,28 @@
                         <textarea id="biografia" name="biografia" maxlength="500" rows="7"><%= userProfile.getBiografia() != null ? userProfile.getBiografia() : "" %></textarea>
                     </div>
 
+                    <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
+
+                    <div class="form-group">
+                        <label for="rol">Rol del usuario:</label><br/>
+
+                            <form:radiobutton id="rol" path="rol" value="0"  /> Normal<br/>
+
+                            <form:radiobutton id="rol" path="rol" value="1" /> Premium<br/>
+
+                            <form:radiobutton id="rol" path="rol" value="2" /> Administrador de películas<br/>
+
+                            <form:radiobutton id="rol" path="rol" value="3" /> Administrador de usuarios<br/>
+                    </div>
+
+                    <% } %>
+
                     <div class="form-actions">
                         <button type="button" class="cancel-btn">Cancelar</button>
                         <form:button type="submit" class="save-btn">Guardar cambios</form:button>
                     </div>
+
+
                 </form:form>
             </div>
         </div>
@@ -151,9 +169,9 @@
     %>
 
     <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
-        <form method="post" action="eliminar?id=<%=userProfile.getId()%>">
 
-        <button type="submit" class="edit-profile-btn">Eliminar perfil</button>
+        <form method="post" action="eliminar?id=<%=userProfile.getId()%>">
+            <button type="submit" class="edit-profile-btn">Eliminar perfil</button>
         </form>
     <% } %>
 

@@ -5,6 +5,8 @@ import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 
@@ -14,9 +16,11 @@ import java.util.Objects;
 public class ListaPeliculaId implements java.io.Serializable {
     private static final long serialVersionUID = 1895170678652302635L;
     @Column(name = "id_lista", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Integer idLista;
 
     @Column(name = "id_pelicula", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Integer idPelicula;
 
     @Override
