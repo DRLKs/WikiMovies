@@ -37,17 +37,25 @@
         </i>
         <!---------------------------------------------------------->
         <!-- BOTON DE EDITAR PELICULA -->
-        <%
-            if (usuario != null && usuario.getRol() == 2) {
+        <% 
+            if (usuario != null && usuario.getRol() == 2) { 
         %>
-        <form action="/editarPelicula" method="post" class="edit-form filmview">
-            <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button" title="Editar película">
-                <i class="fa fa-pencil"></i>
-            </button>
-        </form>
-        <%
-            }
+            <form action="/eliminarPelicula" method="post" class="delete-form filmview" onsubmit="return confirm('¿Seguro que quieres eliminar esta película?');">
+                <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
+                <button type="submit" class="favorite-button delete-btn" title="Eliminar película">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </form>
+
+            <form action="/editarPelicula" method="post" class="edit-form filmview">
+                <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
+                <button type="submit" class="favorite-button" title="Editar película">
+                    <i class="fa fa-pencil"></i>
+                </button>
+            </form>           
+        
+        <% 
+            } 
         %>
         <!---------------------------------------------------------->
         <!-- BOTON DE AÑADIR PELICULA A UNA LISTA -->

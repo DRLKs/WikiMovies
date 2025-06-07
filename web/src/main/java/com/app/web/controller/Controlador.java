@@ -405,4 +405,10 @@ public class Controlador extends BaseControlador {
         return "redirect:/film?id=" + guardada.getId();
     }
 
+    @PostMapping("/eliminarPelicula")
+    public String eliminarPelicula(@RequestParam("idPelicula") Integer idPelicula) {
+        peliculasService.eliminarPelicula(idPelicula);
+        return "redirect:/peliculas";
+    }
+
 }

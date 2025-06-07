@@ -73,9 +73,16 @@
             <%
                 if (usuario != null && usuario.getRol() == 2) {
             %>
+            <form action="/eliminarPelicula" method="post" class="delete-form" onsubmit="return confirm('¿Seguro que quieres eliminar esta película?');">
+                <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
+                <button type="submit" class="favorite-button delete-btn" title="Eliminar película">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </form>
+            
             <form action="/editarPelicula" method="post" class="edit-form">
                 <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-                <button type="submit" class="favorite-button">
+                <button type="submit" class="favorite-button" title="Editar película">
                     <i class="fa fa-pencil"></i>
                 </button>
             </form>
@@ -87,7 +94,7 @@
             <!-- BOTON PARA AÑADIR PELICULA A LA LISTA DE "VISTAS" -->
             <form action="/seen" method="post" class="seen-form">
                 <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-                <button type="submit" class="favorite-button">
+                <button type="submit" class="favorite-button" title="Marcar como vista">
                     <i class="<%= peliculaVista ? "fas fa-eye" : "fas fa-eye-slash" %>"></i>
                 </button>
             </form>
@@ -96,7 +103,7 @@
             <!-- BOTON PARA AÑADIR PELICULA A LA LISTA DE "FAVORITAS" -->
             <form action="/favorite" method="post" class="favorite-form">
                 <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-                <button type="submit" class="favorite-button">
+                <button type="submit" class="favorite-button" title="Añadir a favoritas">
                     <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
                 </button>
             </form>
