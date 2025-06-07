@@ -16,7 +16,23 @@
     color: #11f811;
 }
 /* FIN PELICULAS VISTAS */
+/* EDITAR PELICULA */
+.edit-form {
+    position: absolute;
+    top: 20px;
+    right: 120px;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+}
+.fa-pencil{
+    color:white;
+}
 
+.edit-form.filmview {
+    right:170px;
+}
+/* FIN EDITAR PELICULA */
 /* FAVORITOS */
 .favorite-form {
     position: absolute;

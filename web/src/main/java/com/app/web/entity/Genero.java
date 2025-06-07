@@ -20,10 +20,7 @@ public class Genero {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @ManyToMany
-    @JoinTable(name = "pelicula_genero",
-            joinColumns = @JoinColumn(name = "id_genero"),
-            inverseJoinColumns = @JoinColumn(name = "id_pelicula"))
-    private Set<com.app.web.entity.Pelicula> peliculas = new LinkedHashSet<>();
+    @ManyToMany(mappedBy = "generos")
+    private Set<Pelicula> peliculas = new LinkedHashSet<>();
 
 }

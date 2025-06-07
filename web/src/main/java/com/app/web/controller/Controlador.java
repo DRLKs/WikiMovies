@@ -1,12 +1,10 @@
 package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
+import com.app.web.dao.IdiomasRepository;
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.PeliculaDTO;
-import com.app.web.entity.Genero;
-import com.app.web.entity.Lista;
-import com.app.web.entity.Pelicula;
-import com.app.web.entity.Usuario;
+import com.app.web.entity.*;
 import com.app.web.service.ListasService;
 import com.app.web.service.PeliculasService;
 import com.app.web.service.UsuarioService;
@@ -15,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static com.app.web.utils.Constantes.USUARIO_SESION;
@@ -37,8 +37,12 @@ public class Controlador extends BaseControlador {
 
     @Autowired
     GenerosRepository generosRepositorio;
+
     @Autowired
     protected ListasService listasService;
+
+    @Autowired
+    IdiomasRepository idiomasRepository;
 
     /**
      * Controlador de la pantalla inicial
@@ -64,7 +68,7 @@ public class Controlador extends BaseControlador {
      */
     @GetMapping("/search")
     public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO, Model model, HttpServletRequest request,
-            HttpSession session) {
+                         HttpSession session) {
 
         if (estaAutenticado(request, session)) {
             Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
@@ -126,7 +130,7 @@ public class Controlador extends BaseControlador {
                     && peliculasVistasDTO.getPeliculasId().contains(pelicula.getId());
 
             List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(usuario.getId()); // Obtiene las
-                                                                                                    // listas del
+            // listas del
             // usuario (sin contar la de
             // fav y vistas)
             model.addAttribute("listasUsuario", listasUsuarioDTO);
@@ -153,14 +157,14 @@ public class Controlador extends BaseControlador {
     /**
      * El controlador recibe la acción de poner como favorita para el usuario la
      * película entregada
-     * 
+     *
      * @param idPelicula El identificador de la película
      */
     @PostMapping("/favorite")
     public String doFavorite(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request,
-            HttpSession session) {
+                             HttpSession session) {
 
-        // Un usuario no puede guardarse una películas como favorita si tiene la sesión
+        // Un usuario no puede guardarse una película como favorita si tiene la sesión
         // iniciada
         if (!estaAutenticado(request, session)) {
             return "redirect:/login";
@@ -193,12 +197,12 @@ public class Controlador extends BaseControlador {
     /**
      * El controlador recibe la acción de poner como vista para el usuario la
      * película entregada
-     * 
+     *
      * @param idPelicula El identificador de la película
      */
     @PostMapping("/seen")
     public String doSeen(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request,
-            HttpSession session) {
+                         HttpSession session) {
 
         // Un usuario no puede guardarse una películas como vistas si tiene la sesión
         // iniciada
@@ -233,13 +237,13 @@ public class Controlador extends BaseControlador {
     /**
      * El controlador recibe la acción de poner como favorita para el usuario la
      * película entregada
-     * 
+     *
      * @param idPelicula El identificador de la película
      */
     @PostMapping("/addToList")
     public String doAddToList(@RequestParam("idPelicula") Integer idPelicula,
-            @RequestParam(value = "listasSeleccionadas", required = false) List<Integer> listasSeleccionadas,
-            HttpServletRequest request, HttpSession session) {
+                              @RequestParam(value = "listasSeleccionadas", required = false) List<Integer> listasSeleccionadas,
+                              HttpServletRequest request, HttpSession session) {
 
         if (listasSeleccionadas == null) {
             listasSeleccionadas = new ArrayList<>();
@@ -296,7 +300,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/mostrarLista")
     public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request,
-            HttpSession session) {
+                               HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
 
@@ -323,6 +327,82 @@ public class Controlador extends BaseControlador {
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "mostrarLista";
+    }
+
+    @PostMapping("/editarPelicula")
+    public String editarPelicula(@RequestParam("idPelicula") Integer idPelicula, Model model) {
+        PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(idPelicula);
+        model.addAttribute("pelicula", pelicula);
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+        List<Idioma> idiomas = idiomasRepository.findAll();
+        model.addAttribute("idiomas", idiomas);
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        return "editarPelicula";
+    }
+
+    @GetMapping("/crearPelicula")
+    public String crearPelicula(Model model) {
+
+        model.addAttribute("pelicula", null);
+
+        List<Genero> generos = generosRepositorio.findAll();
+        model.addAttribute("generos", generos);
+        List<Idioma> idiomas = idiomasRepository.findAll();
+        model.addAttribute("idiomas", idiomas);
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        return "editarPelicula";
+    }
+
+    @PostMapping("/guardarPelicula")
+    public String guardarPelicula(@RequestParam("idPelicula") Integer idPelicula,
+                                  @RequestParam("titulo") String titulo,
+                                  @RequestParam("fecha_estreno") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_estreno,
+                                  @RequestParam("presupuesto") Integer presupuesto,
+                                  @RequestParam("ingresos") Integer ingresos,
+                                  @RequestParam("duracion") Integer duracion,
+                                  @RequestParam("descripcion") String descripcion,
+                                  @RequestParam("enlace") String enlace,
+                                  @RequestParam("idioma_original") Integer idioma_original,
+                                  @RequestParam("estatus") String estatus,
+                                  @RequestParam("eslogan") String eslogan,
+                                  @RequestParam("poster") String poster,
+                                  @RequestParam("generos") List<Integer> idGeneros,
+                                  Model model, HttpServletRequest request) {
+        PeliculaDTO peliculaDTO = null;
+        if (idPelicula == -1) { // Queremos crear una pelicula
+            peliculaDTO = new PeliculaDTO();
+        } else { // Queremos editar una pelicula
+            peliculaDTO = peliculasService.buscarPeliculaDTO(idPelicula);
+        }
+
+        peliculaDTO.setTitulo(titulo);
+        peliculaDTO.setTitulooriginal(titulo);
+        peliculaDTO.setFechaEstreno(fecha_estreno);
+        peliculaDTO.setPresupuesto(presupuesto.longValue());
+        peliculaDTO.setIngresos(ingresos.longValue());
+        peliculaDTO.setDuracion(duracion);
+        peliculaDTO.setDescripcion(descripcion);
+        peliculaDTO.setEnlace(enlace);
+        Idioma idioma = idiomasRepository.findById(idioma_original).orElse(null);
+        peliculaDTO.setIdiomaOriginal(idioma);
+        peliculaDTO.setEstatus(estatus);
+        peliculaDTO.setEslogan(eslogan);
+        peliculaDTO.setPoster(poster);
+        Set<Genero> generos = new HashSet<>();
+        for(Integer id: idGeneros){
+            Genero genero = generosRepositorio.findById(id).orElse(null);
+            generos.add(genero);
+        }
+        peliculaDTO.setGeneros(generos);
+
+        PeliculaDTO guardada = peliculasService.guardarPeliculaDTO(peliculaDTO);
+        return "redirect:/film?id=" + guardada.getId();
     }
 
 }

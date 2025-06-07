@@ -16,6 +16,14 @@
 
         <%@ include file="barra_navegacion.jsp" %>
 
+        <%
+            if(usuario != null && usuario.getRol() == 2) {
+        %>
+        <a href="/crearPelicula" class="crear-pelicula-btn">CREAR PELICULA</a>
+        <%
+            }
+        %>
+        
         <div class="container">
 
             <h3 class="ranking-titulo">ESTA ES LA SELECCIÓN DEL DÍA DE HOY:</h3>

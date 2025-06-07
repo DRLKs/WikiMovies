@@ -77,7 +77,12 @@ public class Pelicula implements com.app.web.dto.DTO<PeliculaDTO> {
     @ManyToMany(mappedBy = "peliculas")
     private Set<Etiqueta> etiquetas = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "peliculas")
+    @ManyToMany
+    @JoinTable(
+        name = "pelicula_genero",
+        joinColumns = @JoinColumn(name = "id_pelicula"),
+        inverseJoinColumns = @JoinColumn(name = "id_genero")
+    )
     private Set<Genero> generos = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "peliculas")

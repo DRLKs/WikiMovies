@@ -1,0 +1,179 @@
+/* --- Variables y reset --- */
+:root {
+    --primary-bg: #141414;
+    --secondary-bg: #181818;
+    --text-primary: #fff;
+    --text-secondary: #e5e5e5;
+    --text-muted: #b3b3b3;
+    --accent-color: #e50914;
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: var(--primary-bg);
+    color: var(--text-primary);
+    padding-top: 80px;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* --- Estilos generales para la página de editar/crear película --- */
+.saveMovieForm {
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    max-width: 600px;
+    margin: 40px auto 30px auto;
+    padding: 32px 36px 24px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+table {
+    width: 100%;
+    border-spacing: 0 12px;
+}
+
+td {
+    color: var(--text-secondary);
+    font-size: 15px;
+    padding: 6px 0;
+    vertical-align: top;
+}
+
+td:first-child {
+    font-weight: 600;
+    width: 140px;
+    padding-right: 12px;
+    text-align: right;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #232323;
+    color: #fff;
+    font-size: 15px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 8px rgba(229, 9, 20, 0.15);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button[type="submit"] {
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 18px auto 0 auto;
+    display: block;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #b71c1c;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Géneros SOLO para editarPelicula, no para filtros de barra */
+#editar-generos-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+    max-height: none;
+    overflow-y: visible;
+    padding: 6px 0 2px 0;
+    margin-bottom: 0;
+}
+
+#editar-generos-list label {
+    display: flex;
+    align-items: center;
+    background: #232323;
+    border-radius: 16px;
+    padding: 4px 12px 4px 6px;
+    color: var(--text-muted);
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+#editar-generos-list label:hover {
+    background: #292929;
+}
+
+#editar-generos-list input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #e50914;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    transition: accent-color 0.2s;
+}
+
+#editar-generos-list input[type="checkbox"]:checked {
+    accent-color: #e50914;
+}
+
+/* For Chrome, Edge, Safari: custom checkmark color */
+#editar-generos-list input[type="checkbox"]:checked {
+    filter: brightness(1.1);
+}
+
+/* Ajuste para la celda de géneros */
+td.generos-cell {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+@media (max-width: 700px) {
+    form {
+        max-width: 98vw;
+        padding: 18px 6vw 18px 6vw;
+    }
+
+    td:first-child {
+        width: 90px;
+        font-size: 13px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        font-size: 15px;
+    }
+}

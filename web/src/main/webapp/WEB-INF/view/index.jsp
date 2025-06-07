@@ -22,6 +22,14 @@
 
 <%@ include file="barra_navegacion.jsp" %>
 
+<%
+    if(usuario != null && usuario.getRol() == 2) {
+%>
+<a href="/crearPelicula" class="crear-pelicula-btn">CREAR PELICULA</a>
+<%
+    }
+%>
+
 <div class="peliculas-container">
     <div class="peliculas-recomendadas">
         <div class="container">

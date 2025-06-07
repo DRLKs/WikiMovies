@@ -36,12 +36,26 @@
         <i class="eslogan"><%= pelicula.getEslogan() %>
         </i>
         <!---------------------------------------------------------->
+        <!-- BOTON DE EDITAR PELICULA -->
+        <%
+            if (usuario != null && usuario.getRol() == 2) {
+        %>
+        <form action="/editarPelicula" method="post" class="edit-form filmview">
+            <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
+            <button type="submit" class="favorite-button" title="Editar película">
+                <i class="fa fa-pencil"></i>
+            </button>
+        </form>
+        <%
+            }
+        %>
+        <!---------------------------------------------------------->
         <!-- BOTON DE AÑADIR PELICULA A UNA LISTA -->
         <%
             if (usuario != null) {
         %>
         <div class="addToList">
-            <button id="addToListBtn" class="addToList-btn">+</button>
+            <button id="addToListBtn" class="addToList-btn" title="Añadir a lista">+</button>
 
             <div id="addToListModal" class="modal">
                 <div class="modal-content">
@@ -77,7 +91,7 @@
         <!-- BOTON PARA AÑADIR PELICULA A LA LISTA DE "VISTAS" -->
         <form action="/seen" method="post" class="seen-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button">
+            <button type="submit" class="favorite-button" title="Marcar como vista">
                 <i class="<%= peliculaVista ? "fas fa-eye" : "fas fa-eye-slash" %>"></i>
             </button>
         </form>
@@ -86,7 +100,7 @@
         <!-- BOTON PARA AÑADIR PELICULA A LA LISTA DE "FAVORITAS" -->
         <form action="/favorite" method="post" class="favorite-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button">
+            <button type="submit" class="favorite-button" title="Añadir a favoritas">
                 <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
             </button>
         </form>
