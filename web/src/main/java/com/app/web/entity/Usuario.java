@@ -1,5 +1,7 @@
 package com.app.web.entity;
 
+import com.app.web.dto.DTO;
+import com.app.web.dto.UsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,15 +9,17 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements DTO<UsuarioDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", nullable = false)
@@ -101,6 +105,10 @@ public class Usuario {
         return usuario.getSeguidores().contains(this);
     }
 
+    public boolean sigueA(Set<Integer> seguidoresUsuario){
+        return seguidoresUsuario.contains(this.getId());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -111,6 +119,27 @@ public class Usuario {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public UsuarioDTO toDTO() {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setIdUsuario(this.id);
+        usuarioDTO.setNombreUsuario(this.nombreUsuario);
+        usuarioDTO.setBiografia(this.biografia);
+        usuarioDTO.setAvatar(this.avatarUrl);
+        usuarioDTO.setTiempoRegistrado(this.getTiempoRegistrado());
+        usuarioDTO.setGenero(this.getGenero());
+        usuarioDTO.setRol(this.getRol());
+        usuarioDTO.setNacimientoFecha(this.getNacimientoFecha());
+
+        HashSet<Integer> seguidoresId = new HashSet();
+        for( Usuario usuario : this.getSeguidores() ){
+            seguidoresId.add(usuario.getId());
+        }
+        usuarioDTO.setSeguidoresIds(seguidoresId) ;
+
+        return usuarioDTO;
     }
 
     /*

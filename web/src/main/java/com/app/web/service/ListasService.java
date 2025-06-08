@@ -21,12 +21,9 @@ import java.util.Set;
 @Service
 public class ListasService extends DTOService<ListaDTO, Lista> {
 
-    @Autowired
-    private ListaRepository listaRepository;
-    @Autowired
-    private UsuariosRepositorio usuariosRepositorio;
-    @Autowired
-    private com.app.web.dao.PeliculasRepository peliculaRepository;
+    @Autowired private ListaRepository listaRepository;
+    @Autowired private UsuariosRepositorio usuariosRepositorio;
+    @Autowired private com.app.web.dao.PeliculasRepository peliculaRepository;
 
     /**
      * Obtener todas las listas como DTOs
@@ -52,6 +49,19 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     public List<Lista> getAllListas() {
         return listaRepository.findAll();
     }
+
+
+    /**
+     * Obtenemos las listas de un usuario
+     * @param idUsuario Identificador del usuario
+     * @return List<ListaDTO>
+     */
+    public List<ListaDTO> getListasUsuario(Integer idUsuario) {
+        Set<Lista> listas = usuariosRepositorio.getReferenceById(idUsuario).getListas();
+
+        return this.entity2DTO(listas);
+    }
+
 
     /**
      * Obtener una lista por su ID como DTO

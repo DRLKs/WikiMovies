@@ -21,6 +21,9 @@ public interface UsuariosRepositorio extends JpaRepository<Usuario, Integer> {
     @Query("select u from Usuario u join u.seguidores s where s.id = :id")
     List<Usuario> getSeguidos(@Param("id") Integer id);
 
+    @Query("select COUNT(u) from Usuario u join u.seguidores s where s.id = :id")
+    Integer getNumSeguidos(@Param("id") Integer id);
+
     Usuario getUsuarioById(Integer id);
 
     @Query("SELECT U FROM Usuario U JOIN U.seguidores S GROUP BY U ORDER BY COUNT(S) ASC")

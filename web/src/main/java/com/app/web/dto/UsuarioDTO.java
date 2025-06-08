@@ -1,6 +1,10 @@
 package com.app.web.dto;
 
+import com.app.web.entity.Lista;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class UsuarioDTO{
@@ -35,5 +39,11 @@ public class UsuarioDTO{
      */
     protected Integer genero;
 
+    protected String tiempoRegistrado;
 
+    protected Set<Integer> seguidoresIds;
+
+    protected Integer rol;
+
+    protected LocalDate nacimientoFecha;
 }

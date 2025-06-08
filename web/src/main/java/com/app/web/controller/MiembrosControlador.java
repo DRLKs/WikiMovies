@@ -1,13 +1,12 @@
 package com.app.web.controller;
 
-import com.app.web.dao.GenerosRepository;
-import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.dto.ListaDTO;
-import com.app.web.entity.Genero;
-import com.app.web.entity.Lista;
+import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
+import com.app.web.service.GenerosService;
+import com.app.web.service.ListasService;
+import com.app.web.service.MiembrosService;
 import com.app.web.ui.FiltroBusquedaDTO;
-import com.app.web.ui.UsuarioProfile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.app.web.utils.Constantes.USUARIO_SESION;
 import static com.app.web.utils.Constantes.USER_ADMIN;
@@ -29,41 +25,36 @@ import static com.app.web.utils.Constantes.USER_ADMIN;
 @Controller
 public class MiembrosControlador extends BaseControlador {
 
-    @Autowired UsuariosRepositorio usuarioRepositorio;
-    @Autowired GenerosRepository generosRepositorio;
+    @Autowired MiembrosService miembrosService;
+    @Autowired ListasService listasService;
+    @Autowired GenerosService generosService;
 
     /**
-     * Controlador de la petición del sistema al cargar todos los miembros de
+     * Controlador de la petición del sistema para cargar todos los miembros de
      * WikiMovies
      */
     @GetMapping("/miembros")
     public String mostrarMiembros(Model model) {
 
-        // List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
-        List<Usuario> usuarios = usuarioRepositorio.findAll();
-
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        // Cargamos los generos para el filtro de búsqueda de películas
+        model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
-        model.addAttribute("miembros", usuarios);
-
-        return "miembros";
+        return miembrosService.listarMiembros(null, model);
     }
 
+    /**
+     * Controlador de la petición del sistema para cargar todos los miembros de
+     * WikiMovies que cumplan con un filtro
+     */
     @GetMapping("/miembros/filtro")
-    public String mostrarFiltro(@RequestParam("nombre") String nombre,  Model model) {
+    public String mostrarFiltro(@RequestParam("nombre") String filtroNombre,  Model model) {
 
-        // List<Usuario> usuarios = usuarioRepositorio.usuariosOrdenadosPorSeguidores();
-        List<Usuario> usuarios = usuarioRepositorio.findByNombre(nombre);
-
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        // Cargamos los generos para el filtro de búsqueda de películas
+        model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
-        model.addAttribute("miembros", usuarios);
-
-        return "miembros";
+        return miembrosService.listarMiembros(filtroNombre, model);
     }
 
     /**
@@ -75,35 +66,20 @@ public class MiembrosControlador extends BaseControlador {
     @GetMapping("/profile")
     public String mostrarProfile(@RequestParam("id") Integer id, Model model) {
 
-        Usuario usuario = usuarioRepositorio.getReferenceById(id);
-        model.addAttribute(USUARIO_SESION, usuario);
-
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
-        // Introducimos los datos necesarios en el DTO
-        UsuarioProfile usuarioProfile = new UsuarioProfile();
-        usuarioProfile.setId(usuario.getId());
-        usuarioProfile.setAvatar(usuario.getAvatarUrl());
-        usuarioProfile.setBiografia(usuario.getBiografia());
-        usuarioProfile.setNombreUsuario(usuario.getNombreUsuario());
-        usuarioProfile.setGenero(usuario.getGenero());
-        usuarioProfile.setFechaNacimiento(usuario.getNacimientoFecha());
-        usuarioProfile.setRol(usuario.getRol());
+        // Obtenemos al usuario
+        UsuarioDTO usuarioProfile = miembrosService.obtenerUsuario(id);
         model.addAttribute("usuarioProfile", usuarioProfile);
 
-        // Convertir las listas del usuario a DTOs
-        List<ListaDTO> listasDTO = new ArrayList<>();
-        if (usuario.getListas() != null) {
-            for (Lista lista : usuario.getListas()) {
-                listasDTO.add(lista.toDTO());
-            }
-        }
+        // Obtenemos las listas del usuario
+        List<ListaDTO> listasDTO = listasService.getListasUsuario(id);
         model.addAttribute("listasDTO", listasDTO);
 
-        List<Usuario> seguidos = usuarioRepositorio.getSeguidos(id);
-        model.addAttribute("seguidos", seguidos.size());
+        // Obtenemos el número de personas que sigue el usuario
+        Integer numseguidos = miembrosService.numSeguidosUsuario(id);
+        model.addAttribute("numseguidos", numseguidos);
 
         return "profile";
     }
@@ -115,7 +91,7 @@ public class MiembrosControlador extends BaseControlador {
      * @return JSP
      */
     @PostMapping("/profile/update")
-    public String doUpdateProfile(@ModelAttribute() UsuarioProfile usuarioProfile, Model model,
+    public String doUpdateProfile(@ModelAttribute() UsuarioDTO usuarioProfile,
             HttpServletRequest request, HttpSession session) {
 
         if (!estaAutenticado(request, session)) {
@@ -123,8 +99,9 @@ public class MiembrosControlador extends BaseControlador {
         }
 
         // Comprobamos que el usuario tenga permisos para editar un perfil
+        // IMPORTANTE: De USUARIo debe pasar a USUARIODTO
         Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
-        Integer idUsuarioProfile = usuarioProfile.getId();
+        Integer idUsuarioProfile = usuarioProfile.getIdUsuario();
 
 
         if( !usuario.getId().equals(idUsuarioProfile) ) {
@@ -133,75 +110,31 @@ public class MiembrosControlador extends BaseControlador {
                 return "redirect:/profile?id=" + idUsuarioProfile;
             }
             // El administrador ajusta una cuenta que no es la suya
-            usuario = usuarioRepositorio.getReferenceById(idUsuarioProfile);
+            // usuario = usuarioRepositorio.getReferenceById(idUsuarioProfile);
         }
 
-
-
-        String avatar = usuarioProfile.getAvatar();
-        String nombreUsuario = usuarioProfile.getNombreUsuario();
-        String biografia = usuarioProfile.getBiografia();
-        LocalDate fechaNacimiento = usuarioProfile.getFechaNacimiento();
-        Integer genero = usuarioProfile.getGenero();
-        Integer rol = usuarioProfile.getRol();
-
-
-        try {
-
-            if (avatar != null && !avatar.isEmpty()) {
-                usuario.setAvatarUrl(avatar);
-            }
-
-            if (nombreUsuario != null && !nombreUsuario.isEmpty()
-                    && !nombreUsuario.equals(usuario.getNombreUsuario())) {
-                usuario.setNombreUsuario(nombreUsuario);
-            }
-
-            if (biografia != null && !biografia.isEmpty() && !biografia.equals(usuario.getBiografia())) {
-                usuario.setBiografia(biografia);
-            }
-
-            if (fechaNacimiento != null) {
-
-                usuario.setNacimientoFecha(fechaNacimiento);
-            }
-
-            if (genero != null) {
-                usuario.setGenero(genero);
-            }
-
-            if( rol != null ){
-                usuario.setRol(rol);
-            }
-
-        } catch (Exception e) {
-            return "redirect:/profile?id=" + idUsuarioProfile;
-        }
-
-        this.usuarioRepositorio.save(usuario);
+        miembrosService.editarUsuario(usuarioProfile);
 
         return "redirect:/profile?id=" + idUsuarioProfile;
     }
 
     @GetMapping("/seguir")
-    public String seguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session,
+    public String seguir(@RequestParam("id") Integer idUsuarioSeguir, HttpSession session,
             HttpServletRequest request) {
-        Usuario usuarioSeguido = usuarioRepositorio.getReferenceById(idSeguido);
-        Usuario yo = (Usuario) session.getAttribute("usuario");
-        usuarioSeguido.getSeguidores().add(yo);
-        usuarioRepositorio.save(usuarioSeguido);
+
+        Integer miId = ((Usuario) session.getAttribute("usuario")).getId();
+        miembrosService.seguirUsuario( miId ,idUsuarioSeguir);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/miembros");
     }
 
     @GetMapping("/dejarSeguir")
-    public String dejarSeguir(@RequestParam("id") Integer idSeguido, Model model, HttpSession session,
+    public String dejarSeguir(@RequestParam("id") Integer idUsuario, HttpSession session,
             HttpServletRequest request) {
-        Usuario usuarioSeguido = usuarioRepositorio.getReferenceById(idSeguido);
-        Usuario yo = (Usuario) session.getAttribute("usuario");
-        usuarioSeguido.getSeguidores().remove(yo);
-        usuarioRepositorio.save(usuarioSeguido);
+
+        Integer miId = ((Usuario) session.getAttribute("usuario")).getId();
+        miembrosService.dejarDeSeguirUsuario( miId ,idUsuario);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/miembros");
@@ -211,8 +144,7 @@ public class MiembrosControlador extends BaseControlador {
     @PostMapping("/eliminar")
     public String eliminarUsuario(@RequestParam("id") Integer idUsuario){
 
-        Usuario usuario = usuarioRepositorio.getReferenceById(idUsuario);
-        usuarioRepositorio.delete(usuario);
+        miembrosService.eliminarUsuario(idUsuario);
 
         return "redirect:/miembros";
     }

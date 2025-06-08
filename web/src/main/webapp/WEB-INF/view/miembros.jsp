@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="com.app.web.dto.UsuarioDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -9,7 +10,7 @@
 </head>
 
 <%
-    List<Usuario> usuarios = (List<Usuario>) request.getAttribute("miembros");
+    List<UsuarioDTO> usuarios = (List<UsuarioDTO>) request.getAttribute("miembros");
     Usuario user = (Usuario)session.getAttribute("usuario");
 %>
 
@@ -39,22 +40,22 @@
 
             <%
                 if(usuarios != null && !usuarios.isEmpty()) {
-                    for(Usuario userMiembro : usuarios) {
+                    for(UsuarioDTO userMiembro : usuarios) {
             %>
                 <div class="miembro-card">
-                    <a href="profile?id=<%= userMiembro.getId() %>" class="miembro-link">
+                    <a href="profile?id=<%= userMiembro.getIdUsuario() %>" class="miembro-link">
                         <div>
-                            <img class="profile-image" src="<%= userMiembro.getAvatarUrl() != null ? userMiembro.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
+                            <img class="profile-image" src="<%= userMiembro.getAvatar() != null ? userMiembro.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                             <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>
                             <div class="miembro-info"><% if(!userMiembro.getTiempoRegistrado().equals("Usuario nuevo")) {%>Se unió hace <%= userMiembro.getTiempoRegistrado() %> <% } else { %><%= userMiembro.getTiempoRegistrado() %> <% } %></div>
                         </div>
                     </a>
                     <%
-                        if(user != null && userMiembro.getId() != user.getId()){
-                            if(user.sigueA(userMiembro)) { %>
-                                <a class="unfollow-btn" href="/dejarSeguir?id=<%= userMiembro.getId() %>">Dejar de seguir</a>
+                        if(user != null && userMiembro.getIdUsuario() != user.getId()){
+                            if(user.sigueA(userMiembro.getSeguidoresIds())) { %>
+                                <a class="unfollow-btn" href="/dejarSeguir?id=<%= userMiembro.getIdUsuario() %>">Dejar de seguir</a>
                             <% } else { %>
-                                <a class="follow-btn" href="/seguir?id=<%= userMiembro.getId() %>">Seguir</a>
+                                <a class="follow-btn" href="/seguir?id=<%= userMiembro.getIdUsuario() %>">Seguir</a>
                             <% } %>
                     <%
                         }

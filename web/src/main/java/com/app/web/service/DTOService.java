@@ -3,10 +3,11 @@ package com.app.web.service;
 import com.app.web.dto.DTO;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class DTOService<DTOClass, EntityClass> {
-    protected List<DTOClass> entity2DTO(List<EntityClass> entidades) {
+    protected List<DTOClass> entity2DTO(Collection<EntityClass> entidades) {
         List<DTOClass> lista = new ArrayList<>();
         for (EntityClass entidad : entidades) {
             if (entidad instanceof DTO) {

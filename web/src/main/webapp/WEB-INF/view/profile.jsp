@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="static com.app.web.utils.Constantes.USER_ADMIN" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.app.web.dto.UsuarioDTO" %>
 
 <html>
 
@@ -16,26 +17,26 @@
 <%@ include file="barra_navegacion.jsp" %>
 
 <%
-    Usuario userProfile = (Usuario) request.getAttribute("usuario");
+    UsuarioDTO userProfile = (UsuarioDTO) request.getAttribute("usuarioProfile");
     List<ListaDTO> listasDTO = (List<ListaDTO>) request.getAttribute("listasDTO");
-    Integer seguidos = (Integer) request.getAttribute("seguidos");
+    Integer seguidos = (Integer) request.getAttribute("numseguidos");
 %>
 
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-avatar">
-            <img src="<%= userProfile.getAvatarUrl() != null ? userProfile.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userProfile.getNombreUsuario()%>">
+            <img src="<%= userProfile.getAvatar() != null ? userProfile.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userProfile.getNombreUsuario()%>">
         </div>
         <div class="profile-info">
             <h1 class="profile-username"><%=userProfile.getNombreUsuario()%></h1>
             <p class="profile-bio"><%=userProfile.getGenero() != null && !userProfile.getBiografia().isEmpty() ? userProfile.getBiografia() : "Sin biografía"%></p>
 
             <%
-                if(usuario != null && userProfile.getId() != usuario.getId()){
-                    if(usuario.sigueA(userProfile)) { %>
-                        <a class="unfollow-btn" href="/dejarSeguir?id=<%= userProfile.getId() %>">Dejar de seguir</a>
+                if(usuario != null && userProfile.getIdUsuario() != usuario.getId()){
+                    if(usuario.sigueA(userProfile.getSeguidoresIds())) { %>
+                        <a class="unfollow-btn" href="/dejarSeguir?id=<%= userProfile.getIdUsuario() %>">Dejar de seguir</a>
                     <% } else { %>
-                        <a class="follow-btn" href="/seguir?id=<%= userProfile.getId() %>">Seguir</a>
+                        <a class="follow-btn" href="/seguir?id=<%= userProfile.getIdUsuario() %>">Seguir</a>
                     <% } %>
             <%
                 }
@@ -47,7 +48,7 @@
     
     <div class="profile-stats">
         <div class="stat-box">
-            <span class="stat-count"><%= userProfile.getSeguidores().size() %></span>
+            <span class="stat-count"><%= userProfile.getSeguidoresIds().size() %></span>
             <span class="stat-label">Seguidores</span>
         </div>
         <div class="stat-box">
@@ -84,7 +85,7 @@
     </div>
 
     <%
-        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || usuario.getId() == userProfile.getId())){
+        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || usuario.getId() == userProfile.getIdUsuario())){
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
@@ -95,12 +96,12 @@
                 <h2>Editar tu perfil</h2>
                 <form:form id="editProfileForm" action="/profile/update" method="POST" enctype="multipart/form-data" modelAttribute="usuarioProfile" >
 
-                    <form:hidden path="id" />
+                    <form:hidden path="idUsuario" />
 
                     <div class="form-group">
                         <label for="avatar">Foto de perfil:</label>
                         <div class="avatar-preview">
-                            <img id="avatarPreview" placeholder="URL imagen" src="<%= userProfile.getAvatarUrl() != null ? userProfile.getAvatarUrl() : "../../img/default-avatar.png"%>" alt="Avatar">
+                            <img id="avatarPreview" placeholder="URL imagen" src="<%= userProfile.getAvatar() != null ? userProfile.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar">
                         </div>
 
                         <form:input type="text" id="avatar" path="avatar" placeholder="url" />
@@ -114,7 +115,7 @@
 
                     <div class="form-group">
                         <label for="fechaNacimiento">Fecha Nacimiento:</label>
-                        <form:input type="date" id="fechaNacimiento" path="fechaNacimiento"/>
+                        <form:input type="date" id="fechaNacimiento" path="nacimientoFecha"/>
                     </div>
 
                     <div class="form-group">
@@ -170,7 +171,7 @@
 
     <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
 
-        <form method="post" action="eliminar?id=<%=userProfile.getId()%>">
+        <form method="post" action="eliminar?id=<%=userProfile.getIdUsuario()%>">
             <button type="submit" class="edit-profile-btn">Eliminar perfil</button>
         </form>
     <% } %>
