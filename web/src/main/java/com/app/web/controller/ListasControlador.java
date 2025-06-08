@@ -97,9 +97,8 @@ public class ListasControlador extends BaseControlador {
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
-        // Obtener todas las películas para la selección
-        List<Pelicula> peliculas = peliculasService.listarPeliculas();
-        model.addAttribute("peliculas", peliculas);
+        // Ya no necesitamos cargar todas las películas para la selección
+        // Las películas se añadirán después desde otra parte de la aplicación
 
         loadCommonModelAttributes(model, session);
         model.addAttribute("usuario", usuario);
@@ -107,8 +106,6 @@ public class ListasControlador extends BaseControlador {
 
         return "crearLista";
     }
-
-
 
     /**
      * Controlador para mostrar listas de usuarios seguidos
@@ -155,7 +152,7 @@ public class ListasControlador extends BaseControlador {
     }
 
     /**
-     * Controlador para guardar una lista recién creada
+     * Controlador para guardar una lista recién creada (ahora lista vacía)
      */
     @PostMapping("/guardarLista")
     public String guardarLista(@ModelAttribute("nuevaLista") NuevaLista nuevaLista, HttpSession session) {
@@ -176,18 +173,14 @@ public class ListasControlador extends BaseControlador {
 
         lista.setIdUsuario(usuario);
 
-        // Añadir películas seleccionadas a la lista
-        Set<Pelicula> pelis = new HashSet<>();
-        for (Integer peliId : nuevaLista.getPeliculasId()) {
-            Pelicula aux = peliculasService.buscarPelicula(peliId);
-            pelis.add(aux);
-        }
-        lista.setPeliculas(pelis);
+        // Crear lista vacía - ya no añadimos películas aquí
+        lista.setPeliculas(new HashSet<>()); // Lista vacía
 
-        // Guardar la lista usando el servicio (devuelve DTO pero no lo usamos aquí)
-        listasService.guardarListaDTO(lista);
+        // Guardar la lista usando el servicio
+        ListaDTO listaGuardada = listasService.guardarListaDTO(lista);
 
-        return "redirect:/";
+        // Redirigir a la vista de la lista creada para que puedan añadir películas
+        return "redirect:/mostrarLista?listaId=" + listaGuardada.getId();
     }
 
     /**
