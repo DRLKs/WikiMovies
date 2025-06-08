@@ -29,6 +29,14 @@
 
 <body>
 
+<%
+    if(usuario != null && usuario.getRol() == 2) {
+%>
+<a href="/crearPelicula" class="crear-pelicula-btn">CREAR PELICULA</a>
+<%
+    }
+%>
+
 <div class="info-busqueda-container">
     <% if(titulo != null && !titulo.trim().equals("")) {%>
         <h2> Mostrando <%= peliculas.size() %> resultados para "<%=titulo%>"</h2>

@@ -95,7 +95,10 @@
             </td>
         </tr>
     </table>
-    <button type="submit">Guardar</button>
+    <div class="form-actions">
+        <a href="<%= pelicula != null? "/film?id="+pelicula.getId() : "/peliculas" %>" class="cancelar-btn">Cancelar</a>
+        <button type="submit" class="save-btn">Guardar</button>
+    </div>
 </form>
 
 </body>
