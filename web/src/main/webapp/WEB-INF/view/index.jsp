@@ -1,6 +1,7 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -15,7 +16,8 @@
     List<PeliculaDTO> peliculaList = (List<PeliculaDTO>) request.getAttribute("peliculas");
     List<Genero> generos = (List<Genero>) request.getAttribute("generos");
     List<PeliculaDTO> peliculasTop =(List<PeliculaDTO>) request.getAttribute("peliculasRanking");
-
+    List<Genero> generosFavoritas = (List<Genero>) request.getAttribute("generosFavoritas");
+    ListaDTO favoritas = (ListaDTO) request.getAttribute("favoritas");
 %>
 
 <body>
@@ -59,7 +61,33 @@
 
             </div>
         </div>
-    </div>    <%for (Genero g : generos) {%>
+    </div>
+
+    <% if(usuario != null && usuario.getRol() == 1) {%>
+    <div class="peliculas-generos">
+        <h3> Peliculas recomendadas en base a tus películas favoritas
+        </h3>
+        <div class="lista-peliculas">
+            <%for (PeliculaDTO p : peliculaList) {%>
+            <%if (!generosFavoritas.isEmpty() &&
+                    (p.getGeneros().contains(generosFavoritas.get(0)) || (generosFavoritas.size() > 1 && p.getGeneros().contains(generosFavoritas.get(1)))) &&
+             !favoritas.getPeliculasId().contains(p.getId())) {%>
+            <a href="/film?id=<%= p.getId() %>">
+                <img src="<%= p.getPoster() %>"
+                     alt="Póster de <%= p.getTitulo() %>"
+                     class="poster-ranking"
+                     style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
+                >
+            </a>
+            <%}%>
+            <%}%>
+
+        </div>
+    </div>
+    <% } %>
+
+    <%for (Genero g : generos) {%>
+    <%if (!g.getPeliculas().isEmpty()) {%>
     <div class="peliculas-generos">
         <h3> Peliculas de <%=g.getNombre()%>
         </h3>
@@ -78,6 +106,7 @@
 
         </div>
     </div>
+    <%}%>
     <%}%>
 
 

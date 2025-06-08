@@ -2,17 +2,17 @@ package com.app.web.service;
 
 import com.app.web.dao.ListaRepository;
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.dto.GeneroDTO;
 import com.app.web.dto.ListaDTO;
+import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Capa de servicio para operaciones de Listas
@@ -355,4 +355,32 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         Lista guardada = listaRepository.save(lista);
         return guardada.toDTO();
     }
+
+    // Función que devuelve una lista con los 3 géneros más repetidos de una lista
+    public List<Genero> generosMasRepetidosEnLaLista(ListaDTO listaDTO) {
+        // Buscar la lista existente
+        Lista lista = listaRepository.findById(listaDTO.getId()).orElse(null);
+
+        Set<Pelicula> peliculasLista = lista.getPeliculas();
+        if (peliculasLista == null || peliculasLista.isEmpty()) return Collections.emptyList();
+
+        // Mapa para contar frecuencia de cada género
+        Map<Genero, Integer> generoFrecuencia = new HashMap<>();
+
+        for (Pelicula pelicula : peliculasLista) {
+            for (Genero genero : pelicula.getGeneros()) {
+                generoFrecuencia.put(genero, generoFrecuencia.getOrDefault(genero, 0) + 1);
+            }
+        }
+
+        // Ordenar por frecuencia descendente y tomar los 3 primeros
+        List<Genero> generosTop3 = generoFrecuencia.entrySet().stream()
+                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue())) // Orden descendente
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return generosTop3;
+    }
+
 }

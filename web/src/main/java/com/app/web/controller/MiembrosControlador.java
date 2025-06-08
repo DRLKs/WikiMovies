@@ -149,4 +149,14 @@ public class MiembrosControlador extends BaseControlador {
         return "redirect:/miembros";
     }
 
+    @GetMapping("/cambioRol")
+    public String cambioRol(@RequestParam("id") Integer idUsuario, HttpSession session,
+                            HttpServletRequest request) {
+
+        Integer miId = ((Usuario) session.getAttribute("usuario")).getId();
+        miembrosService.editarRolPremium(idUsuario);
+
+        return "redirect:/profile?id=" + idUsuario;
+    }
+
 }

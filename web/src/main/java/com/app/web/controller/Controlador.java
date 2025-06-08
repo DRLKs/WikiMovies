@@ -48,7 +48,18 @@ public class Controlador extends BaseControlador {
      * Controlador de la pantalla inicial
      */
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request,
+                        HttpSession session) {
+
+        if (estaAutenticado(request, session)) {
+            Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+            ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getId());
+            model.addAttribute("favoritas", favoritas);
+            model.addAttribute("generosFavoritas", listasService.generosMasRepetidosEnLaLista(favoritas));
+        } else {
+            model.addAttribute("generosFavoritas", new ArrayList<>());
+            model.addAttribute("favoritas", null);
+        }
 
         List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();
         model.addAttribute("peliculas", peliculas);

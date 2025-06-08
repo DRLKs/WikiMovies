@@ -42,6 +42,19 @@
                 }
             %>
 
+
+            <%
+                if(usuario != null && userProfile.getIdUsuario() == usuario.getId() && usuario.getRol() < 2){
+            %>
+            <div class="botonPremium">
+                <a class="boton-premium" href="/cambioRol?id=<%= userProfile.getIdUsuario() %>">
+                    <%= (userProfile.getRol() == 0)? "Hacerse Premium" : "Dejar de ser Premium"%>
+                </a>
+            </div>
+            <%
+                }
+            %>
+
         </div>
 
     </div>

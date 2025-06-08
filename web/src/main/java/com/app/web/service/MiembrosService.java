@@ -132,4 +132,15 @@ public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
     }
 
 
+    public void editarRolPremium(Integer id) {
+        // Obtenemos el usuario que queremos editar
+        Usuario usuario = usuariosRepositorio.getReferenceById(id);
+
+        int rol = (usuario.getRol() + 1) % 2;
+
+        usuario.setRol(rol);
+
+        this.usuariosRepositorio.save(usuario);
+    }
+
 }
