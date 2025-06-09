@@ -14,8 +14,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.app.web.utils.Constantes.LISTA_FAVORITAS;
-import static com.app.web.utils.Constantes.LISTA_VISTAS;
+import static com.app.web.utils.Constantes.*;
 
 public class UsuarioService {
 
@@ -113,23 +112,16 @@ public class UsuarioService {
         this.usuarioRepositorio.save(usuario);
 
 
-        //Le añado la lista de "Favoritas" y "Vistas"
+        // Creamos el conjunto donde se almacenarán las listas del usuario
         Set<Lista> listas = new HashSet<>();
-        Lista listaFav = new Lista();
-        listaFav.setNombre(LISTA_FAVORITAS);
-        listaFav.setDescripcion("Lista de películas favoritas");
-        listaFav.setImgURL("https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg=");
-        listaFav.setIdUsuario(usuario);
-        listaFav.setPeliculas(new HashSet<>());
+
+        //Creamos la lista que conteine las películas favoritas del usuario
+        Lista listaFav = listasService.nuevaLista(LISTA_FAVORITAS,DESCRIPCION_LISTA_FAVORITAS,IMAGEN_LISTA_FAVORITAS, usuario);
         listas.add(listaFav);
 
-        Lista listaVistas = new Lista();
-        listaVistas.setNombre(LISTA_VISTAS);
-        listaVistas.setDescripcion("Lista de películas vistas");
-        listaVistas.setImgURL("https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg");
-        listaVistas.setIdUsuario(usuario);
-        listaVistas.setPeliculas(new HashSet<>());
-        listas.add(listaVistas);
+        // Creamos la lista que contiene las películas vistas
+        Lista listaVistas = listasService.nuevaLista(LISTA_VISTAS,DESCRIPCION_LISTA_VISTAS,IMAGEN_LISTA_VISTAS, usuario);
+        listas.add((listaVistas));
 
         this.listasService.guardarLista(listaVistas);
         this.listasService.guardarLista(listaFav);
@@ -155,4 +147,6 @@ public class UsuarioService {
         }
         return seguidos;
     }
+
+
 }

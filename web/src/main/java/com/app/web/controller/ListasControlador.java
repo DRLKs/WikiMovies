@@ -4,7 +4,6 @@ import com.app.web.dao.GenerosRepository;
 import com.app.web.dto.ListaDTO;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
-import com.app.web.entity.Pelicula;
 import com.app.web.entity.Usuario;
 import com.app.web.service.ListasService;
 import com.app.web.service.PeliculasService;
@@ -35,14 +34,10 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class ListasControlador extends BaseControlador {
 
-    @Autowired
-    protected GenerosRepository generosRepositorio;
-    @Autowired
-    protected PeliculasService peliculasService;
-    @Autowired
-    protected UsuarioService usuarioService;
-    @Autowired
-    protected ListasService listasService;
+    @Autowired protected GenerosRepository generosRepositorio;
+    @Autowired protected PeliculasService peliculasService;
+    @Autowired protected UsuarioService usuarioService;
+    @Autowired protected ListasService listasService;
 
     /**
      * Carga los atributos comunes del modelo necesarios para todas las vistas de

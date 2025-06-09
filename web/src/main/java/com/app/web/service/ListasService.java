@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.app.web.utils.Constantes.*;
+
 /**
  * Capa de servicio para operaciones de Listas
  * Maneja toda la lógica de negocio relacionada con las listas de usuarios
@@ -24,6 +26,8 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     @Autowired private ListaRepository listaRepository;
     @Autowired private UsuariosRepositorio usuariosRepositorio;
     @Autowired private com.app.web.dao.PeliculasRepository peliculaRepository;
+
+    @Autowired private MiembrosService miembrosService;
 
     /**
      * Obtener todas las listas como DTOs
@@ -316,6 +320,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
      * @return El DTO de la lista guardada
      */
     public ListaDTO guardarListaDTO(ListaDTO listaDTO) {
+
         if (listaDTO == null) {
             throw new IllegalArgumentException("La listaDTO no puede ser nula");
         }
@@ -381,6 +386,92 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
                 .collect(Collectors.toList());
 
         return generosTop3;
+    }
+
+    public Lista nuevaLista(String nombreLista, String descripcion, String imgURL, Usuario usuario){
+        Lista lista = new Lista();
+        lista.setNombre(nombreLista);
+        lista.setIdUsuario(usuario);
+        lista.setDescripcion(descripcion);
+        lista.setImgURL(imgURL);
+        lista.setPeliculas(new HashSet<>());
+        return lista;
+    }
+
+
+    /**
+     * Cuando un usuario toca el botón de que le gusta una película
+     * @param peliculaId Identificador de la películas
+     * @param usuarioId Identificador del usuario
+     */
+    public void peliculaAccionFavorita(Integer peliculaId, Integer usuarioId){
+
+        // Obtenemos la lista por el usuario
+        Lista listaFavorita = listaRepository.getListaFavoritas(usuarioId);
+        Pelicula peliculaFavorita = peliculaRepository.getReferenceById(peliculaId);
+
+        // En el caso de que el usuario no tenga la lista
+        if( listaFavorita == null ){
+            Usuario usuario = usuariosRepositorio.getReferenceById(usuarioId);
+            listaFavorita = nuevaLista(LISTA_FAVORITAS,DESCRIPCION_LISTA_FAVORITAS,IMAGEN_LISTA_FAVORITAS,usuario);
+
+            // Añadimos la película
+            listaFavorita.getPeliculas().add(peliculaFavorita);
+            listaRepository.save(listaFavorita);
+            usuario.getListas().add(listaFavorita);
+
+            // Guardamos los cambios
+            usuariosRepositorio.save(usuario);
+
+        }else{
+            // Comprobar si la película ya está en vistas
+            if (listaFavorita.getPeliculas().contains(peliculaFavorita)) {
+                // Ya estaba vista y la quitamos
+                listaFavorita.getPeliculas().remove(peliculaFavorita);
+            } else {
+                // La introducimos como vista
+                listaFavorita.getPeliculas().add(peliculaFavorita);
+            }
+            listaRepository.save(listaFavorita);
+        }
+    }
+
+
+    /**
+     * Cuando un usuario toca el botón de que ha visto una película
+     * @param peliculaId Identificador de la películas
+     * @param usuarioId Identificador del usuario
+     */
+    public void peliculaAccionVer(Integer peliculaId, Integer usuarioId){
+
+        // Obtenemos la lista por el usuario
+        Lista listaVistas = listaRepository.getListaVistas(usuarioId);
+        Pelicula peliculaVista = peliculaRepository.getReferenceById(peliculaId);
+
+        // En el caso de que el usuario no tenga la lista
+        if( listaVistas == null ){
+            Usuario usuario = usuariosRepositorio.getReferenceById(usuarioId);
+            listaVistas = nuevaLista(LISTA_VISTAS,DESCRIPCION_LISTA_VISTAS,IMAGEN_LISTA_VISTAS,usuario);
+
+            // Añadimos la película
+            listaVistas.getPeliculas().add(peliculaVista);
+            listaRepository.save(listaVistas);
+            usuario.getListas().add(listaVistas);
+
+            // Guardamos los cambios
+            usuariosRepositorio.save(usuario);
+
+        }else{
+            // Comprobar si la película ya está en vistas
+            if (listaVistas.getPeliculas().contains(peliculaVista)) {
+                // Ya estaba vista y la quitamos
+                listaVistas.getPeliculas().remove(peliculaVista);
+            } else {
+                // La introducimos como vista
+                listaVistas.getPeliculas().add(peliculaVista);
+            }
+            listaRepository.save(listaVistas);
+        }
     }
 
 }

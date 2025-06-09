@@ -13,41 +13,25 @@ import java.util.List;
 @Service
 public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
 
-    @Autowired
-    private PeliculasRepository peliculasRepository;
-
-    public List<Pelicula> listarPeliculas() {
-        return peliculasRepository.findAll();
-    }
+    @Autowired private PeliculasRepository peliculasRepository;
 
     public List<PeliculaDTO> getAllPeliculasDTO() {
         List<Pelicula> peliculas = peliculasRepository.findAll();
-        List<PeliculaDTO> peliculasDTOS = new ArrayList<>();
 
-        for (Pelicula pelicula : peliculas) {
-            peliculasDTOS.add(pelicula.toDTO());
-        }
+        return this.entity2DTO(peliculas);
+    }
 
-        return peliculasDTOS;
+    public PeliculaDTO getPeliculaDTOById(int id) {
+        return peliculasRepository.getPeliculaById(id).toDTO();
     }
 
     public List<Pelicula> buscarPeliculaXTitulo(String nombre) {
-        List<Pelicula> peliculas = new ArrayList<>();
-        if (nombre != null) {
-            peliculas = peliculasRepository.findByTitulo(nombre);
-        }
-        return peliculas;
+        return peliculasRepository.findByTitulo(nombre);
     }
 
     public List<PeliculaDTO> getAllPeliculasDTOByTitulo(String titulo) {
         List<Pelicula> peliculas = buscarPeliculaXTitulo(titulo);
-        List<PeliculaDTO> peliculasDTOs = new ArrayList<>();
-
-        for (Pelicula pelicula : peliculas) {
-            peliculasDTOs.add(pelicula.toDTO());
-        }
-
-        return peliculasDTOs;
+        return this.entity2DTO(peliculas);
     }
 
     public List<Pelicula> buscarPeliculaXTituloYGenero(String nombre, Integer[] listaGeneros) {
@@ -60,26 +44,16 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
 
     public List<PeliculaDTO> getAllPeliculasDTOByTituloYGenero(String titulo, Integer[] listaGeneros) {
         List<Pelicula> peliculas = buscarPeliculaXTituloYGenero(titulo, listaGeneros);
-        List<PeliculaDTO> peliculasDTOs = new ArrayList<>();
-
-        for (Pelicula pelicula : peliculas) {
-            peliculasDTOs.add(pelicula.toDTO());
-        }
-
-        return peliculasDTOs;
+        return this.entity2DTO(peliculas);
     }
 
     public Pelicula buscarPelicula(int id) {
-        Pelicula pelicula = null;
-        if (id > 0) {
-            pelicula = peliculasRepository.findById(id).orElse(null);
-        }
-        return pelicula;
+        return peliculasRepository.findById(id).orElse(null);
     }
 
     public PeliculaDTO buscarPeliculaDTO(int id) {
         Pelicula pelicula = buscarPelicula(id);
-        return pelicula != null ? pelicula.toDTO() : null;
+        return pelicula.toDTO();
     }
 
     public void eliminarPelicula(Integer id) {
@@ -115,6 +89,7 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
      * @return El DTO de la película guardada
      */
     public PeliculaDTO guardarPeliculaDTO(PeliculaDTO peliculaDTO) {
+
         if (peliculaDTO == null) {
             throw new IllegalArgumentException("La peliculaDTO no puede ser nula");
         }
@@ -155,19 +130,5 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
         // Guardar la película actualizada
         Pelicula guardada = peliculasRepository.save(pelicula);
         return guardada.toDTO();
-    }
-
-    /**
-     * Método para convertir una lista de entidades en una lista de DTOs
-     * 
-     * @param peliculas Lista de entidades Pelicula
-     * @return Lista de DTOs PeliculaDTO
-     */
-    public List<PeliculaDTO> convertToDTOList(List<Pelicula> peliculas) {
-        List<PeliculaDTO> peliculaDTOs = new ArrayList<>();
-        for (Pelicula pelicula : peliculas) {
-            peliculaDTOs.add(pelicula.toDTO());
-        }
-        return peliculaDTOs;
     }
 }

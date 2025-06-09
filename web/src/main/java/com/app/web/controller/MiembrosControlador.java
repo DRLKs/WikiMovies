@@ -39,8 +39,8 @@ public class MiembrosControlador extends BaseControlador {
         // Cargamos los generos para el filtro de búsqueda de películas
         model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
-
-        return miembrosService.listarMiembros(null, model);
+        model.addAttribute("miembros", miembrosService.obtenerMiembros(null));
+        return "miembros";
     }
 
     /**
@@ -53,8 +53,9 @@ public class MiembrosControlador extends BaseControlador {
         // Cargamos los generos para el filtro de búsqueda de películas
         model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("miembros", miembrosService.obtenerMiembros(filtroNombre));
 
-        return miembrosService.listarMiembros(filtroNombre, model);
+        return "miembros";
     }
 
     /**
@@ -150,10 +151,8 @@ public class MiembrosControlador extends BaseControlador {
     }
 
     @GetMapping("/cambioRol")
-    public String cambioRol(@RequestParam("id") Integer idUsuario, HttpSession session,
-                            HttpServletRequest request) {
+    public String cambioRol(@RequestParam("id") Integer idUsuario) {
 
-        Integer miId = ((Usuario) session.getAttribute("usuario")).getId();
         miembrosService.editarRolPremium(idUsuario);
 
         return "redirect:/profile?id=" + idUsuario;

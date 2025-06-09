@@ -6,6 +6,7 @@ import com.app.web.dto.ListaDTO;
 import com.app.web.dto.PeliculaDTO;
 import com.app.web.entity.*;
 import com.app.web.service.ListasService;
+import com.app.web.service.MiembrosService;
 import com.app.web.service.PeliculasService;
 import com.app.web.service.UsuarioService;
 import com.app.web.ui.FiltroBusquedaDTO;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.app.web.utils.Constantes.USUARIO_SESION;
+import static com.app.web.utils.Constantes.*;
 
 @Controller
 public class Controlador extends BaseControlador {
@@ -43,6 +44,8 @@ public class Controlador extends BaseControlador {
 
     @Autowired
     IdiomasRepository idiomasRepository;
+    @Autowired
+    private MiembrosService miembrosService;
 
     /**
      * Controlador de la pantalla inicial
@@ -184,22 +187,7 @@ public class Controlador extends BaseControlador {
         // Obtenemos los datos del usuario
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
 
-        // Obtenemos la lista de favoritas como DTO
-        ListaDTO favoritasDTO = listasService.getListaFavoritasDTO(idUsuario);
-
-        if (favoritasDTO != null) {
-            // Comprobar si la película ya está en favoritos
-            if (favoritasDTO.getPeliculasId().contains(idPelicula)) {
-                // Ya era favorita y la quitamos
-                favoritasDTO.getPeliculasId().remove(idPelicula);
-            } else {
-                // La introducimos como favorita
-                favoritasDTO.getPeliculasId().add(idPelicula);
-            }
-
-            // Guardamos los cambios usando el DTO
-            this.listasService.guardarListaDTO(favoritasDTO);
-        }
+        listasService.peliculaAccionFavorita(idPelicula, idUsuario);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);
@@ -215,8 +203,7 @@ public class Controlador extends BaseControlador {
     public String doSeen(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request,
             HttpSession session) {
 
-        // Un usuario no puede guardarse una películas como vistas si tiene la sesión
-        // iniciada
+        // Un usuario no puede guardarse una películas como vistas si no tiene la sesión iniciada
         if (!estaAutenticado(request, session)) {
             return "redirect:/login";
         }
@@ -224,22 +211,7 @@ public class Controlador extends BaseControlador {
         // Obtenemos los datos del usuario
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
 
-        // Usar el método que devuelve DTO para listas vistas
-        ListaDTO vistasDTO = listasService.getListaVistasDTO(idUsuario);
-
-        if (vistasDTO != null) {
-            // Comprobar si la película ya está en vistas
-            if (vistasDTO.getPeliculasId().contains(idPelicula)) {
-                // Ya estaba vista y la quitamos
-                vistasDTO.getPeliculasId().remove(idPelicula);
-            } else {
-                // La introducimos como vista
-                vistasDTO.getPeliculasId().add(idPelicula);
-            }
-
-            // Guardamos los cambios usando el DTO
-            this.listasService.guardarListaDTO(vistasDTO);
-        }
+        listasService.peliculaAccionVer(idPelicula,idUsuario);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/film?id=" + idPelicula);

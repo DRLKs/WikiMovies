@@ -1,15 +1,8 @@
 package com.app.web.controller;
 
-import com.app.web.dao.ListaRepository;
-import com.app.web.entity.Lista;
-import com.app.web.entity.Pelicula;
-import com.app.web.entity.Usuario;
 import com.app.web.service.LoginService;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.ui.UsuarioSignup;
-import com.app.web.utils.Hash;
-import com.app.web.dao.UsuariosRepositorio;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -20,19 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
-import static com.app.web.utils.Constantes.*;
 
 @Controller
 public class UsuariosController extends BaseControlador {
 
     @Autowired LoginService loginService;
-
-    @Autowired
-    ListaRepository listaRepository;
 
     /**
      * Función que abre el apartado de LOGIN

@@ -5,7 +5,6 @@ import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,19 +17,14 @@ public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
 
     @Autowired UsuariosRepositorio usuariosRepositorio;
 
-    public String listarMiembros(String filtroNombre, Model model){
-
-        List<Usuario> usuarios;
+    public List<UsuarioDTO> obtenerMiembros(String filtroNombre){
 
         if( filtroNombre == null ){
-            usuarios = usuariosRepositorio.findAll();
+            return this.entity2DTO(usuariosRepositorio.findAll());
         }else{
-            usuarios = usuariosRepositorio.findByNombre(filtroNombre);
+            return this.entity2DTO(usuariosRepositorio.findByNombre(filtroNombre));
         }
 
-        model.addAttribute("miembros", this.entity2DTO(usuarios));
-
-        return "miembros";
     }
 
     public UsuarioDTO obtenerUsuario(Integer id){
