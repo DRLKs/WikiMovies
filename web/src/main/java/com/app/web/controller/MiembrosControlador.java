@@ -25,9 +25,9 @@ import static com.app.web.utils.Constantes.USER_ADMIN;
 @Controller
 public class MiembrosControlador extends BaseControlador {
 
-    @Autowired MiembrosService miembrosService;
-    @Autowired ListasService listasService;
-    @Autowired GenerosService generosService;
+    @Autowired protected MiembrosService miembrosService;
+    @Autowired protected ListasService listasService;
+    @Autowired protected GenerosService generosService;
 
     /**
      * Controlador de la petición del sistema para cargar todos los miembros de

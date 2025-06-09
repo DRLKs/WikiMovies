@@ -34,7 +34,7 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 @Controller
 public class ListasControlador extends BaseControlador {
 
-    @Autowired protected GenerosRepository generosRepositorio;
+    @Autowired protected GenerosService generosService;
     @Autowired protected PeliculasService peliculasService;
     @Autowired protected UsuarioService usuarioService;
     @Autowired protected ListasService listasService;
@@ -43,20 +43,12 @@ public class ListasControlador extends BaseControlador {
      * Carga los atributos comunes del modelo necesarios para todas las vistas de
      * listas
      */
-    private void loadCommonModelAttributes(Model model, HttpSession session) {
+    private void loadCommonModelAttributes(Model model) {
         // Añadir filtro de búsqueda
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         // Añadir géneros para filtros
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
-
-        // Añadir usuario si está conectado
-        Usuario usuario = null;
-        if (session != null) {
-            usuario = (Usuario) session.getAttribute("usuario");
-        }
-        model.addAttribute("usuario", usuario);
+        model.addAttribute("generos", generosService.getAllGeneros());
     }
 
     /**
@@ -73,29 +65,28 @@ public class ListasControlador extends BaseControlador {
         List<ListaDTO> listas = listasService.getAllListasDTO();
         model.addAttribute("listas", listas);
 
-        loadCommonModelAttributes(model, session);
+        loadCommonModelAttributes(model);
         model.addAttribute("usuario", usuario);
 
         return "listasPopulares";
     }
 
     /**
-     * Controlador para crear una nueva lista
+     * Controlador para crear una nueva lista la cual comienza vacía
      */
     @GetMapping("/crearLista")
     public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
+        
         // El usuario debe estar conectado para crear una lista
         if (!estaAutenticado(request, session)) {
             return "redirect:/login";
         }
 
+        // Obtenemos el usuario
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
-        // Ya no necesitamos cargar todas las películas para la selección
-        // Las películas se añadirán después desde otra parte de la aplicación
-
-        loadCommonModelAttributes(model, session);
+        loadCommonModelAttributes(model);
         model.addAttribute("usuario", usuario);
         model.addAttribute("nuevaLista", new NuevaLista());
 
@@ -107,6 +98,8 @@ public class ListasControlador extends BaseControlador {
      */
     @GetMapping("/listasSeguidos")
     public String listasSeguidos(@RequestParam("id") Integer id, Model model, HttpSession session) {
+        
+        // Obtenemos los usuarios que sigue el usuario
         List<Usuario> seguidos = usuarioService.usuarioSeguidos(id);
         List<ListaDTO> listasSeguidos = new ArrayList<>();
 
@@ -121,7 +114,7 @@ public class ListasControlador extends BaseControlador {
         }
         model.addAttribute("listasSeguidos", listasSeguidos);
 
-        loadCommonModelAttributes(model, session);
+        loadCommonModelAttributes(model);
 
         return "listasSeguidos";
     }
@@ -141,16 +134,18 @@ public class ListasControlador extends BaseControlador {
 
         model.addAttribute("misListas", misListas);
 
-        loadCommonModelAttributes(model, session);
+        loadCommonModelAttributes(model);
 
         return "misListas";
     }
 
     /**
-     * Controlador para guardar una lista recién creada (ahora lista vacía)
+     * Guarda en la base de datos la nueva lista, creada por el usuario
      */
     @PostMapping("/guardarLista")
     public String guardarLista(@ModelAttribute("nuevaLista") NuevaLista nuevaLista, HttpSession session) {
+        
+        // Obtenemos el usuario 
         int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
         Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
@@ -184,8 +179,7 @@ public class ListasControlador extends BaseControlador {
     @GetMapping("/quitarPeliLista")
     public String quitarPeliLista(
             @RequestParam("idPeli") Integer idPeli,
-            @RequestParam("idLista") Integer idLista,
-            HttpSession session) {
+            @RequestParam("idLista") Integer idLista) {
 
         // Usar el servicio para eliminar la película de la lista (devuelve DTO)
         listasService.removePeliculaFromListaDTO(idLista, idPeli);
@@ -198,6 +192,8 @@ public class ListasControlador extends BaseControlador {
      */
     @PostMapping("/editarLista")
     public String editarLista(@RequestParam("listaId") Integer listaId, Model model) {
+        
+        // Obtenemos el DTO de la entidad lista
         ListaDTO listaDTO = listasService.getListaDTOById(listaId);
 
         if (listaDTO == null) {
@@ -210,7 +206,7 @@ public class ListasControlador extends BaseControlador {
         editarLista.setDescripcion(listaDTO.getDescripcion());
         editarLista.setListaId(listaDTO.getId());
 
-        loadCommonModelAttributes(model, null);
+        loadCommonModelAttributes(model);
         model.addAttribute("editarLista", editarLista);
         model.addAttribute("lista", listaDTO);
 
@@ -222,6 +218,7 @@ public class ListasControlador extends BaseControlador {
      */
     @PostMapping("/guardarCambiosLista")
     public String guardarCambiosLista(@ModelAttribute("editarLista") NuevaLista editarLista, HttpSession session) {
+        
         // Obtenemos la entidad Lista para actualizarla
         Lista lista = listasService.getListaById(editarLista.getListaId());
 

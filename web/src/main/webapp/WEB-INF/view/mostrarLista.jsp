@@ -45,7 +45,9 @@
         </form>
         <%}%>
 
-    </div>    <table>
+    </div>    
+    
+    <table>
         <tr>
             <td> Nombre Películas </td>
             <td> Duración </td>

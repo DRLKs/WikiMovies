@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UsuariosController extends BaseControlador {
 
     @Autowired LoginService loginService;
+    @Autowired UsuarioService usuariosService;
 
     /**
      * Función que abre el apartado de LOGIN
@@ -89,6 +90,6 @@ public class UsuariosController extends BaseControlador {
             return "signup";
         }
         
-        return loginService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
+        return usuariosService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
     }
 }
