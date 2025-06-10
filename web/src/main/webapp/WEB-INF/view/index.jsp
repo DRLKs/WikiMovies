@@ -16,8 +16,7 @@
     List<PeliculaDTO> peliculaList = (List<PeliculaDTO>) request.getAttribute("peliculas");
     List<GeneroDTO> generos = (List<GeneroDTO>) request.getAttribute("generos");
     List<PeliculaDTO> peliculasTop =(List<PeliculaDTO>) request.getAttribute("peliculasRanking");
-    List<GeneroDTO> generosFavoritas = (List<GeneroDTO>) request.getAttribute("generosFavoritas");
-    ListaDTO favoritas = (ListaDTO) request.getAttribute("favoritas");
+    List<PeliculaDTO> peliculasRecomendadasFavoritas =(List<PeliculaDTO>) request.getAttribute("peliculasRecomendadasFavoritas");
 %>
 
 <body>
@@ -63,15 +62,12 @@
         </div>
     </div>
 
-    <% if(usuario != null && usuario.getRol() == 1) {%>
+    <% if(usuario != null && usuario.getRol() >= 1 && peliculasRecomendadasFavoritas != null) {%>
     <div class="peliculas-generos">
         <h3> Peliculas recomendadas en base a tus películas favoritas
         </h3>
         <div class="lista-peliculas">
-            <%for (PeliculaDTO p : peliculaList) {%>
-            <%if (!generosFavoritas.isEmpty() &&
-                    (p.getGeneros().contains(generosFavoritas.get(0)) || (generosFavoritas.size() > 1 && p.getGeneros().contains(generosFavoritas.get(1)))) &&
-             !favoritas.getPeliculasId().contains(p.getId())) {%>
+            <%for (PeliculaDTO p : peliculasRecomendadasFavoritas) {%>
             <a href="/film?id=<%= p.getId() %>">
                 <img src="<%= p.getPoster() %>"
                      alt="Póster de <%= p.getTitulo() %>"
@@ -80,11 +76,9 @@
                 >
             </a>
             <%}%>
-            <%}%>
-
         </div>
     </div>
-    <% } %>
+    <%}%>
 
     <%for (GeneroDTO g : generos) {%>
     <%if (!g.getPeliculasIDs().isEmpty()) {%>

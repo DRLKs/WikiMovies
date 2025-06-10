@@ -376,7 +376,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         return guardada.toDTO();
     }
 
-    // Función que devuelve una lista con los 3 géneros más repetidos de una lista
+    // Función que devuelve una lista con los 2 géneros más repetidos de una lista
     public List<GeneroDTO> generosMasRepetidosEnLaLista(ListaDTO listaDTO) {
         // Buscar la lista existente
         Lista lista = listaRepository.findById(listaDTO.getId()).orElse(null);
@@ -393,14 +393,14 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
             }
         }
 
-        // Ordenar por frecuencia descendente y tomar los 3 primeros
-        List<GeneroDTO> generosTop3 = generoFrecuencia.entrySet().stream()
+        // Ordenar por frecuencia descendente y tomar los 2 primeros
+        List<GeneroDTO> generosTop2 = generoFrecuencia.entrySet().stream()
                 .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue())) // Orden descendente
-                .limit(3)
+                .limit(2)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        return generosTop3;
+        return generosTop2;
     }
 
     public Lista nuevaLista(String nombreLista, String descripcion, String imgURL, Usuario usuario){

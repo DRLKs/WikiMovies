@@ -2,6 +2,7 @@ package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.IdiomasRepository;
+import com.app.web.dto.GeneroDTO;
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.PeliculaDTO;
 import com.app.web.dto.UsuarioDTO;
@@ -46,11 +47,19 @@ public class Controlador extends BaseControlador {
         if (estaAutenticado(request, session)) {
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
             ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
-            model.addAttribute("favoritas", favoritas);
-            model.addAttribute("generosFavoritas", listasService.generosMasRepetidosEnLaLista(favoritas));
+            // Realizamos lo del recomendador aquí
+            if(usuario.getRol()>0 && favoritas.getPeliculasId().size()>0) {
+                List<GeneroDTO> generosFavoritas = listasService.generosMasRepetidosEnLaLista(favoritas);
+                List<PeliculaDTO> peliculasRecomendadasFavoritas;
+                if(generosFavoritas.size()>1) {
+                    peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosFavoritas.get(0), generosFavoritas.get(1));
+                } else {
+                    peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosFavoritas.get(0), null);
+                }
+                model.addAttribute("peliculasRecomendadasFavoritas", peliculasRecomendadasFavoritas);
+            }
         } else {
-            model.addAttribute("generosFavoritas", new ArrayList<>());
-            model.addAttribute("favoritas", null);
+            model.addAttribute("peliculasRecomendadasFavoritas", new ArrayList<>());
         }
 
         List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();

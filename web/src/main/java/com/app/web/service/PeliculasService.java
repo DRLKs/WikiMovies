@@ -1,7 +1,9 @@
 package com.app.web.service;
 
 import com.app.web.dao.PeliculasRepository;
+import com.app.web.dto.GeneroDTO;
 import com.app.web.dto.PeliculaDTO;
+import com.app.web.entity.Genero;
 import com.app.web.entity.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -131,4 +133,26 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
         Pelicula guardada = peliculasRepository.save(pelicula);
         return guardada.toDTO();
     }
+
+    /**
+     * Filtra las películas que contienen alguno de los géneros.
+     * @param idPeliculas Lista de ids de las películas que no queremos que se filtren porque ya están en esa lista
+     * @param genero1 Primer género
+     * @param genero2 Segundo género
+     * @return Lista de películas que contienen alguno de los géneros
+     */
+    public List<PeliculaDTO> filtrarPorDosGeneros(List<Integer> idPeliculas, GeneroDTO genero1, GeneroDTO genero2) {
+        List<Pelicula> peliculas = peliculasRepository.findAll();
+
+        List<Pelicula> filtrado = peliculas.stream()
+                .filter(p -> !idPeliculas.contains(p.getId()) &&
+                        p.getGeneros().stream().anyMatch(g ->
+                                g.getId().equals(genero1.getId()) ||
+                                        (genero2 != null && g.getId().equals(genero2.getId()))
+                        ))
+                .toList();
+
+        return this.entity2DTO(filtrado);
+    }
+
 }
