@@ -39,6 +39,8 @@
                 <div class="list-info">
                     <h3 class="list-title"><%= lista.getNombre() %></h3>
                     <p class="list-description"><%= lista.getDescripcion() %></p>
+                    <p class="list-propietario">Usuario: <%=lista.getNombreUsuario()%></p>
+
                     <!-- El DTO no tiene usuario, así que no mostramos el nombre -->
                     <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
                 </div>

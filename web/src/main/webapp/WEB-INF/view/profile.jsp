@@ -73,7 +73,8 @@
             <span class="stat-label">Listas</span>
         </div>
     </div>
-      <div class="profile-lists">
+
+    <div class="profile-lists">
         <h2>Listas de <%= userProfile.getNombreUsuario() %> </h2>
         <div class="lists-container">
             <% if (listasDTO != null && !listasDTO.isEmpty()) { %>
@@ -87,13 +88,13 @@
                         <div class="list-info">
                             <h3 class="list-title"><%= lista.getNombre() %></h3>
                             <p class="list-description"><%= lista.getDescripcion() %></p>
+                            <p class="list-propietario">Usuario: <%=lista.getNombreUsuario()%></p>
                             <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
                         </div>
                     </div>
                     </a>
                 <% } %>
             <% } %>
-            </div>
         </div>
     </div>
 
@@ -102,6 +103,12 @@
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
+
+        <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
+        <button type="button" class="btn-delete-user" onclick="showDeleteModal(<%=userProfile.getIdUsuario()%>, '<%=userProfile.getNombreUsuario()%>')">
+            Eliminar perfil
+        </button>
+        <% } %>
 
         <div id="editProfileModal" class="modal">
             <div class="modal-content">
@@ -173,7 +180,6 @@
                         <form:button type="submit" class="save-btn">Guardar cambios</form:button>
                     </div>
 
-
                 </form:form>
             </div>
         </div>
@@ -182,14 +188,101 @@
         }
     %>
 
-    <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
+    <!-- Modal de confirmación de eliminación -->
+    <div id="deleteUserModal" class="delete-confirmation-modal">
+        <div class="delete-modal-overlay"></div>
+        <div class="delete-modal-content">
+            <div class="delete-modal-header">
+                <h3>Eliminar Usuario</h3>
+            </div>
+            
+            <div class="delete-modal-body">
+                <p class="delete-main-text">¿Eliminar a <strong id="deleteUserName"></strong>?</p>
+                <p class="delete-warning-text">Esta acción no se puede deshacer.</p>
+            </div>
+            
+            <div class="delete-modal-footer">
+                <button onclick="hideDeleteModal()" class="btn-cancel-delete">
+                    Cancelar
+                </button>
+                <button onclick="confirmUserDeletion()" class="btn-confirm-delete">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
 
-        <form method="post" action="eliminar?id=<%=userProfile.getIdUsuario()%>">
-            <button type="submit" class="edit-profile-btn">Eliminar perfil</button>
-        </form>
-    <% } %>
+</div>
 
+<script>
+    let userIdToDelete = null;
 
+    function showDeleteModal(userId, userName) {
+        userIdToDelete = userId;
+        document.getElementById('deleteUserName').textContent = userName;
+        const modal = document.getElementById('deleteUserModal');
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Trigger reflow para asegurar que la animación funcione
+        modal.offsetHeight;
+        
+        setTimeout(() => {
+            document.querySelector('.delete-modal-content').classList.add('show');
+        }, 10);
+    }
+
+    function hideDeleteModal() {
+        const modalContent = document.querySelector('.delete-modal-content');
+        modalContent.classList.remove('show');
+        
+        setTimeout(() => {
+            document.getElementById('deleteUserModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 400);
+        
+        userIdToDelete = null;
+    }
+
+    function confirmUserDeletion() {
+        if (userIdToDelete) {
+            // Efecto visual de confirmación
+            const confirmBtn = document.querySelector('.btn-confirm-delete');
+            const originalText = confirmBtn.textContent;
+            confirmBtn.textContent = 'Eliminando...';
+            confirmBtn.style.opacity = '0.7';
+            confirmBtn.disabled = true;
+            
+            setTimeout(() => {
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '/eliminar?id=' + userIdToDelete;
+                document.body.appendChild(form);
+                form.submit();
+            }, 800);
+        }
+    }
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideDeleteModal();
+        }
+    });
+
+    // Cerrar clickeando fuera
+    window.onclick = function(event) {
+        const modal = document.getElementById('deleteUserModal');
+        if (event.target === modal || event.target.classList.contains('delete-modal-overlay')) {
+            hideDeleteModal();
+        }
+    }
+
+    // Prevenir cierre accidental con doble click
+    document.querySelector('.delete-modal-content').addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+</script>
 
 <script type="text/javascript" src="../../js/updateProfile.js"></script>
 

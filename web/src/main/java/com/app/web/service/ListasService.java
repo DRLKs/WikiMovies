@@ -45,6 +45,21 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         return listasDTOs;
     }
 
+    public List<ListaDTO> getListasPopularesDTO() {
+        List<Lista> listas = listaRepository.findAll();
+        List<ListaDTO> listasDTOs = new ArrayList<>();
+
+        for (Lista lista : listas) {
+            if(!lista.getNombre().equalsIgnoreCase("Vistas") &&
+                    !lista.getNombre().equalsIgnoreCase("Favoritas")){
+                listasDTOs.add(lista.toDTO());
+            }
+
+        }
+
+        return listasDTOs;
+    }
+
     /**
      * Obtener todas las listas como entidades
      *

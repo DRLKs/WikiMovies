@@ -57,7 +57,7 @@ public class ListasControlador extends BaseControlador {
     @GetMapping("/listas")
     public String mostrarListas(Model model) {
 
-        List<ListaDTO> listas = listasService.getAllListasDTO();
+        List<ListaDTO> listas = listasService.getListasPopularesDTO();
         model.addAttribute("listas", listas);
 
         loadCommonModelAttributes(model);

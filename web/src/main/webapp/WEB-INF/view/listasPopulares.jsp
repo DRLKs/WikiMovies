@@ -22,7 +22,7 @@
     <a href="/listasSeguidos?id=<%=usuario.getIdUsuario()%>">Listas Seguidos</a>
     <a href="/misListas?id=<%=usuario.getIdUsuario()%>">Mis listas</a>
     <% } else { %>
-    <a href="/listasPopulares" class="lista-activa">Listas Populares</a>
+    <a href="/listas" class="lista-activa">Listas Populares</a>
     <% } %>
 </div>
 
@@ -40,6 +40,8 @@
                 </h3>
                 <p class="list-description"><%= lista.getDescripcion() %>
                 </p>
+                <p class="list-propietario">Usuario: <%=lista.getNombreUsuario()%></p>
+
                 <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
             </div>
         </div>
