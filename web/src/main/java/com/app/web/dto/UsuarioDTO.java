@@ -1,6 +1,7 @@
 package com.app.web.dto;
 
 import com.app.web.entity.Lista;
+import com.app.web.entity.Usuario;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -46,4 +47,8 @@ public class UsuarioDTO{
     protected Integer rol;
 
     protected LocalDate nacimientoFecha;
+
+    public boolean sigueA(UsuarioDTO usuario){
+        return usuario.getSeguidoresIds().contains(this.getIdUsuario());
+    }
 }

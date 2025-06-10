@@ -1,5 +1,4 @@
 <%@ page import="com.app.web.dto.ListaDTO" %>
-<%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
@@ -20,8 +19,8 @@
 <div class="navegar-listas">
     <% if (usuario != null) { %>
     <a href="/listas" class="lista-activa">Listas Populares</a>
-    <a href="/listasSeguidos?id=<%=usuario.getId()%>">Listas Seguidos</a>
-    <a href="/misListas?id=<%=usuario.getId()%>">Mis listas</a>
+    <a href="/listasSeguidos?id=<%=usuario.getIdUsuario()%>">Listas Seguidos</a>
+    <a href="/misListas?id=<%=usuario.getIdUsuario()%>">Mis listas</a>
     <% } else { %>
     <a href="/listasPopulares" class="lista-activa">Listas Populares</a>
     <% } %>

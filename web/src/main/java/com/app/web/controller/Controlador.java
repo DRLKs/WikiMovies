@@ -4,6 +4,7 @@ import com.app.web.dao.GenerosRepository;
 import com.app.web.dao.IdiomasRepository;
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.PeliculaDTO;
+import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.*;
 import com.app.web.service.ListasService;
 import com.app.web.service.MiembrosService;
@@ -55,8 +56,8 @@ public class Controlador extends BaseControlador {
                         HttpSession session) {
 
         if (estaAutenticado(request, session)) {
-            Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
-            ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getId());
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
+            ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             model.addAttribute("favoritas", favoritas);
             model.addAttribute("generosFavoritas", listasService.generosMasRepetidosEnLaLista(favoritas));
         } else {
@@ -85,11 +86,11 @@ public class Controlador extends BaseControlador {
             HttpSession session) {
 
         if (estaAutenticado(request, session)) {
-            Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
-            // Usar métodos DTO en lugar de entidades
-            model.addAttribute("favoritas", listasService.getListaFavoritasDTO(usuario.getId()));
-            model.addAttribute("vistas", listasService.getListaVistasDTO(usuario.getId()));
-            model.addAttribute("listasUsuario", listasService.getListasDTOByUsuario(usuario.getId()));
+            UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
+
+            model.addAttribute("favoritas", listasService.getListaFavoritasDTO(usuario.getIdUsuario()));
+            model.addAttribute("vistas", listasService.getListaVistasDTO(usuario.getIdUsuario()));
+            model.addAttribute("listasUsuario", listasService.getListasDTOByUsuario(usuario.getIdUsuario()));
         }
 
         List<PeliculaDTO> peliculas;
@@ -237,7 +238,7 @@ public class Controlador extends BaseControlador {
         if (!estaAutenticado(request, session)) {
             return "redirect:/login";
         } // Obtenemos los datos del usuario
-        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
 
         // Obtenemos todas las listas como DTOs
         List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(idUsuario);
@@ -265,12 +266,12 @@ public class Controlador extends BaseControlador {
         List<PeliculaDTO> peliculas = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
         model.addAttribute("peliculas", peliculas);
 
-        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
 
         // Solo cargar las listas de favoritas y vistas si el usuario está autenticado
         if (usuario != null) {
-            model.addAttribute("favoritas", listasService.getListaFavoritasDTO(usuario.getId()));
-            model.addAttribute("vistas", listasService.getListaVistasDTO(usuario.getId()));
+            model.addAttribute("favoritas", listasService.getListaFavoritasDTO(usuario.getIdUsuario()));
+            model.addAttribute("vistas", listasService.getListaVistasDTO(usuario.getIdUsuario()));
         } else {
             // Para usuarios no autenticados, pasar null o listas vacías
             model.addAttribute("favoritas", null);
@@ -297,7 +298,7 @@ public class Controlador extends BaseControlador {
     public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request,
             HttpSession session) {
 
-        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
 
         // Usar el método que devuelve DTO en lugar de entidad
         ListaDTO listaDTO = listasService.getListaDTOById(listaId);
@@ -310,9 +311,9 @@ public class Controlador extends BaseControlador {
         model.addAttribute("peliculasService", peliculasService);
 
         // Verificar si la lista es favorita para el usuario
-        boolean peliculaFavorita = false;
+        boolean peliculaFavorita;
         if (usuario != null) {
-            ListaDTO favoritasDTO = listasService.getListaFavoritasDTO(usuario.getId());
+            ListaDTO favoritasDTO = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             peliculaFavorita = favoritasDTO != null && favoritasDTO.getPeliculasId().contains(listaDTO.getId());
             model.addAttribute("peliculaFavorita", peliculaFavorita);
         }

@@ -2,9 +2,11 @@ package com.app.web.controller;
 
 import com.app.web.dao.GenerosRepository;
 import com.app.web.dto.ListaDTO;
+import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
+import com.app.web.service.GenerosService;
 import com.app.web.service.ListasService;
 import com.app.web.service.PeliculasService;
 import com.app.web.service.UsuarioService;
@@ -55,18 +57,12 @@ public class ListasControlador extends BaseControlador {
      * Controlador para mostrar todas las listas
      */
     @GetMapping("/listas")
-    public String mostrarListas(Model model, HttpServletRequest request, HttpSession session) {
-        Usuario usuario = null;
-        // Obtener datos del usuario si está autenticado
-        if (estaAutenticado(request, session)) {
-            int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
-            usuario = usuarioService.buscarUsuario(idUsuario);
-        }
+    public String mostrarListas(Model model) {
+
         List<ListaDTO> listas = listasService.getAllListasDTO();
         model.addAttribute("listas", listas);
 
         loadCommonModelAttributes(model);
-        model.addAttribute("usuario", usuario);
 
         return "listasPopulares";
     }
@@ -82,12 +78,7 @@ public class ListasControlador extends BaseControlador {
             return "redirect:/login";
         }
 
-        // Obtenemos el usuario
-        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
-        Usuario usuario = usuarioService.buscarUsuario(idUsuario);
-
         loadCommonModelAttributes(model);
-        model.addAttribute("usuario", usuario);
         model.addAttribute("nuevaLista", new NuevaLista());
 
         return "crearLista";
@@ -123,9 +114,10 @@ public class ListasControlador extends BaseControlador {
      * Controlador para mostrar las listas propias del usuario
      */
     @GetMapping("/misListas")
-    public String misListas(@RequestParam("id") Integer id, Model model, HttpSession session) {
-        Usuario usuarioP = usuarioService.buscarUsuario(id);
-        Set<Lista> misListasEntidades = usuarioP.getListas();
+    public String misListas(@RequestParam("id") Integer id, Model model) {
+
+        Usuario miUsuario = usuarioService.buscarUsuario(id);
+        Set<Lista> misListasEntidades = miUsuario.getListas();
 
         // Convertir entidades Lista a ListaDTO
         Set<ListaDTO> misListas = misListasEntidades.stream()
@@ -146,7 +138,7 @@ public class ListasControlador extends BaseControlador {
     public String guardarLista(@ModelAttribute("nuevaLista") NuevaLista nuevaLista, HttpSession session) {
         
         // Obtenemos el usuario 
-        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
         Usuario usuario = usuarioService.buscarUsuario(idUsuario);
 
         Lista lista = new Lista();
@@ -217,7 +209,7 @@ public class ListasControlador extends BaseControlador {
      * Controlador para guardar cambios en una lista editada
      */
     @PostMapping("/guardarCambiosLista")
-    public String guardarCambiosLista(@ModelAttribute("editarLista") NuevaLista editarLista, HttpSession session) {
+    public String guardarCambiosLista(@ModelAttribute("editarLista") NuevaLista editarLista) {
         
         // Obtenemos la entidad Lista para actualizarla
         Lista lista = listasService.getListaById(editarLista.getListaId());

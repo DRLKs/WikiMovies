@@ -11,7 +11,6 @@
 
 <%
     List<UsuarioDTO> usuarios = (List<UsuarioDTO>) request.getAttribute("miembros");
-    Usuario user = (Usuario)session.getAttribute("usuario");
 %>
 
 <body>
@@ -51,8 +50,8 @@
                         </div>
                     </a>
                     <%
-                        if(user != null && userMiembro.getIdUsuario() != user.getId()){
-                            if(user.sigueA(userMiembro.getSeguidoresIds())) { %>
+                        if(usuario != null && userMiembro.getIdUsuario() != usuario.getIdUsuario()){
+                            if(usuario.sigueA(userMiembro)) { %>
                                 <a class="unfollow-btn" href="/dejarSeguir?id=<%= userMiembro.getIdUsuario() %>">Dejar de seguir</a>
                             <% } else { %>
                                 <a class="follow-btn" href="/seguir?id=<%= userMiembro.getIdUsuario() %>">Seguir</a>

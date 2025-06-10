@@ -1,5 +1,3 @@
-<%@ page import="com.app.web.entity.Lista" %>
-<%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -20,8 +18,8 @@
 <div class="navegar-listas">
     <% if (usuario != null) { %>
     <a href="/listas">Listas Populares</a>
-    <a href="/listasSeguidos?id=<%=usuario.getId()%>" class="lista-activa">Listas Seguidos</a>
-    <a href="/misListas?id=<%=usuario.getId()%>">Mis listas</a>
+    <a href="/listasSeguidos?id=<%=usuario.getIdUsuario()%>" class="lista-activa">Listas Seguidos</a>
+    <a href="/misListas?id=<%=usuario.getIdUsuario()%>">Mis listas</a>
     <% } else { %>
     <a href="listas/listasPopulares">Listas Populares</a>
     <% } %>

@@ -105,10 +105,6 @@ public class Usuario implements DTO<UsuarioDTO> {
         return usuario.getSeguidores().contains(this);
     }
 
-    public boolean sigueA(Set<Integer> seguidoresUsuario){
-        return seguidoresUsuario.contains(this.getId());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

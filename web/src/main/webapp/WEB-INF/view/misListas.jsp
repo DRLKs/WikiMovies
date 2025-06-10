@@ -20,8 +20,8 @@
 <div class="navegar-listas">
     <% if (usuario != null) { %>
     <a href="/listas">Listas Populares</a>
-    <a href="/listasSeguidos?id=<%=usuario.getId()%>">Listas Seguidos</a>
-    <a href="/misListas?id=<%=usuario.getId()%>" class="lista-activa">Mis listas</a>
+    <a href="/listasSeguidos?id=<%=usuario.getIdUsuario()%>">Listas Seguidos</a>
+    <a href="/misListas?id=<%=usuario.getSeguidoresIds()%>" class="lista-activa">Mis listas</a>
     <% } else { %>
     <a href="listas/listasPopulares">Listas Populares</a>
     <% } %>

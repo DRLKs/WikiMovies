@@ -32,8 +32,8 @@
             <p class="profile-bio"><%=userProfile.getGenero() != null && !userProfile.getBiografia().isEmpty() ? userProfile.getBiografia() : "Sin biografía"%></p>
 
             <%
-                if(usuario != null && userProfile.getIdUsuario() != usuario.getId()){
-                    if(usuario.sigueA(userProfile.getSeguidoresIds())) { %>
+                if(usuario != null && userProfile.getIdUsuario() != usuario.getIdUsuario()){
+                    if(usuario.sigueA(userProfile)) { %>
                         <a class="unfollow-btn" href="/dejarSeguir?id=<%= userProfile.getIdUsuario() %>">Dejar de seguir</a>
                     <% } else { %>
                         <a class="follow-btn" href="/seguir?id=<%= userProfile.getIdUsuario() %>">Seguir</a>
@@ -44,7 +44,7 @@
 
 
             <%
-                if(usuario != null && userProfile.getIdUsuario() == usuario.getId() && usuario.getRol() < 2){
+                if(usuario != null && userProfile.getIdUsuario() == usuario.getIdUsuario() && usuario.getRol() < 2){
             %>
             <div class="botonPremium">
                 <a class="boton-premium" href="/cambioRol?id=<%= userProfile.getIdUsuario() %>">
@@ -98,7 +98,7 @@
     </div>
 
     <%
-        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || usuario.getId() == userProfile.getIdUsuario())){
+        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || usuario.getIdUsuario() == userProfile.getIdUsuario())){
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>

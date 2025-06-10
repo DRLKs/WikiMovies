@@ -101,11 +101,11 @@ public class MiembrosControlador extends BaseControlador {
 
         // Comprobamos que el usuario tenga permisos para editar un perfil
         // IMPORTANTE: De USUARIo debe pasar a USUARIODTO
-        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
         Integer idUsuarioProfile = usuarioProfile.getIdUsuario();
 
 
-        if( !usuario.getId().equals(idUsuarioProfile) ) {
+        if( !usuario.getIdUsuario().equals(idUsuarioProfile) ) {
             if( usuario.getRol() != USER_ADMIN ) {
                 // Alguien sin permisos intenta ajustar una cuenta
                 return "redirect:/profile?id=" + idUsuarioProfile;
@@ -123,7 +123,7 @@ public class MiembrosControlador extends BaseControlador {
     public String seguir(@RequestParam("id") Integer idUsuarioSeguir, HttpSession session,
             HttpServletRequest request) {
 
-        Integer miId = ((Usuario) session.getAttribute("usuario")).getId();
+        Integer miId = ((UsuarioDTO) session.getAttribute("usuario")).getIdUsuario();
         miembrosService.seguirUsuario( miId ,idUsuarioSeguir);
 
         String referer = request.getHeader("Referer");
@@ -134,7 +134,7 @@ public class MiembrosControlador extends BaseControlador {
     public String dejarSeguir(@RequestParam("id") Integer idUsuario, HttpSession session,
             HttpServletRequest request) {
 
-        Integer miId = ((Usuario) session.getAttribute("usuario")).getId();
+        Integer miId = ((UsuarioDTO) session.getAttribute("usuario")).getIdUsuario();
         miembrosService.dejarDeSeguirUsuario( miId ,idUsuario);
 
         String referer = request.getHeader("Referer");

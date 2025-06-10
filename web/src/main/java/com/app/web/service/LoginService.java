@@ -49,7 +49,7 @@ public class LoginService extends UsuarioService {
             return "login";
         }
 
-        session.setAttribute(USUARIO_SESION, usuarioAutenticado);
+        session.setAttribute(USUARIO_SESION, usuarioAutenticado.toDTO());
 
         if (remember) {
             // Crear un token único que combine ID de usuario y una marca de tiempo

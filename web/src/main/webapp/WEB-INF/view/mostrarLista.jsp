@@ -1,11 +1,7 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
-<%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="com.app.web.service.PeliculasService" %>
-<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
 
 <html>
 <head>
@@ -31,7 +27,7 @@
             <p class="lista-descripcion"><%= listaDTO.getDescripcion() %></p>
             <p class="movie-count" > Número de películas: <%=listaDTO.getPeliculasId().size()%></p>
         </div>
-        <%if( usuario != null && (usuario.getId().equals(listaDTO.getUsuarioId()) ) && (!listaDTO.getNombre().equals("Vistas") && !listaDTO.getNombre().equals("Favoritas"))){%>
+        <%if( usuario != null && (usuario.getIdUsuario().equals(listaDTO.getUsuarioId()) ) && (!listaDTO.getNombre().equals("Vistas") && !listaDTO.getNombre().equals("Favoritas"))){%>
 
             <form method="post" action="/editarLista?listaId=<%=listaDTO.getId()%>" >
                 <button>Editar lista</button>
@@ -70,7 +66,7 @@
                     <%= pelicula.getDuracion() %>
                 </div>
             </td>
-            <%if(usuario != null && listaDTO.getUsuarioId().equals(usuario.getId())){%>
+            <%if(usuario != null && listaDTO.getUsuarioId().equals(usuario.getIdUsuario())){%>
                 <td class="delete-cell-wrapper">
                     <div class="delete-cell"
                          onclick="if (confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulo() %>?')) { window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= listaDTO.getId() %>'; }">
