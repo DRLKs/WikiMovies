@@ -15,10 +15,12 @@
 
 <body>
 
-    <%@ include file="barra_navegacion.jsp" %>
+    <%@ include file="barra_navegacion.jsp" %>    
+
+    <h1 class="page-title">Miembros de WikiMovies</h1>
 
     <div id="filtroMiembros">
-        <form action="/miembros/filtro" method="GET" style="display: flex; align-items: center; gap: 8px;">
+        <form action="/miembros/filtro" method="GET">
             <input
                     type="text"
                     name="nombre"
@@ -26,15 +28,12 @@
                     placeholder="Buscar miembros..."
                     autocomplete="off"
                     maxlength="30"
-                    style="padding: 8px 12px; border-radius: 20px; border: none; background-color: #333; color: white; width: 200px;"
             />
-            <button type="submit" style="padding: 8px 12px; border-radius: 20px; border: none; background-color: #555; color: white;">Buscar</button>
+            <button type="submit">Buscar</button>
         </form>
     </div>
 
     <div class="miembros-container">
-        <h1 class="page-title">Miembros de WikiMovies</h1>
-
         <div class="miembros-grid">
 
             <%

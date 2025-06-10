@@ -1,100 +1,175 @@
+/* Variables para fácil personalización */
+:root {
+    --primary-bg: #141414;
+    --secondary-bg: #181818;
+    --text-primary: #ffffff;
+    --text-secondary: #e5e5e5;
+    --text-muted: #b3b3b3;
+    --accent-color: #e50914;
+    --hover-color: #f40612;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --transition-speed: 0.3s;
+    --border-radius: 8px;
+}
+
+/* Reseteo y estilo general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    padding-top: 120px !important; /* Margin-top más alto */
+    min-height: 100vh;
+}
 
 #filtroMiembros {
-    position: fixed;       /* o 'fixed' si quieres que se mantenga en pantalla al hacer scroll */
-    top: 100px;                /* Altura de la barra de navegación */
-    left: 0;
-    padding: 8px 12px;        /* Espaciado interno opcional */
+    margin: 32px auto 35px auto; /* Aumenta el espacio inferior */
+    display: flex;
+    justify-content: center;
+}
+#filtroMiembros form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+#nombreUsuario {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #333;
     color: white;
-    border-radius: 4px;
-    z-index: 1000;            /* Asegura que quede por encima de otros elementos */
+    width: 200px;
 }
-
-.miembros-container {
-    margin-top: 130px; /* Centrado horizontalmente con margen superior e inferior */
+#filtroMiembros button[type="submit"] {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
 }
-
- .miembros-grid {
-     display: grid;
-     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-     grid-gap: 20px;
-     padding: 20px;
- }
-
-.miembro-link {
-    text-decoration: none;
-}
-
-.miembro-card {
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.miembro-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.profile-image {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #3498db;
-}
-
-.miembro-nombre {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #333;
-}
-
-.miembro-info {
-    color: #666;
-    margin-top: 5px;
-    font-size: 0.9em;
-    margin-bottom: 25px;
+#filtroMiembros button[type="submit"]:hover {
+    background: #333;
 }
 
 .page-title {
     text-align: center;
-    margin: 20px 0;
-    color: #2c3e50;
-    font-size: 2em;
+    color: #e5e5e5;
+    margin-bottom: 24px;
+    font-size: 2.1rem;
+    font-weight: 600;
 }
 
-/* Botón de seguir */
+.miembros-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 18px 40px 18px;
+}
+
+.miembros-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px 22px;
+    justify-content: center;
+}
+
+.miembro-card {
+    background: #181818;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    padding: 22px 18px 18px 18px;
+    min-width: 220px;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.miembro-card:hover {
+    box-shadow: 0 4px 24px rgba(229,9,20,0.10);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.miembro-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+    border: 2px solid #e50914;
+    background: #232323;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.miembro-nombre {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.miembro-info {
+    color: #b3b3b3;
+    font-size: 0.98rem;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.follow-btn, .unfollow-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 22px;
+    border-radius: 22px;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+}
 .follow-btn {
-    padding: 5px;
-    text-decoration: none;
-    background-color: #e50914;
-    color: white;
-    border: 0.5px solid #e50914;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    background: #e50914;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(229,9,20,0.10);
 }
-
 .follow-btn:hover {
-    background-color: #b80000;
+    background: #b80000;
 }
-
-/* Botón de DEJAR DE seguir */
 .unfollow-btn {
-    padding: 5px;
-    text-decoration: none;
-    background-color: white;
-    color: red;
-    border: 0.5px solid red;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    background: #e0e0e0;
+    color: #232323;
+}
+.unfollow-btn:hover {
+    background: #bdbdbd;
+    color: #111;
 }
 
-.unfollow-btn:hover {
-    background-color: #dddddd;
+@media (max-width: 700px) {
+    .miembros-grid {
+        gap: 18px 8px;
+    }
+    .miembro-card {
+        min-width: 90vw;
+        max-width: 98vw;
+        padding: 16px 6vw 16px 6vw;
+    }
 }

@@ -1,6 +1,7 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="com.app.web.entity.Idioma" %>
 <%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="com.app.web.dto.GeneroDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
@@ -13,7 +14,7 @@
 <%
     PeliculaDTO pelicula = (PeliculaDTO) request.getAttribute("pelicula");
     List<Idioma> idiomas = (List<Idioma>) request.getAttribute("idiomas");
-    List<Genero> generos = (List<Genero>) request.getAttribute("generos");
+    List<GeneroDTO> generos = (List<GeneroDTO>) request.getAttribute("generos");
 %>
 
 <body>
@@ -83,10 +84,15 @@
             <td class="generos-cell">Géneros:</td>
             <td class="generos-cell">
                 <div class="generos-checkbox-list" id="editar-generos-list">
-                <% for(Genero genero: generos) {
+                <% for(GeneroDTO genero: generos) {
                     var selected = "";
-                    if (pelicula!=null && pelicula.getGeneros().contains(genero)) {
-                        selected = "checked";
+                    if (pelicula != null) {
+                        for (Genero g : pelicula.getGeneros()) {
+                            if (g.getId().equals(genero.getId())) {
+                                selected = "checked";
+                                break;
+                            }
+                        }
                     }
                 %>
                     <label><input type="checkbox" name="generos" <%= selected %> value="<%= genero.getId() %>"><%= genero.getNombre()  %></label>

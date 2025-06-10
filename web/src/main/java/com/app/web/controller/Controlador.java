@@ -385,6 +385,19 @@ public class Controlador extends BaseControlador {
         }
         peliculaDTO.setGeneros(generos);
 
+        // Asignar valores aleatorios a número de votos, media de votos y popularidad
+        if(peliculaDTO.getPopularidad() == null && peliculaDTO.getMediaVotos() == null && peliculaDTO.getNumeroVotos() == null) {
+            Random random = new Random();
+            int numeroVotos = 1000 + random.nextInt(9000); // entre 1000 y 10000
+            float mediaVotos = 6.0f + random.nextFloat() * 3.5f; // entre 6.0 y 9.5
+            float variacion = (random.nextFloat() - 0.5f); // entre -0.5 y +0.5
+            float popularidad = mediaVotos + variacion;
+
+            peliculaDTO.setNumeroVotos(numeroVotos);
+            peliculaDTO.setMediaVotos((float) Math.round(mediaVotos * 10) / 10); // redondeo a 1 decimal
+            peliculaDTO.setPopularidad((float) Math.round(popularidad * 10) / 10); // redondeo a 1 decimal
+        }
+
         PeliculaDTO guardada = peliculasService.guardarPeliculaDTO(peliculaDTO);
         return "redirect:/film?id=" + guardada.getId();
     }
