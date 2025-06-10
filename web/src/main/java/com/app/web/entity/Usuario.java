@@ -129,7 +129,7 @@ public class Usuario implements DTO<UsuarioDTO> {
         usuarioDTO.setRol(this.getRol());
         usuarioDTO.setNacimientoFecha(this.getNacimientoFecha());
 
-        HashSet<Integer> seguidoresId = new HashSet();
+        HashSet<Integer> seguidoresId = new HashSet<>();
         for( Usuario usuario : this.getSeguidores() ){
             seguidoresId.add(usuario.getId());
         }

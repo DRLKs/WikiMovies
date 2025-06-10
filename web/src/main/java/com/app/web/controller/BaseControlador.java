@@ -1,6 +1,6 @@
 package com.app.web.controller;
 
-import com.app.web.entity.Usuario;
+import com.app.web.dto.UsuarioDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BaseControlador {
 
     // Mapa simple para cachear sesiones (en producción usar algo más robusto como Redis)
-    private static final Map<String, Usuario> sesionesCache = new ConcurrentHashMap<>();
+    private static final Map<String, UsuarioDTO> sesionesCache = new ConcurrentHashMap<>();
 
     protected boolean estaAutenticado(HttpServletRequest request, HttpSession session) {
 
@@ -19,7 +19,7 @@ public class BaseControlador {
         if( session.getAttribute("usuario") != null ) {
             autenticado =  true;
         }else{
-            Usuario usuario = verificarCookieSesion(request);
+            UsuarioDTO usuario = verificarCookieSesion(request);
 
             if( usuario != null ) {
                 session.setAttribute("usuario", usuario);
@@ -30,7 +30,7 @@ public class BaseControlador {
         return autenticado;
     }
 
-    protected Usuario verificarCookieSesion(HttpServletRequest request) {
+    protected UsuarioDTO verificarCookieSesion(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -38,7 +38,7 @@ public class BaseControlador {
                     String token = cookie.getValue();
                     
                     // Si no hay usuario en la sesión, buscamos en el caché por el token
-                    Usuario usuarioCached = obtenerUsuarioDesdeSesionCache(token);
+                    UsuarioDTO usuarioCached = obtenerUsuarioDesdeSesionCache(token);
                     if (usuarioCached != null) {
                         // Si encontramos al usuario, lo guardamos en la sesión actual
                         // para futuras solicitudes
@@ -55,7 +55,7 @@ public class BaseControlador {
      * @param token Identificador del usuario en la caché
      * @param usuario Usuario a guardar
     */ 
-    protected void guardarUsuarioEnSesionCache(String token, Usuario usuario) {
+    protected void guardarUsuarioEnSesionCache(String token, UsuarioDTO usuario) {
         sesionesCache.put(token, usuario);
     }
 
@@ -72,7 +72,7 @@ public class BaseControlador {
      * @param token Identificador del usuario en la caché
      * @return Usuario obtenido en la caché
      */
-    private Usuario obtenerUsuarioDesdeSesionCache(String token) {
+    private UsuarioDTO obtenerUsuarioDesdeSesionCache(String token) {
         return sesionesCache.get(token);
     }
 }

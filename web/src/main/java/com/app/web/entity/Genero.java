@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,6 +32,11 @@ public class Genero implements DTO<GeneroDTO> {
         GeneroDTO generoDTO = new GeneroDTO();
         generoDTO.setId(id);
         generoDTO.setNombre(nombre);
+        HashSet<Integer> peliculasIDs = new HashSet<>();
+        for( Pelicula pelicula : this.getPeliculas() ){
+            peliculasIDs.add(pelicula.getId());
+        }
+        generoDTO.setPeliculasIDs(peliculasIDs);
         return generoDTO;
     }
 }

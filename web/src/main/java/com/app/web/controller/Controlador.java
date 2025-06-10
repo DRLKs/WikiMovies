@@ -5,11 +5,9 @@ import com.app.web.dao.IdiomasRepository;
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.PeliculaDTO;
 import com.app.web.dto.UsuarioDTO;
-import com.app.web.entity.*;
-import com.app.web.service.ListasService;
-import com.app.web.service.MiembrosService;
-import com.app.web.service.PeliculasService;
-import com.app.web.service.UsuarioService;
+import com.app.web.entity.Idioma;
+import com.app.web.entity.Genero;
+import com.app.web.service.*;
 import com.app.web.ui.FiltroBusquedaDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,23 +29,13 @@ import static com.app.web.utils.Constantes.*;
 @Controller
 public class Controlador extends BaseControlador {
 
-    @Autowired
-    PeliculasService peliculasService;
+    @Autowired PeliculasService peliculasService;
+    @Autowired GenerosService generosService;
 
-    @Autowired
-    UsuarioService usuarioService;
+    @Autowired protected ListasService listasService;
 
-    @Autowired
-    GenerosRepository generosRepositorio;
-
-    @Autowired
-    protected ListasService listasService;
-
-    @Autowired
-    IdiomasRepository idiomasRepository;
-    @Autowired
-    private MiembrosService miembrosService;
-
+    @Autowired IdiomasRepository idiomasRepository;
+    @Autowired GenerosRepository generosRepositorio;
     /**
      * Controlador de la pantalla inicial
      */
@@ -68,8 +56,8 @@ public class Controlador extends BaseControlador {
         List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();
         model.addAttribute("peliculas", peliculas);
 
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         List<PeliculaDTO> peliculasRanking = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
         model.addAttribute("peliculasRanking", peliculasRanking);
 
@@ -106,8 +94,8 @@ public class Controlador extends BaseControlador {
         model.addAttribute("titulo", titulo);
         model.addAttribute("peliculas", peliculas);
 
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         model.addAttribute("filtroBusquedaDTO", filtroBusquedaDTO);
 
         return "search";
@@ -131,20 +119,20 @@ public class Controlador extends BaseControlador {
         boolean peliculaFavorita = false;
         boolean peliculaVista = false;
 
-        Usuario usuario = (Usuario) session.getAttribute(USUARIO_SESION);
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
 
         if (usuario != null) {
             // Asegurarnos de tener el usuario actualizado desde la base de datos
             // Usar métodos DTO en lugar de entidades
-            ListaDTO peliculasFavoritasDTO = listasService.getListaFavoritasDTO(usuario.getId());
+            ListaDTO peliculasFavoritasDTO = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             peliculaFavorita = peliculasFavoritasDTO != null
                     && peliculasFavoritasDTO.getPeliculasId().contains(pelicula.getId());
 
-            ListaDTO peliculasVistasDTO = listasService.getListaVistasDTO(usuario.getId());
+            ListaDTO peliculasVistasDTO = listasService.getListaVistasDTO(usuario.getIdUsuario());
             peliculaVista = peliculasVistasDTO != null
                     && peliculasVistasDTO.getPeliculasId().contains(pelicula.getId());
 
-            List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(usuario.getId()); // Obtiene las
+            List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(usuario.getIdUsuario()); // Obtiene las
             // listas del
             // usuario (sin contar la de
             // fav y vistas)
@@ -162,8 +150,8 @@ public class Controlador extends BaseControlador {
         model.addAttribute("peliculaFavorita", peliculaFavorita);
         model.addAttribute("peliculaVista", peliculaVista);
 
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "film";
@@ -186,7 +174,7 @@ public class Controlador extends BaseControlador {
         }
 
         // Obtenemos los datos del usuario
-        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
 
         listasService.peliculaAccionFavorita(idPelicula, idUsuario);
 
@@ -210,7 +198,7 @@ public class Controlador extends BaseControlador {
         }
 
         // Obtenemos los datos del usuario
-        int idUsuario = ((Usuario) session.getAttribute(USUARIO_SESION)).getId();
+        int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
 
         listasService.peliculaAccionVer(idPelicula,idUsuario);
 
@@ -279,8 +267,8 @@ public class Controlador extends BaseControlador {
         }
 
         // Para que la búsqueda y el filtro funcione
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "peliculas";
@@ -318,8 +306,8 @@ public class Controlador extends BaseControlador {
             model.addAttribute("peliculaFavorita", peliculaFavorita);
         }
 
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "mostrarLista";
@@ -330,8 +318,8 @@ public class Controlador extends BaseControlador {
         PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(idPelicula);
         model.addAttribute("pelicula", pelicula);
 
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         List<Idioma> idiomas = idiomasRepository.findAll();
         model.addAttribute("idiomas", idiomas);
 
@@ -345,8 +333,8 @@ public class Controlador extends BaseControlador {
 
         model.addAttribute("pelicula", null);
 
-        List<Genero> generos = generosRepositorio.findAll();
-        model.addAttribute("generos", generos);
+        model.addAttribute("generos", generosService.getAllGeneros());
+
         List<Idioma> idiomas = idiomasRepository.findAll();
         model.addAttribute("idiomas", idiomas);
 

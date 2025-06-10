@@ -2,7 +2,6 @@ package com.app.web.controller;
 
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.UsuarioDTO;
-import com.app.web.entity.Usuario;
 import com.app.web.service.GenerosService;
 import com.app.web.service.ListasService;
 import com.app.web.service.MiembrosService;

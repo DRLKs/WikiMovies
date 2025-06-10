@@ -1,6 +1,6 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="com.app.web.dto.GeneroDTO" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -14,9 +14,9 @@
 
 <%
     List<PeliculaDTO> peliculaList = (List<PeliculaDTO>) request.getAttribute("peliculas");
-    List<Genero> generos = (List<Genero>) request.getAttribute("generos");
+    List<GeneroDTO> generos = (List<GeneroDTO>) request.getAttribute("generos");
     List<PeliculaDTO> peliculasTop =(List<PeliculaDTO>) request.getAttribute("peliculasRanking");
-    List<Genero> generosFavoritas = (List<Genero>) request.getAttribute("generosFavoritas");
+    List<GeneroDTO> generosFavoritas = (List<GeneroDTO>) request.getAttribute("generosFavoritas");
     ListaDTO favoritas = (ListaDTO) request.getAttribute("favoritas");
 %>
 
@@ -86,14 +86,14 @@
     </div>
     <% } %>
 
-    <%for (Genero g : generos) {%>
-    <%if (!g.getPeliculas().isEmpty()) {%>
+    <%for (GeneroDTO g : generos) {%>
+    <%if (!g.getPeliculasIDs().isEmpty()) {%>
     <div class="peliculas-generos">
         <h3> Peliculas de <%=g.getNombre()%>
         </h3>
         <div class="lista-peliculas">
             <%for (PeliculaDTO p : peliculaList) {%>
-            <%if (p.getGeneros().contains(g)) {%>
+            <%if (g.getPeliculasIDs().contains(p.getId())) {%>
             <a href="/film?id=<%= p.getId() %>">
                 <img src="<%= p.getPoster() %>"
                      alt="Póster de <%= p.getTitulo() %>"

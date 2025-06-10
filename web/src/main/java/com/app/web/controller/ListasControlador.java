@@ -1,9 +1,7 @@
 package com.app.web.controller;
 
-import com.app.web.dao.GenerosRepository;
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.UsuarioDTO;
-import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
 import com.app.web.service.GenerosService;

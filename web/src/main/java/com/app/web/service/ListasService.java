@@ -362,7 +362,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     }
 
     // Función que devuelve una lista con los 3 géneros más repetidos de una lista
-    public List<Genero> generosMasRepetidosEnLaLista(ListaDTO listaDTO) {
+    public List<GeneroDTO> generosMasRepetidosEnLaLista(ListaDTO listaDTO) {
         // Buscar la lista existente
         Lista lista = listaRepository.findById(listaDTO.getId()).orElse(null);
 
@@ -370,16 +370,16 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         if (peliculasLista == null || peliculasLista.isEmpty()) return Collections.emptyList();
 
         // Mapa para contar frecuencia de cada género
-        Map<Genero, Integer> generoFrecuencia = new HashMap<>();
+        Map<GeneroDTO, Integer> generoFrecuencia = new HashMap<>();
 
         for (Pelicula pelicula : peliculasLista) {
             for (Genero genero : pelicula.getGeneros()) {
-                generoFrecuencia.put(genero, generoFrecuencia.getOrDefault(genero, 0) + 1);
+                generoFrecuencia.put(genero.toDTO(), generoFrecuencia.getOrDefault(genero, 0) + 1);
             }
         }
 
         // Ordenar por frecuencia descendente y tomar los 3 primeros
-        List<Genero> generosTop3 = generoFrecuencia.entrySet().stream()
+        List<GeneroDTO> generosTop3 = generoFrecuencia.entrySet().stream()
                 .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue())) // Orden descendente
                 .limit(3)
                 .map(Map.Entry::getKey)
