@@ -68,11 +68,9 @@ public class MiembrosControlador extends BaseControlador {
     @GetMapping("/profile")
     public String mostrarProfile(@RequestParam("id") Integer id, Model model) {
 
-        model.addAttribute("generos", generosService.getAllGeneros());
-        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
-
         // Obtenemos al usuario
         UsuarioDTO usuarioProfile = miembrosService.obtenerUsuario(id);
+        if( usuarioProfile == null ) return "redirect:/miembros";
         model.addAttribute("usuarioProfile", usuarioProfile);
 
         // Obtenemos las listas del usuario
@@ -82,6 +80,10 @@ public class MiembrosControlador extends BaseControlador {
         // Obtenemos el número de personas que sigue el usuario
         Integer numseguidos = miembrosService.numSeguidosUsuario(id);
         model.addAttribute("numseguidos", numseguidos);
+
+        // Cargamos los modelos para el filtro de películas
+        model.addAttribute("generos", generosService.getAllGeneros());
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
         return "profile";
     }
@@ -101,18 +103,14 @@ public class MiembrosControlador extends BaseControlador {
         }
 
         // Comprobamos que el usuario tenga permisos para editar un perfil
-        // IMPORTANTE: De USUARIo debe pasar a USUARIODTO
         UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
         Integer idUsuarioProfile = usuarioProfile.getIdUsuario();
-
 
         if( !usuario.getIdUsuario().equals(idUsuarioProfile) ) {
             if( usuario.getRol() != USER_ADMIN ) {
                 // Alguien sin permisos intenta ajustar una cuenta
                 return "redirect:/profile?id=" + idUsuarioProfile;
             }
-            // El administrador ajusta una cuenta que no es la suya
-            // usuario = usuarioRepositorio.getReferenceById(idUsuarioProfile);
         }
 
         miembrosService.editarUsuario(usuarioProfile);

@@ -45,6 +45,10 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         return listasDTOs;
     }
 
+    /**
+     * Listas sin favoritas ni populares
+     * @return List
+     */
     public List<ListaDTO> getListasPopularesDTO() {
         List<Lista> listas = listaRepository.listasPopulares();
         return this.entity2DTO(listas);
@@ -66,9 +70,19 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
      * @return List<ListaDTO>
      */
     public List<ListaDTO> getListasUsuario(Integer idUsuario) {
-        Set<Lista> listas = usuariosRepositorio.getReferenceById(idUsuario).getListas();
+        return this.entity2DTO(listaRepository.getTodasListasUsuario(idUsuario));
+    }
 
-        return this.entity2DTO(listas);
+    public List<ListaDTO> getListasUsuarioNoFavoritasNoVistas(Integer idUsuario) {
+        return this.entity2DTO(listaRepository.getListasUsuario(idUsuario));
+    }
+
+    public ListaDTO getListaFavoritosUsuario(Integer idUsuario) {
+        return listaRepository.getListaFavoritas(idUsuario).toDTO();
+    }
+
+    public ListaDTO getListaVistasUsuario(Integer idUsuario) {
+        return listaRepository.getListaVistas(idUsuario).toDTO();
     }
 
 

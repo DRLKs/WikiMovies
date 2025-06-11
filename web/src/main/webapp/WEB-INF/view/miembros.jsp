@@ -44,14 +44,13 @@
                 if(usuarios != null && !usuarios.isEmpty()) {
                     for(UsuarioDTO userMiembro : usuarios) {
             %>
-                <div class="miembro-card">
-                    <a href="profile?id=<%= userMiembro.getIdUsuario() %>" class="miembro-link">
+                <a href="profile?id=<%= userMiembro.getIdUsuario() %>" class="miembro-link">
+                    <div class="miembro-card">
                         <div>
                             <img class="miembro-profile-image" src="<%= userMiembro.getAvatar() != null ? userMiembro.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                             <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>
                             <div class="miembro-info"><% if(!userMiembro.getTiempoRegistrado().equals("Usuario nuevo")) {%>Se unió hace <%= userMiembro.getTiempoRegistrado() %> <% } else { %><%= userMiembro.getTiempoRegistrado() %> <% } %></div>
                         </div>
-                    </a>
                     <%
                         if(usuario != null && userMiembro.getIdUsuario() != usuario.getIdUsuario()){
                             if(usuario.sigueA(userMiembro)) { %>
@@ -62,7 +61,9 @@
                     <%
                         }
                     %>
-                </div>
+                    </div>
+                </a>
+
 
 
 
