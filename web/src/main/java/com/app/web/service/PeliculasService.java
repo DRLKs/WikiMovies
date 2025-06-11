@@ -1,21 +1,29 @@
 package com.app.web.service;
 
+import com.app.web.dao.GenerosRepository;
+import com.app.web.dao.IdiomasRepository;
 import com.app.web.dao.PeliculasRepository;
 import com.app.web.dto.GeneroDTO;
+import com.app.web.dto.IdiomaDTO;
 import com.app.web.dto.PeliculaDTO;
 import com.app.web.entity.Genero;
+import com.app.web.entity.Idioma;
 import com.app.web.entity.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
 
     @Autowired private PeliculasRepository peliculasRepository;
+    @Autowired private IdiomasRepository idiomasRepository;
+    @Autowired private GenerosRepository generosRepository;
 
     public List<PeliculaDTO> getAllPeliculasDTO() {
         List<Pelicula> peliculas = peliculasRepository.findAll();
@@ -110,7 +118,7 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
         pelicula.setDuracion(peliculaDTO.getDuracion());
         pelicula.setDescripcion(peliculaDTO.getDescripcion());
         pelicula.setEnlace(peliculaDTO.getEnlace());
-        pelicula.setIdiomaOriginal(peliculaDTO.getIdiomaOriginal());
+        pelicula.setIdiomaOriginal( idiomasRepository.getReferenceById( peliculaDTO.getIdiomaOriginal().getId() ) );
         pelicula.setPopularidad(peliculaDTO.getPopularidad());
         pelicula.setEstatus(peliculaDTO.getEstatus());
         pelicula.setEslogan(peliculaDTO.getEslogan());
@@ -119,9 +127,20 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
         pelicula.setNumeroVotos(peliculaDTO.getNumeroVotos());
         pelicula.setPoster(peliculaDTO.getPoster());
 
-        // Mantenemos objetos ligeros como géneros, idiomas y países de producción
-        pelicula.setGeneros(peliculaDTO.getGeneros());
-        pelicula.setIdiomas(peliculaDTO.getIdiomas());
+        // Obtenemos los géneros
+        Set<Genero> generos = new HashSet<>();
+        for( GeneroDTO generoDTO : peliculaDTO.getGeneros() ){
+            generos.add( generosRepository.getReferenceById(generoDTO.getId()) );
+        }
+        pelicula.setGeneros(generos);
+
+        // Obtenemos los idiomas
+        Set<Idioma> idiomas = new HashSet<>();
+        for( IdiomaDTO idiomaDTO : peliculaDTO.getIdiomas() ){
+            idiomas.add( idiomasRepository.getReferenceById(idiomaDTO.getId()) );
+        }
+        pelicula.setIdiomas(idiomas);
+
         pelicula.setPaisproduccions(peliculaDTO.getPaisproduccions());
 
         // Las relaciones complejas como crews, usuarios, listas y etiquetas

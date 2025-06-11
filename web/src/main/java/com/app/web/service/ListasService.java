@@ -2,6 +2,7 @@ package com.app.web.service;
 
 import com.app.web.dao.ListaRepository;
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.dao.PeliculasRepository;
 import com.app.web.dto.GeneroDTO;
 import com.app.web.dto.ListaDTO;
 import com.app.web.entity.Genero;
@@ -25,9 +26,8 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
 
     @Autowired private ListaRepository listaRepository;
     @Autowired private UsuariosRepositorio usuariosRepositorio;
-    @Autowired private com.app.web.dao.PeliculasRepository peliculaRepository;
+    @Autowired private PeliculasRepository peliculaRepository;
 
-    @Autowired private MiembrosService miembrosService;
 
     /**
      * Obtener todas las listas como DTOs
@@ -46,18 +46,8 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     }
 
     public List<ListaDTO> getListasPopularesDTO() {
-        List<Lista> listas = listaRepository.findAll();
-        List<ListaDTO> listasDTOs = new ArrayList<>();
-
-        for (Lista lista : listas) {
-            if(!lista.getNombre().equalsIgnoreCase("Vistas") &&
-                    !lista.getNombre().equalsIgnoreCase("Favoritas")){
-                listasDTOs.add(lista.toDTO());
-            }
-
-        }
-
-        return listasDTOs;
+        List<Lista> listas = listaRepository.listasPopulares();
+        return this.entity2DTO(listas);
     }
 
     /**

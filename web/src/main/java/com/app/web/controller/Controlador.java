@@ -1,13 +1,6 @@
 package com.app.web.controller;
 
-import com.app.web.dao.GenerosRepository;
-import com.app.web.dao.IdiomasRepository;
-import com.app.web.dto.GeneroDTO;
-import com.app.web.dto.ListaDTO;
-import com.app.web.dto.PeliculaDTO;
-import com.app.web.dto.UsuarioDTO;
-import com.app.web.entity.Idioma;
-import com.app.web.entity.Genero;
+import com.app.web.dto.*;
 import com.app.web.service.*;
 import com.app.web.ui.FiltroBusquedaDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,13 +23,10 @@ import static com.app.web.utils.Constantes.*;
 @Controller
 public class Controlador extends BaseControlador {
 
-    @Autowired PeliculasService peliculasService;
-    @Autowired GenerosService generosService;
-
+    @Autowired protected PeliculasService peliculasService;
+    @Autowired protected GenerosService generosService;
+    @Autowired private IdiomasService idiomasService;
     @Autowired protected ListasService listasService;
-
-    @Autowired IdiomasRepository idiomasRepository;
-    @Autowired GenerosRepository generosRepositorio;
     /**
      * Controlador de la pantalla inicial
      */
@@ -329,8 +319,7 @@ public class Controlador extends BaseControlador {
 
         model.addAttribute("generos", generosService.getAllGeneros());
 
-        List<Idioma> idiomas = idiomasRepository.findAll();
-        model.addAttribute("idiomas", idiomas);
+        model.addAttribute("idiomas", idiomasService.getAllIdiomas());
 
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
@@ -344,8 +333,7 @@ public class Controlador extends BaseControlador {
 
         model.addAttribute("generos", generosService.getAllGeneros());
 
-        List<Idioma> idiomas = idiomasRepository.findAll();
-        model.addAttribute("idiomas", idiomas);
+        model.addAttribute("idiomas", idiomasService.getAllIdiomas());
 
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
@@ -365,8 +353,8 @@ public class Controlador extends BaseControlador {
             @RequestParam("estatus") String estatus,
             @RequestParam("eslogan") String eslogan,
             @RequestParam("poster") String poster,
-            @RequestParam("generos") List<Integer> idGeneros,
-            Model model, HttpServletRequest request) {
+            @RequestParam("generos") List<Integer> idGeneros) {
+
         PeliculaDTO peliculaDTO = null;
         if (idPelicula == -1) { // Queremos crear una pelicula
             peliculaDTO = new PeliculaDTO();
@@ -382,14 +370,14 @@ public class Controlador extends BaseControlador {
         peliculaDTO.setDuracion(duracion);
         peliculaDTO.setDescripcion(descripcion);
         peliculaDTO.setEnlace(enlace);
-        Idioma idioma = idiomasRepository.findById(idioma_original).orElse(null);
+        IdiomaDTO idioma = idiomasService.getIdiomaById(idioma_original);
         peliculaDTO.setIdiomaOriginal(idioma);
         peliculaDTO.setEstatus(estatus);
         peliculaDTO.setEslogan(eslogan);
         peliculaDTO.setPoster(poster);
-        Set<Genero> generos = new HashSet<>();
+        Set<GeneroDTO> generos = new HashSet<>();
         for (Integer id : idGeneros) {
-            Genero genero = generosRepositorio.findById(id).orElse(null);
+            GeneroDTO genero = generosService.getGenero(id);
             generos.add(genero);
         }
         peliculaDTO.setGeneros(generos);

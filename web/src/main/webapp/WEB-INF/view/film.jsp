@@ -1,5 +1,5 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
-<%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="com.app.web.dto.GeneroDTO" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -129,7 +129,7 @@
         %>
         <div class="generosTags-container">
             <%
-                for (Genero genero : pelicula.getGeneros()) {
+                for (GeneroDTO genero : pelicula.getGeneros()) {
             %>
             <span class="genero-tag"><%= genero.getNombre() %></span>
             <%

@@ -1,5 +1,7 @@
 package com.app.web.entity;
 
+import com.app.web.dto.GeneroDTO;
+import com.app.web.dto.IdiomaDTO;
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.PeliculaDTO;
 import jakarta.persistence.*;
@@ -7,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -118,7 +121,7 @@ public class Pelicula implements com.app.web.dto.DTO<PeliculaDTO> {
         peliculaDTO.setDuracion(duracion);
         peliculaDTO.setDescripcion(descripcion);
         peliculaDTO.setEnlace(enlace);
-        peliculaDTO.setIdiomaOriginal(idiomaOriginal);
+        peliculaDTO.setIdiomaOriginal(idiomaOriginal.toDTO());
         peliculaDTO.setPopularidad(popularidad);
         peliculaDTO.setEstatus(estatus);
         peliculaDTO.setEslogan(eslogan);
@@ -141,8 +144,17 @@ public class Pelicula implements com.app.web.dto.DTO<PeliculaDTO> {
         }
 
         // Pasar relaciones ligeras directamente
-        peliculaDTO.setGeneros(generos);
-        peliculaDTO.setIdiomas(idiomas);
+        Set<GeneroDTO> generosDTO = new HashSet<>();
+        for( Genero genero : this.getGeneros() ){
+            generosDTO.add( genero.toDTO() );
+        }
+        peliculaDTO.setGeneros(generosDTO);
+
+        Set<IdiomaDTO> idiomasDTO = new HashSet<>();
+        for( Idioma idioma : this.getIdiomas() ){
+            idiomasDTO.add( idioma.toDTO() );
+        }
+        peliculaDTO.setIdiomas(idiomasDTO);
         peliculaDTO.setPaisproduccions(paisproduccions);
 
         return peliculaDTO;

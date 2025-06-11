@@ -18,4 +18,7 @@ public interface ListaRepository extends JpaRepository<Lista,Integer> {
     @Query("SELECT l FROM Lista l WHERE l.idUsuario.id = :idUsuario AND l.nombre NOT IN ('Favoritas', 'Vistas')")
     List<Lista> getListasUsuario(@Param("idUsuario") Integer idUsuario);
 
+    @Query("SELECT L FROM Lista L WHERE L.nombre != 'Favoritas' and L.nombre != 'Vistas'")
+    List<Lista> listasPopulares();
+
 }

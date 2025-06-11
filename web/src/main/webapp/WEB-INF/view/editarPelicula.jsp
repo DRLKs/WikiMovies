@@ -1,8 +1,8 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
-<%@ page import="com.app.web.entity.Idioma" %>
-<%@ page import="com.app.web.entity.Genero" %>
+<%@ page import="com.app.web.dto.IdiomaDTO" %>
 <%@ page import="com.app.web.dto.GeneroDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
@@ -13,7 +13,7 @@
 
 <%
     PeliculaDTO pelicula = (PeliculaDTO) request.getAttribute("pelicula");
-    List<Idioma> idiomas = (List<Idioma>) request.getAttribute("idiomas");
+    List<IdiomaDTO> idiomas = (List<IdiomaDTO>) request.getAttribute("idiomas");
     List<GeneroDTO> generos = (List<GeneroDTO>) request.getAttribute("generos");
 %>
 
@@ -56,9 +56,9 @@
             <td>Idioma original:</td>
             <td>
                 <select name="idioma_original">
-                    <% for(Idioma idioma: idiomas) {
+                    <% for(IdiomaDTO idioma: idiomas) {
                         String selected = "";
-                        if (pelicula!=null && pelicula.getIdiomaOriginal() == idioma) {
+                        if (pelicula!=null && Objects.equals(pelicula.getIdiomaOriginal().getId(), idioma.getId())) {
                             selected = "selected";
                         }
                     %>
@@ -87,7 +87,7 @@
                 <% for(GeneroDTO genero: generos) {
                     var selected = "";
                     if (pelicula != null) {
-                        for (Genero g : pelicula.getGeneros()) {
+                        for (GeneroDTO g : pelicula.getGeneros()) {
                             if (g.getId().equals(genero.getId())) {
                                 selected = "checked";
                                 break;

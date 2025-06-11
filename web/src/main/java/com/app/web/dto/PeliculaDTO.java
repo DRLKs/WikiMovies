@@ -18,7 +18,7 @@ public class PeliculaDTO {
       private Integer duracion;
       private String descripcion;
       private String enlace;
-      private Idioma idiomaOriginal;
+      private IdiomaDTO idiomaOriginal;
       private Float popularidad;
       private String estatus;
       private String eslogan;
@@ -34,8 +34,8 @@ public class PeliculaDTO {
       private Set<Integer> etiquetasId = new LinkedHashSet<>();
 
       // Para géneros guardamos el objeto completo ya que es ligero y se usa mucho
-      private Set<Genero> generos = new LinkedHashSet<>();
-      private Set<Idioma> idiomas = new LinkedHashSet<>();
+      private Set<GeneroDTO> generos = new LinkedHashSet<>();
+      private Set<IdiomaDTO> idiomas = new LinkedHashSet<>();
       private Set<Paisproduccion> paisproduccions = new LinkedHashSet<>();
 
 }

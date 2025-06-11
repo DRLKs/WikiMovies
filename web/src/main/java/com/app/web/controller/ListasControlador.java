@@ -6,7 +6,6 @@ import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
 import com.app.web.service.GenerosService;
 import com.app.web.service.ListasService;
-import com.app.web.service.PeliculasService;
 import com.app.web.service.UsuarioService;
 import com.app.web.ui.FiltroBusquedaDTO;
 import com.app.web.ui.NuevaLista;
@@ -35,7 +34,6 @@ import static com.app.web.utils.Constantes.USUARIO_SESION;
 public class ListasControlador extends BaseControlador {
 
     @Autowired protected GenerosService generosService;
-    @Autowired protected PeliculasService peliculasService;
     @Autowired protected UsuarioService usuarioService;
     @Autowired protected ListasService listasService;
 

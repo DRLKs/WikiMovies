@@ -1,9 +1,13 @@
 package com.app.web.entity;
 
+import com.app.web.dto.DTO;
+import com.app.web.dto.IdiomaDTO;
+import com.app.web.dto.PeliculaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -11,7 +15,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "idiomas")
-public class Idioma {
+public class Idioma implements DTO<IdiomaDTO> {
     @Id
     @Column(name = "id_idioma", nullable = false)
     private Integer id;
@@ -28,4 +32,16 @@ public class Idioma {
     @OneToMany(mappedBy = "idiomaOriginal")
     private Set<com.app.web.entity.Pelicula> peliculaIdiomaOriginal = new LinkedHashSet<>();
 
+    @Override
+    public IdiomaDTO toDTO() {
+        IdiomaDTO idiomaDTO = new IdiomaDTO();
+        idiomaDTO.setId(id);
+        idiomaDTO.setNombre(nombre);
+        Set<PeliculaDTO> peliculasDTO = new HashSet<>();
+        for( Pelicula pelicula : peliculas ){
+            peliculasDTO.add(pelicula.toDTO());
+        }
+        idiomaDTO.setPeliculas( peliculasDTO );
+        return idiomaDTO;
+    }
 }
