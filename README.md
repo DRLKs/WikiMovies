@@ -2,7 +2,7 @@
 
 # 🎬 WikiMovies - Tu Mundo de Películas
 
-Bienvenido a **MovieVerse**, el lugar donde puedes encontrar información sobre tus películas favoritas, descubrir nuevos títulos y compartir opiniones con la comunidad.
+Bienvenido a **WikiMovies**, el lugar donde puedes encontrar información sobre tus películas favoritas, descubrir nuevos títulos y compartir opiniones con la comunidad.
 
 ## 📌 Características
 - 🎞️ [Base de datos con cientos de películas](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata?resource=download&select=tmdb_5000_movies.csv).
