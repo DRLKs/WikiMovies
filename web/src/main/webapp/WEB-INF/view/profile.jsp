@@ -140,18 +140,17 @@
 
                     <div class="form-group">
                         <label for="generos">Género:</label>
-
-                        <label class="radio-label">
-                            <form:radiobutton id="generos" path="genero" value="1"/> Hombre
-                        </label>
-
-                        <label class="radio-label">
-                            <form:radiobutton id="generos" path="genero" value="2"/> Mujer
-                        </label>
-
-                        <label class="radio-label">
-                            <form:radiobutton id="generos" path="genero" value="3" /> Otro
-                        </label>
+                        <div class="radio-group-horizontal">
+                            <label class="radio-label">
+                                <form:radiobutton id="generos" path="genero" value="1"/> Hombre
+                            </label>
+                            <label class="radio-label">
+                                <form:radiobutton id="generos" path="genero" value="2"/> Mujer
+                            </label>
+                            <label class="radio-label">
+                                <form:radiobutton id="generos" path="genero" value="3" /> Otro
+                            </label>
+                        </div>
                     </div>
 
                     <div class="form-group">

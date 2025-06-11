@@ -84,20 +84,33 @@ public class Controlador extends BaseControlador {
         Integer[] listaGeneros = filtroBusquedaDTO.getGeneros();
         String titulo = filtroBusquedaDTO.getTitulo();
 
-        if (listaGeneros != null && listaGeneros.length > 0) { // Filtro de géneros
+        if (listaGeneros != null && listaGeneros.length > 0 && (titulo == null || titulo.trim().isEmpty())) { // Solo géneros
+            peliculas = peliculasService.getAllPeliculasDTOByTituloYGenero("", listaGeneros);
+            // Construir el título con los nombres de los géneros
+            List<String> nombresGeneros = new ArrayList<>();
+            for (Integer idGenero : listaGeneros) {
+                GeneroDTO genero = generosService.getGenero(idGenero);
+                if (genero != null) {
+                    nombresGeneros.add(genero.getNombre());
+                }
+            }
+            String tituloGeneros = String.join(", ", nombresGeneros);
+            model.addAttribute("titulo", tituloGeneros);
+        } else if (listaGeneros != null && listaGeneros.length > 0) { // Filtro de géneros y título
             peliculas = peliculasService.getAllPeliculasDTOByTituloYGenero(titulo, listaGeneros);
+            model.addAttribute("titulo", titulo);
         } else {
             peliculas = peliculasService.getAllPeliculasDTOByTitulo(titulo);
+            model.addAttribute("titulo", titulo);
         }
 
-        model.addAttribute("titulo", titulo);
         model.addAttribute("peliculas", peliculas);
 
         model.addAttribute("generos", generosService.getAllGeneros());
 
         model.addAttribute("filtroBusquedaDTO", filtroBusquedaDTO);
 
-        return "search";
+        return "peliculas";
     }
 
     /**
@@ -250,7 +263,7 @@ public class Controlador extends BaseControlador {
 
     @GetMapping("/peliculas")
     public String mostrarPeliculas(Model model, HttpSession session) {
-        List<PeliculaDTO> peliculas = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
+        List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();
         model.addAttribute("peliculas", peliculas);
 
         UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
@@ -266,6 +279,8 @@ public class Controlador extends BaseControlador {
         }
 
         // Para que la búsqueda y el filtro funcione
+        model.addAttribute("titulo", "");
+
         model.addAttribute("generos", generosService.getAllGeneros());
 
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());

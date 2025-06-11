@@ -43,7 +43,7 @@
                 <div class="miembro-card">
                     <a href="profile?id=<%= userMiembro.getIdUsuario() %>" class="miembro-link">
                         <div>
-                            <img class="profile-image" src="<%= userMiembro.getAvatar() != null ? userMiembro.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
+                            <img class="miembro-profile-image" src="<%= userMiembro.getAvatar() != null ? userMiembro.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                             <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>
                             <div class="miembro-info"><% if(!userMiembro.getTiempoRegistrado().equals("Usuario nuevo")) {%>Se unió hace <%= userMiembro.getTiempoRegistrado() %> <% } else { %><%= userMiembro.getTiempoRegistrado() %> <% } %></div>
                         </div>

@@ -9,7 +9,6 @@
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/index.css">
     <link rel="stylesheet" href="../../css/peliculas.css">
-    <link rel="stylesheet" href="../../css/search.css">
     <link rel="stylesheet" href="../../css/botonesPelicula.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
           crossorigin="anonymous"/>
@@ -17,6 +16,7 @@
 </head>
 
 <%
+    String titulo = (String) request.getAttribute("titulo");
     List<PeliculaDTO> peliculas = (List<PeliculaDTO>) request.getAttribute("peliculas");
     boolean peliculaFavorita = false;
     boolean peliculaVista = false;
@@ -37,6 +37,14 @@
 <%
     }
 %>
+
+<div class="info-busqueda-container">
+    <% if(titulo != null && !titulo.trim().equals("")) {%>
+    <h2> Mostrando <%= peliculas.size() %> resultados para "<%=titulo%>"</h2>
+    <%
+        }
+    %>
+</div>
 
 <div class="peliculas-container">
 
@@ -89,16 +97,16 @@
         <%
             if (usuarioAutenticado && usuario.getRol() == 2) {
         %>
-        <form action="/eliminarPelicula" method="post" class="delete-form" onsubmit="return confirm('¿Seguro que quieres eliminar esta película?');">
+        <form action="/eliminarPelicula" method="post" class="delete-form" onsubmit="event.stopPropagation(); return confirm('¿Seguro que quieres eliminar esta película?');">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button delete-btn" title="Eliminar película">
+            <button type="submit" class="favorite-button delete-btn" title="Eliminar película" onclick="event.stopPropagation();">
                 <i class="fa fa-trash"></i>
             </button>
         </form>
 
         <form action="/editarPelicula" method="post" class="edit-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button" title="Editar película">
+            <button type="submit" class="favorite-button" title="Editar película" onclick="event.stopPropagation();">
                 <i class="fa fa-pencil"></i>
             </button>
         </form>
@@ -111,7 +119,7 @@
         <% if (usuarioAutenticado) { %>
         <form action="/seen" method="post" class="seen-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button" title="Marcar como vista">
+            <button type="submit" class="favorite-button" title="Marcar como vista" onclick="event.stopPropagation();">
                 <i class="<%= peliculaVista ? "fas fa-eye" : "fas fa-eye-slash" %>"></i>
             </button>
         </form>
@@ -126,7 +134,7 @@
         <% if (usuarioAutenticado) { %>
         <form action="/favorite" method="post" class="favorite-form">
             <input type="hidden" name="idPelicula" value="<%= pelicula.getId() %>">
-            <button type="submit" class="favorite-button" title="Añadir a favoritas">
+            <button type="submit" class="favorite-button" title="Añadir a favoritas" onclick="event.stopPropagation();">
                 <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
             </button>
         </form>
