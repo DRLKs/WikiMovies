@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    <% if(usuario != null && usuario.getRol() >= 1 && peliculasRecomendadasFavoritas != null) {%>
+    <% if(usuario != null && usuario.getRol() >= 1 && peliculasRecomendadasFavoritas != null && !peliculasRecomendadasFavoritas.isEmpty()) {%>
     <div class="peliculas-generos">
         <h3> Peliculas recomendadas en base a tus películas favoritas
         </h3>

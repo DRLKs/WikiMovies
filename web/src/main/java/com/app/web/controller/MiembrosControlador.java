@@ -39,6 +39,7 @@ public class MiembrosControlador extends BaseControlador {
         model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
         model.addAttribute("miembros", miembrosService.obtenerMiembros(null));
+        model.addAttribute("filtro", null);
         return "miembros";
     }
 
@@ -53,6 +54,7 @@ public class MiembrosControlador extends BaseControlador {
         model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
         model.addAttribute("miembros", miembrosService.obtenerMiembros(filtroNombre));
+        model.addAttribute("filtro", filtroNombre);
 
         return "miembros";
     }

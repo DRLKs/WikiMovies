@@ -15,17 +15,27 @@
 %>
 
 <body>
-<%@ include file="barra_navegacion.jsp" %>
+    <%@ include file="barra_navegacion.jsp" %>
 
-<div class="navegar-listas">
-    <% if (usuario != null) { %>
-    <a href="/listas">Listas Populares</a>
-    <a href="/listasSeguidos?id=<%=usuario.getIdUsuario()%>">Listas Seguidos</a>
-    <a href="/misListas?id=<%=usuario.getSeguidoresIds()%>" class="lista-activa">Mis listas</a>
-    <% } else { %>
-    <a href="listas/listasPopulares">Listas Populares</a>
-    <% } %>
-</div>
+    <div class="navegar-listas">
+        <% if (usuario != null) { %>
+        <a href="/listas">Listas Populares</a>
+        <a href="/listasSeguidos?id=<%=usuario.getIdUsuario()%>">Listas Seguidos</a>
+        <a href="/misListas?id=<%=usuario.getSeguidoresIds()%>" class="lista-activa">Mis listas</a>
+        <% } else { %>
+        <a href="listas/listasPopulares">Listas Populares</a>
+        <% } %>
+    </div>
+
+    <div class="crearLista">
+        <div class="crearLista-texto">
+            <h2>¡Crea tus propias listas!</h2>
+            <p>Organiza tus películas favoritas como tú quieras.</p>
+        </div>
+        <form action="/crearLista" method="get">
+            <button type="submit">Crear nueva lista</button>
+        </form>
+    </div>
 
     <div class="todasListas">        <h2>Mis listas</h2>
         <% for (ListaDTO lista : listas) { %>
@@ -48,12 +58,6 @@
         </a>
         <% } %>
     </div>
-    <div class="crearLista">
-        <h2>¡Crea tus propias listas!</h2>
-        <p>Organiza tus películas favoritas como tú quieras.</p>
-        <form action="/crearLista" method="get">
-            <button type="submit">Crear nueva lista</button>
-        </form>
-    </div>
+
 </body>
 </html>

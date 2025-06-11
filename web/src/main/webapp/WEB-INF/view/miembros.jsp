@@ -11,6 +11,7 @@
 
 <%
     List<UsuarioDTO> usuarios = (List<UsuarioDTO>) request.getAttribute("miembros");
+    String filtro = (String) request.getAttribute("filtro");
 %>
 
 <body>
@@ -28,6 +29,9 @@
                     placeholder="Buscar miembros..."
                     autocomplete="off"
                     maxlength="30"
+                    <% if(filtro!=null){%>
+                        value="<%=filtro%>"
+                    <%}%>
             />
             <button type="submit">Buscar</button>
         </form>

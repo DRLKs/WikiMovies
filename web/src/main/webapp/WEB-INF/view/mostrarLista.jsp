@@ -33,6 +33,7 @@
                 <button>Editar lista</button>
             </form>
 
+
         <form action="/favorite" method="post" class="favorite-form">
             <input type="hidden" name="idPelicula" value="<%= listaDTO.getId() %>">
             <button type="submit" class="favorite-button">
@@ -47,7 +48,7 @@
         <tr>
             <td> Nombre Películas </td>
             <td> Duración </td>
-            <%if(usuario != null){%>
+            <%if(usuario != null && listaDTO.getUsuarioId().equals(usuario.getIdUsuario())){%>
             <td></td>
             <%}%>
         </tr>    <%
