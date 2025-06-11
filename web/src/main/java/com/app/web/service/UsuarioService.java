@@ -1,7 +1,11 @@
 package com.app.web.service;
 
+import com.app.web.dao.GenerosUsuariosRepository;
+import com.app.web.dao.RolesRepository;
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.entity.Generousuario;
 import com.app.web.entity.Lista;
+import com.app.web.entity.Role;
 import com.app.web.entity.Usuario;
 import com.app.web.utils.Hash;
 import jakarta.servlet.http.Cookie;
@@ -20,6 +24,8 @@ public class UsuarioService {
 
     @Autowired private UsuariosRepositorio usuarioRepositorio;
     @Autowired private ListasService listasService;
+    @Autowired private RolesRepository rolesRepository;
+    @Autowired private GenerosUsuariosRepository generosUsuariosRepository;
 
     // Mapa simple para cachear sesiones (en producción usar algo más robusto como Redis)
     private static final Map<String, Usuario> sesionesCache = new ConcurrentHashMap<>();
@@ -107,7 +113,12 @@ public class UsuarioService {
         usuario.setContrasenaHash( Hash.obtenerSHA256(contrasena) );
         usuario.setBiografia(""); //añadido
         usuario.setCreacionCuentaFecha(LocalDate.now());
-        usuario.setRol(0);      // El rol 0, indica el rol "normal"
+
+        Role rolNoIdentidicado = rolesRepository.getReferenceById(0);
+        usuario.setRol(rolNoIdentidicado);      // El rol 0, indica el rol "normal"
+
+        Generousuario generoNoIdentificado = generosUsuariosRepository.getReferenceById(0);
+        usuario.setGenero(generoNoIdentificado);   // El genero 0, indica no definido
 
         this.usuarioRepositorio.save(usuario);
 

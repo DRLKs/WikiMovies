@@ -47,8 +47,6 @@ public class Usuario implements DTO<UsuarioDTO> {
     @Column(name = "biografia", length = 500)
     private String biografia;
 
-    @Column(name = "genero")
-    private Integer genero;
 
     @Column(name = "nacimientoFecha")
     private LocalDate nacimientoFecha;
@@ -56,18 +54,24 @@ public class Usuario implements DTO<UsuarioDTO> {
     @Column(name = "creacionCuentaFecha", nullable = false)
     private LocalDate creacionCuentaFecha;
 
+    @Column(name = "avatarUrl", length = 600)
+    private String avatarUrl;
+
     /**
      *  ROL 0: Usuario normal
      * 	ROL 1: Usuario premium
      * 	ROL 2: Usuario editor de películas
      * 	ROL 3: Usuario editor de usuarios
      */
+    @ManyToOne(fetch = FetchType.LAZY)
     @ColumnDefault("0")
-    @Column(name = "rol")
-    private Integer rol;
+    @JoinColumn(name = "rol")
+    private Role rol;
 
-    @Column(name = "avatarUrl", length = 600)
-    private String avatarUrl;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ColumnDefault("0")
+    @JoinColumn(name = "genero", nullable = false)
+    private Generousuario genero;
 
     public String getTiempoRegistrado(){
 
@@ -125,8 +129,8 @@ public class Usuario implements DTO<UsuarioDTO> {
         usuarioDTO.setBiografia(this.biografia);
         usuarioDTO.setAvatar(this.avatarUrl);
         usuarioDTO.setTiempoRegistrado(this.getTiempoRegistrado());
-        usuarioDTO.setGenero(this.getGenero());
-        usuarioDTO.setRol(this.getRol());
+        usuarioDTO.setGenero(this.getGenero().getId());
+        usuarioDTO.setRol(this.getRol().getId());
         usuarioDTO.setNacimientoFecha(this.getNacimientoFecha());
 
         HashSet<Integer> seguidoresId = new HashSet<>();

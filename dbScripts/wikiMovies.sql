@@ -145,6 +145,31 @@ INSERT INTO `generos` VALUES (1,'Terror'),(2,'Comedia'),(3,'Románticas'),(4,'Ac
 UNLOCK TABLES;
 
 --
+-- Table structure for table `generousuario`
+--
+
+DROP TABLE IF EXISTS `generousuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `generousuario` (
+  `id` int NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `generousuario`
+--
+
+LOCK TABLES `generousuario` WRITE;
+/*!40000 ALTER TABLE `generousuario` DISABLE KEYS */;
+INSERT INTO `generousuario` VALUES (0,'No definido'),(1,'Hombre'),(2,'Mujer'),(3,'Otro');
+/*!40000 ALTER TABLE `generousuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `idiomas`
 --
 
@@ -184,7 +209,7 @@ CREATE TABLE `lista` (
   PRIMARY KEY (`id_lista`),
   KEY `FK_Lista_Usuario` (`id_usuario`),
   CONSTRAINT `FK_Lista_Usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +218,7 @@ CREATE TABLE `lista` (
 
 LOCK TABLES `lista` WRITE;
 /*!40000 ALTER TABLE `lista` DISABLE KEYS */;
-INSERT INTO `lista` VALUES (1,10,'','',NULL),(2,10,'ListaNueva','',NULL),(3,14,'Vistas','Lista de películas vistas',NULL),(4,14,'Favoritas','Lista de películas favoritas',NULL),(5,15,'Vistas','Lista de películas vistas',NULL),(6,15,'Favoritas','Lista de películas favoritas',NULL),(15,11,'a','a','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s');
+INSERT INTO `lista` VALUES (1,10,'Para llorar','Con estas películas lloro mucho','https://st2.depositphotos.com/1967477/6346/v/450/depositphotos_63462971-stock-illustration-sad-smiley-emoticon-cartoon.jpg'),(2,10,'ListaNueva','','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s'),(3,14,'Vistas','Lista de películas vistas',NULL),(4,14,'Favoritas','Lista de películas favoritas',NULL),(5,15,'Vistas','Lista de películas vistas',NULL),(6,15,'Favoritas','Lista de películas favoritas',NULL),(15,11,'a','a','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s'),(18,21,'Vistas','Lista de películas vistas','https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg'),(19,21,'Favoritas','Lista de películas favoritas','https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg='),(21,10,'Vistas','Lista de películas vistas','https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg'),(22,10,'Favoritas','\"Lista de películas favoritas\"','https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg='),(23,22,'Vistas','Lista de películas vistas','https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg'),(24,22,'Favoritas','\"Lista de películas favoritas\"','https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg='),(25,10,'David','a','https://media.istockphoto.com/id/93986448/es/foto/clapper.jpg?s=612x612&w=0&k=20&c=bbZguzBvEVkMczAm-NCcYKR8FLpsJvfogOEr9J_5WnA='),(26,23,'Vistas','Lista de películas vistas','https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg'),(27,23,'Favoritas','\"Lista de películas favoritas\"','https://media.istockphoto.com/id/1439973042/es/vector/icono-plano-de-coraz%C3%B3n-rojo-el-s%C3%ADmbolo-del-amor-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jBR9ICw7P_X7M4NIboEu17ZTjCxsxZE2GN8FOIRWqeg=');
 /*!40000 ALTER TABLE `lista` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +245,7 @@ CREATE TABLE `lista_peliculas` (
 
 LOCK TABLES `lista_peliculas` WRITE;
 /*!40000 ALTER TABLE `lista_peliculas` DISABLE KEYS */;
-INSERT INTO `lista_peliculas` VALUES (15,1),(2,2),(15,2),(2,3);
+INSERT INTO `lista_peliculas` VALUES (15,1),(21,1),(22,1),(2,2),(15,2),(21,2),(22,2),(2,3),(21,3);
 /*!40000 ALTER TABLE `lista_peliculas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +430,7 @@ CREATE TABLE `peliculas` (
   PRIMARY KEY (`id_pelicula`),
   KEY `FK_Peliiculas_Idioma_idx` (`idioma_original`),
   CONSTRAINT `FK_Peliculas_Idioma` FOREIGN KEY (`idioma_original`) REFERENCES `idiomas` (`id_idioma`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -466,6 +491,31 @@ LOCK TABLES `productoras` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` int NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (0,'Normal'),(1,'Premium'),(2,'Administrador de películas'),(3,'Administrador de usuarios');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `seguidores`
 --
 
@@ -488,7 +538,7 @@ CREATE TABLE `seguidores` (
 
 LOCK TABLES `seguidores` WRITE;
 /*!40000 ALTER TABLE `seguidores` DISABLE KEYS */;
-INSERT INTO `seguidores` VALUES (11,10),(12,10),(13,10),(14,10),(15,10),(10,11),(12,11),(13,11),(14,11),(15,11),(10,15),(11,15),(12,15),(13,15),(14,15);
+INSERT INTO `seguidores` VALUES (10,11),(12,11),(13,11),(14,11),(15,11),(10,15),(11,15),(12,15),(13,15),(14,15),(10,21),(11,21),(10,22),(15,22);
 /*!40000 ALTER TABLE `seguidores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,11 +582,15 @@ CREATE TABLE `usuarios` (
   `avatarUrl` varchar(600) DEFAULT NULL,
   `biografia` varchar(500) DEFAULT NULL,
   `nacimientoFecha` date DEFAULT NULL,
-  `genero` int DEFAULT NULL,
+  `genero` int NOT NULL DEFAULT '0',
   `creacionCuentaFecha` date NOT NULL,
   PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `correo_electronico_UNIQUE` (`correo_electronico`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `correo_electronico_UNIQUE` (`correo_electronico`),
+  KEY `rol_idx` (`rol`),
+  KEY `genero_idx` (`genero`),
+  CONSTRAINT `generoUsuario` FOREIGN KEY (`genero`) REFERENCES `generousuario` (`id`),
+  CONSTRAINT `rol` FOREIGN KEY (`rol`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -545,7 +599,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (10,'DavidAdmin','david@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg','SOY USER ADMIN','2025-05-15',1,'2022-01-01'),(11,'Cristobal','cbarba@uma.es','c31febb2564abe57222be150a26b16fb1fbf00a17c6c439faa67eec03643ccd9',1,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s','Sí',NULL,1,'2025-04-30'),(12,'PRUEBA','1@a','6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b',0,NULL,NULL,NULL,NULL,'2025-04-30'),(13,'DavidNuevoUsuario','davidNuevo@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,NULL,'',NULL,NULL,'2025-05-12'),(14,'DavidNuevo2','david@uma13.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,NULL,'',NULL,NULL,'2025-05-12'),(15,'David','d@1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',2,'https://media.revistagq.com/photos/5ca5f6a77a3aec0df5496c59/master/w_1600%2Cc_limit/bob_esponja_9564.png','',NULL,NULL,'2025-05-12');
+INSERT INTO `usuarios` VALUES (10,'DavidAdmin','david@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',1,'https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg','SOY USER ADMIN.','2025-05-15',1,'2022-01-01'),(11,'Cristobal','cbarba@uma.es','c31febb2564abe57222be150a26b16fb1fbf00a17c6c439faa67eec03643ccd9',1,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwdEEO-mCKk-1ZV-y9xarZawuakiH4VY381g&s','Sí',NULL,1,'2025-04-30'),(12,'PRUEBA','1@a','6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b',0,NULL,NULL,NULL,0,'2025-04-30'),(13,'DavidNuevoUsuario','davidNuevo@uma.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,NULL,'',NULL,0,'2025-05-12'),(14,'DavidNuevo2','david@uma13.es','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,NULL,'',NULL,0,'2025-05-12'),(15,'David','d@1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',2,'https://media.revistagq.com/photos/5ca5f6a77a3aec0df5496c59/master/w_1600%2Cc_limit/bob_esponja_9564.png','',NULL,0,'2025-05-12'),(21,'Nuevoa','Nuevo@uma.es','069d9fe0de77566d4f0813b0820a7a780946f4a043ab3c558f6ded9a3499f967',0,'https://media.revistagq.com/photos/5ca5f6a77a3aec0df5496c59/master/w_1600%2Cc_limit/bob_esponja_9564.png','Soy Nuevo','2025-06-26',1,'2025-06-08'),(22,'Nuevo','Nuevo1@uma.es','b159fdcbcf13ebf01fa4a22c07637c2d80bc6353ad1a1818b272e9d266a42e57',0,NULL,'',NULL,0,'2025-06-10'),(23,'AdminPeliculas','AdminPeliculas@uma.es','8b795c74238ebde20d42cc2129a93f03e214c5ad0740e283931d921ccb64d335',2,NULL,'',NULL,0,'2025-06-11');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -558,4 +612,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-07 12:26:20
+-- Dump completed on 2025-06-12  0:02:26

@@ -1,5 +1,7 @@
 package com.app.web.service;
 
+import com.app.web.dao.GenerosUsuariosRepository;
+import com.app.web.dao.RolesRepository;
 import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
@@ -9,13 +11,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.app.web.utils.Constantes.USER_ADMIN;
-import static com.app.web.utils.Constantes.USUARIO_SESION;
-
 @Service
 public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
 
     @Autowired UsuariosRepositorio usuariosRepositorio;
+    @Autowired GenerosUsuariosRepository generosUsuariosRepository;
+    @Autowired RolesRepository rolesRepository;
 
     public List<UsuarioDTO> obtenerMiembros(String filtroNombre){
 
@@ -68,11 +69,11 @@ public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
             }
 
             if (genero != null) {
-                usuario.setGenero(genero);
+                usuario.setGenero(generosUsuariosRepository.getReferenceById(genero));
             }
 
             if( rol != null ){
-                usuario.setRol(rol);
+                usuario.setRol(rolesRepository.getReferenceById(rol));
             }
 
         } catch (Exception e) {
@@ -130,9 +131,9 @@ public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
         // Obtenemos el usuario que queremos editar
         Usuario usuario = usuariosRepositorio.getReferenceById(id);
 
-        int rol = (usuario.getRol() + 1) % 2;
+        int rol = usuario.getRol().getId();
 
-        usuario.setRol(rol);
+        usuario.setRol( rolesRepository.getReferenceById( (rol + 1) % 2) );
 
         this.usuariosRepositorio.save(usuario);
     }
