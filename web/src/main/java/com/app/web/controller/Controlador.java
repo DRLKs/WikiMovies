@@ -37,7 +37,8 @@ public class Controlador extends BaseControlador {
         if (estaAutenticado(request, session)) {
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
             ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
-            // Realizamos lo del recomendador aquí
+            ListaDTO vistas = listasService.getListaVistasDTO(usuario.getIdUsuario());
+            // Realizamos lo del recomendador de las películas Favoritas aquí
             if(usuario.getRol()>0 && favoritas.getPeliculasId().size()>0) {
                 List<GeneroDTO> generosFavoritas = listasService.generosMasRepetidosEnLaLista(favoritas);
                 List<PeliculaDTO> peliculasRecomendadasFavoritas;
@@ -48,8 +49,21 @@ public class Controlador extends BaseControlador {
                 }
                 model.addAttribute("peliculasRecomendadasFavoritas", peliculasRecomendadasFavoritas);
             }
+
+            // Realizamos lo del recomendador de las películas Vistas aquí
+            if(usuario.getRol()>0 && vistas.getPeliculasId().size()>0) {
+                List<GeneroDTO> generosVistas = listasService.generosMasRepetidosEnLaLista(vistas);
+                List<PeliculaDTO> peliculasRecomendadasVistas;
+                if(generosVistas.size()>1) {
+                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosVistas.get(0), generosVistas.get(1));
+                } else {
+                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosVistas.get(0), null);
+                }
+                model.addAttribute("peliculasRecomendadasVistas", peliculasRecomendadasVistas);
+            }
+
         } else {
-            model.addAttribute("peliculasRecomendadasFavoritas", new ArrayList<>());
+            model.addAttribute("peliculasRecomendadasVistas", new ArrayList<>());
         }
 
         List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();

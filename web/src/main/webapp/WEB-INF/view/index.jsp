@@ -17,6 +17,7 @@
     List<GeneroDTO> generos = (List<GeneroDTO>) request.getAttribute("generos");
     List<PeliculaDTO> peliculasTop =(List<PeliculaDTO>) request.getAttribute("peliculasRanking");
     List<PeliculaDTO> peliculasRecomendadasFavoritas =(List<PeliculaDTO>) request.getAttribute("peliculasRecomendadasFavoritas");
+    List<PeliculaDTO> peliculasRecomendadasVistas =(List<PeliculaDTO>) request.getAttribute("peliculasRecomendadasVistas");
 %>
 
 <body>
@@ -37,7 +38,7 @@
 
             <h4 class="ranking-titulo">ESTA ES LA SELECCIÓN DEL DÍA DE HOY:</h4>
 
-            <div class="ranking-container">                <%
+            <div class="ranking-container"><%
                 int top = 1;
                 for (int i = 0; i < peliculasTop.size(); i++) {
                     PeliculaDTO p = peliculasTop.get(i);
@@ -68,6 +69,24 @@
         </h3>
         <div class="lista-peliculas">
             <%for (PeliculaDTO p : peliculasRecomendadasFavoritas) {%>
+            <a href="/film?id=<%= p.getId() %>">
+                <img src="<%= p.getPoster() %>"
+                     alt="Póster de <%= p.getTitulo() %>"
+                     class="poster-ranking"
+                     style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
+                >
+            </a>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+
+    <% if(usuario != null && usuario.getRol() >= 1 && peliculasRecomendadasVistas != null && !peliculasRecomendadasVistas.isEmpty()) {%>
+    <div class="peliculas-generos">
+        <h3> Peliculas recomendadas en base a tus películas vistas
+        </h3>
+        <div class="lista-peliculas">
+            <%for (PeliculaDTO p : peliculasRecomendadasVistas) {%>
             <a href="/film?id=<%= p.getId() %>">
                 <img src="<%= p.getPoster() %>"
                      alt="Póster de <%= p.getTitulo() %>"
