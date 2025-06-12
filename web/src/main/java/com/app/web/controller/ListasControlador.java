@@ -58,26 +58,11 @@ public class ListasControlador extends BaseControlador {
         List<ListaDTO> listas = listasService.getListasPopularesDTO();
         model.addAttribute("listas", listas);
 
-        loadCommonModelAttributes(model);
-
-        return "listasPopulares";
-    }
-
-    /**
-     * Controlador para crear una nueva lista la cual comienza vacía
-     */
-    @GetMapping("/crearLista")
-    public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
-        
-        // El usuario debe estar conectado para crear una lista
-        if (!estaAutenticado(request, session)) {
-            return "redirect:/login";
-        }
+        model.addAttribute("apartado", "populares");
 
         loadCommonModelAttributes(model);
-        model.addAttribute("nuevaLista", new NuevaLista());
 
-        return "crearLista";
+        return "listas";
     }
 
     /**
@@ -99,11 +84,13 @@ public class ListasControlador extends BaseControlador {
                         .collect(Collectors.toList()));
             }
         }
-        model.addAttribute("listasSeguidos", listasSeguidos);
+        model.addAttribute("listas", listasSeguidos);
+
+        model.addAttribute("apartado", "seguidos");
 
         loadCommonModelAttributes(model);
 
-        return "listasSeguidos";
+        return "listas";
     }
 
     /**
@@ -115,50 +102,18 @@ public class ListasControlador extends BaseControlador {
         Usuario miUsuario = usuarioService.buscarUsuario(id);
         Set<Lista> misListasEntidades = miUsuario.getListas();
 
-        // Convertir entidades Lista a ListaDTO
-        Set<ListaDTO> misListas = misListasEntidades.stream()
+        // Convertir entidades Lista a ListaDTO y la lista a tipo List
+        List<ListaDTO> misListas = misListasEntidades.stream()
                 .map(Lista::toDTO)
-                .collect(Collectors.toSet());
+                .toList();
 
-        model.addAttribute("misListas", misListas);
+        model.addAttribute("listas", misListas);
+
+        model.addAttribute("apartado", "misListas");
 
         loadCommonModelAttributes(model);
 
-        return "misListas";
-    }
-
-    /**
-     * Guarda en la base de datos la nueva lista, creada por el usuario
-     */
-    @PostMapping("/guardarLista")
-    public String guardarLista(@ModelAttribute("nuevaLista") NuevaLista nuevaLista, HttpSession session) {
-        
-        // Obtenemos el usuario 
-        int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
-        Usuario usuario = usuarioService.buscarUsuario(idUsuario);
-
-        Lista lista = new Lista();
-        lista.setNombre(nuevaLista.getNombre());
-        lista.setDescripcion(nuevaLista.getDescripcion());
-
-        // Establecer imagen predeterminada si no se proporciona
-        if (nuevaLista.getFotoUrl() == null || nuevaLista.getFotoUrl().isEmpty()) {
-            lista.setImgURL(
-                    "https://media.istockphoto.com/id/93986448/es/foto/clapper.jpg?s=612x612&w=0&k=20&c=bbZguzBvEVkMczAm-NCcYKR8FLpsJvfogOEr9J_5WnA=");
-        } else {
-            lista.setImgURL(nuevaLista.getFotoUrl());
-        }
-
-        lista.setIdUsuario(usuario);
-
-        // Crear lista vacía - ya no añadimos películas aquí
-        lista.setPeliculas(new HashSet<>()); // Lista vacía
-
-        // Guardar la lista usando el servicio
-        ListaDTO listaGuardada = listasService.guardarListaDTO(lista);
-
-        // Redirigir a la vista de la lista creada para que puedan añadir películas
-        return "redirect:/mostrarLista?listaId=" + listaGuardada.getId();
+        return "listas";
     }
 
     /**
@@ -173,6 +128,26 @@ public class ListasControlador extends BaseControlador {
         listasService.removePeliculaFromListaDTO(idLista, idPeli);
 
         return "redirect:/mostrarLista?listaId=" + idLista;
+    }
+
+    /**
+     * Controlador para crear una nueva lista la cual comienza vacía
+     */
+    @GetMapping("/crearLista")
+    public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
+
+        // El usuario debe estar conectado para crear una lista
+        if (!estaAutenticado(request, session)) {
+            return "redirect:/login";
+        }
+
+        loadCommonModelAttributes(model);
+        NuevaLista nuevaLista = new NuevaLista();
+        nuevaLista.setListaId(-1);
+        model.addAttribute("model_lista", nuevaLista);
+        model.addAttribute("lista", null);
+
+        return "editarLista";
     }
 
     /**
@@ -195,37 +170,44 @@ public class ListasControlador extends BaseControlador {
         editarLista.setListaId(listaDTO.getId());
 
         loadCommonModelAttributes(model);
-        model.addAttribute("editarLista", editarLista);
+        model.addAttribute("model_lista", editarLista);
         model.addAttribute("lista", listaDTO);
 
         return "editarLista";
     }
 
     /**
-     * Controlador para guardar cambios en una lista editada
+     * Guarda en la base de datos la nueva lista, creada por el usuario
      */
-    @PostMapping("/guardarCambiosLista")
-    public String guardarCambiosLista(@ModelAttribute("editarLista") NuevaLista editarLista) {
-        
-        // Obtenemos la entidad Lista para actualizarla
-        Lista lista = listasService.getListaById(editarLista.getListaId());
+    @PostMapping("/guardarLista")
+    public String guardarLista(@ModelAttribute("model_lista") NuevaLista nuevaLista, HttpSession session) {
 
-        if (lista == null) {
-            return "redirect:/listas";
+        // Obtenemos el usuario
+        int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
+        Usuario usuario = usuarioService.buscarUsuario(idUsuario);
+        Lista lista = listasService.getListaById(nuevaLista.getListaId());
+        if(lista == null) { // Estamos creando la lista
+            lista = new Lista();
+            lista.setPeliculas(new HashSet<>());
         }
 
-        // Actualizar propiedades de la lista
-        lista.setNombre(editarLista.getNombre());
-        lista.setDescripcion(editarLista.getDescripcion());
+        lista.setNombre(nuevaLista.getNombre());
+        lista.setDescripcion(nuevaLista.getDescripcion());
 
-        // Actualizar URL de imagen si se proporciona
-        if (!(editarLista.getFotoUrl() == null || editarLista.getFotoUrl().isEmpty())) {
-            lista.setImgURL(editarLista.getFotoUrl());
+        // Establecer imagen predeterminada si no se proporciona
+        if (nuevaLista.getFotoUrl() == null || nuevaLista.getFotoUrl().isEmpty()) {
+            lista.setImgURL(
+                    "https://media.istockphoto.com/id/93986448/es/foto/clapper.jpg?s=612x612&w=0&k=20&c=bbZguzBvEVkMczAm-NCcYKR8FLpsJvfogOEr9J_5WnA=");
+        } else {
+            lista.setImgURL(nuevaLista.getFotoUrl());
         }
 
-        // Guardar cambios usando el servicio (devuelve DTO)
-        listasService.guardarListaDTO(lista);
+        lista.setIdUsuario(usuario);
 
-        return "redirect:/mostrarLista?listaId=" + editarLista.getListaId();
+        // Guardar la lista usando el servicio
+        ListaDTO listaGuardada = listasService.guardarListaDTO(lista);
+
+        // Redirigir a la vista de la lista creada para que puedan añadir películas
+        return "redirect:/mostrarLista?listaId=" + listaGuardada.getId();
     }
 }

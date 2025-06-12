@@ -57,7 +57,7 @@ public class Controlador extends BaseControlador {
 
         model.addAttribute("generos", generosService.getAllGeneros());
 
-        List<PeliculaDTO> peliculasRanking = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 10));
+        List<PeliculaDTO> peliculasRanking = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 3)); // La selección del día es un top 3 películas ordenadas por popularidad
         model.addAttribute("peliculasRanking", peliculasRanking);
 
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
