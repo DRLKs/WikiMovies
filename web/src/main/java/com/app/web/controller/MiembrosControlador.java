@@ -2,9 +2,7 @@ package com.app.web.controller;
 
 import com.app.web.dto.ListaDTO;
 import com.app.web.dto.UsuarioDTO;
-import com.app.web.service.GenerosService;
-import com.app.web.service.ListasService;
-import com.app.web.service.MiembrosService;
+import com.app.web.service.*;
 import com.app.web.ui.FiltroBusquedaDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -24,9 +22,11 @@ import static com.app.web.utils.Constantes.USER_ADMIN;
 @Controller
 public class MiembrosControlador extends BaseControlador {
 
-    @Autowired protected MiembrosService miembrosService;
-    @Autowired protected ListasService listasService;
-    @Autowired protected GenerosService generosService;
+    @Autowired private MiembrosService miembrosService;
+    @Autowired private ListasService listasService;
+    @Autowired private GenerosService generosService;
+    @Autowired private GenerosUsuariosService generosUsuariosService;
+    @Autowired private RolesService rolesService;
 
     /**
      * Controlador de la petición del sistema para cargar todos los miembros de
@@ -85,6 +85,8 @@ public class MiembrosControlador extends BaseControlador {
         model.addAttribute("generos", generosService.getAllGeneros());
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
 
+        generosUsuariosService.cargarModelosGenerosUsuarios(model);
+        rolesService.cargarModelosRoles(model);
         return "profile";
     }
 

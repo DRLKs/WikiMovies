@@ -857,3 +857,14 @@ input[type="file"] {
     align-items: center;
     gap: 4px;
 }
+
+.form-group input[type="radio"] {
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.form-group label {
+    display: inline-block;
+    margin-right: 15px;
+}
+

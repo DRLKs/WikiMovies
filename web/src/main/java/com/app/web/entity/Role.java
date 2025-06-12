@@ -1,5 +1,7 @@
 package com.app.web.entity;
 
+import com.app.web.dto.DTO;
+import com.app.web.dto.RolesDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements DTO<RolesDTO> {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -22,4 +24,11 @@ public class Role {
     @OneToMany(mappedBy = "rol")
     private Set<Usuario> usuarios = new LinkedHashSet<>();
 
+    @Override
+    public RolesDTO toDTO() {
+        RolesDTO dto = new RolesDTO();
+        dto.setId(id);
+        dto.setNombre(nombre);
+        return dto;
+    }
 }

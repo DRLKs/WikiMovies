@@ -44,8 +44,7 @@
                 if(usuarios != null && !usuarios.isEmpty()) {
                     for(UsuarioDTO userMiembro : usuarios) {
             %>
-                <a href="profile?id=<%= userMiembro.getIdUsuario() %>" class="miembro-link">
-                    <div class="miembro-card">
+                    <div class="miembro-card" onclick="location.href='profile?id=<%= userMiembro.getIdUsuario() %>'">
                         <div>
                             <img class="miembro-profile-image" src="<%= userMiembro.getAvatar() != null ? userMiembro.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                             <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>
@@ -54,15 +53,14 @@
                     <%
                         if(usuario != null && userMiembro.getIdUsuario() != usuario.getIdUsuario()){
                             if(usuario.sigueA(userMiembro)) { %>
-                                <a class="unfollow-btn" href="/dejarSeguir?id=<%= userMiembro.getIdUsuario() %>">Dejar de seguir</a>
+                                <a class="unfollow-btn" href="/dejarSeguir?id=<%= userMiembro.getIdUsuario() %>" >Dejar de seguir</a>
                             <% } else { %>
-                                <a class="follow-btn" href="/seguir?id=<%= userMiembro.getIdUsuario() %>">Seguir</a>
+                                <a class="follow-btn" href="/seguir?id=<%= userMiembro.getIdUsuario() %>" >Seguir</a>
                             <% } %>
                     <%
                         }
                     %>
                     </div>
-                </a>
 
 
 

@@ -7,6 +7,7 @@ import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -89,8 +90,6 @@ public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
         Usuario usuario = usuariosRepositorio.getReferenceById(idUsuario);
         usuariosRepositorio.delete(usuario);
     }
-
-
 
 
     //

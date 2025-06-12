@@ -1,7 +1,6 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
-<%@ page import="com.app.web.entity.Usuario" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>

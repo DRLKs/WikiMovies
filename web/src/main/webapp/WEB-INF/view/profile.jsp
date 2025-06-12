@@ -4,6 +4,7 @@
 <%@ page import="static com.app.web.utils.Constantes.USER_ADMIN" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.dto.UsuarioDTO" %>
+<%@ page import="java.util.Objects" %>
 
 <html>
 
@@ -99,7 +100,7 @@
     </div>
 
     <%
-        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || usuario.getIdUsuario() == userProfile.getIdUsuario())){
+        if ( usuario != null && ( usuario.getRol() == USER_ADMIN || Objects.equals(usuario.getIdUsuario(), userProfile.getIdUsuario()))){
     %>
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
@@ -138,19 +139,9 @@
                         <form:input type="date" id="fechaNacimiento" path="nacimientoFecha"/>
                     </div>
 
-                    <div class="form-group">
+                    <div id="generosUsuarios" class="form-group">
                         <label for="generos">Género:</label>
-                        <div class="radio-group-horizontal">
-                            <label class="radio-label">
-                                <form:radiobutton id="generos" path="genero" value="1"/> Hombre
-                            </label>
-                            <label class="radio-label">
-                                <form:radiobutton id="generos" path="genero" value="2"/> Mujer
-                            </label>
-                            <label class="radio-label">
-                                <form:radiobutton id="generos" path="genero" value="3" /> Otro
-                            </label>
-                        </div>
+                        <form:radiobuttons id="generos" path="genero" itemValue="id" itemLabel="nombre" items="${generosUsuarios}"  />
                     </div>
 
                     <div class="form-group">
@@ -162,19 +153,12 @@
 
                     <div class="form-group">
                         <label for="rol">Rol del usuario:</label><br/>
-
-                            <form:radiobutton id="rol" path="rol" value="0"  /> Normal<br/>
-
-                            <form:radiobutton id="rol" path="rol" value="1" /> Premium<br/>
-
-                            <form:radiobutton id="rol" path="rol" value="2" /> Administrador de películas<br/>
-
-                            <form:radiobutton id="rol" path="rol" value="3" /> Administrador de usuarios<br/>
+                            <form:radiobuttons id="rol" path="rol" itemValue="id" itemLabel="nombre" items="${rolesUsuarios}"  />
                     </div>
 
                     <% } %>
 
-                    <div class="form-actions">
+                    <div id="roles" class="form-actions vertical">
                         <button type="button" class="cancel-btn">Cancelar</button>
                         <form:button type="submit" class="save-btn">Guardar cambios</form:button>
                     </div>
