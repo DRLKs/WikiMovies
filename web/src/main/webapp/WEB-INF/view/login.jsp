@@ -44,11 +44,6 @@
             <form:errors path="password" cssClass="error-message" />
         </div>
 
-        <div class="remember-me">
-            <form:checkbox id="remember" path="remember"/>
-            <label for="remember">Recordarme</label>
-        </div>
-
         <form:button type="submit" class="submit-btn">Iniciar Sesión</form:button>
         <div class="success-message" id="success-message">¡Sesión iniciada correctamente!</div>
     </form:form>

@@ -6,20 +6,18 @@
 }
 
 body {
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
+    background-color: #121212;
+    color: #fff;
+    font-family: 'Poppins', 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
 }
 
 /* Header y Logo */
 .wiki-header {
-    background-color: #141414;
+    background-color: #181818;
     padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 30px;
     width: 100%;
     position: relative;
@@ -53,7 +51,7 @@ body {
 .logo-text {
     font-size: 24px;
     font-weight: 700;
-    color: #e50914;
+    color: #ff4646;
     margin: 0;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -61,19 +59,20 @@ body {
 
 /* Contenedor principal centrado horizontalmente pero no verticalmente */
 .container {
-    background-color: white;
+    background-color: #1e1e1e;
+    color: #fff;
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 400px;
-    margin: 60px auto; /* Espacio superior entre el header y el contenedor */
+    margin: 60px auto;
     flex-grow: 0; /* Para que no se expanda y ocupe todo el espacio disponible */
 }
 
 /* Título principal */
 h1 {
-    color: #333;
+    color: #ffd369;
     text-align: center;
     margin-bottom: 25px;
     font-size: 24px;
@@ -85,6 +84,7 @@ h1 {
 
 /* Boton para mostrar/ocultar contraseña */
 .password-btn {
+    color: #ffd369;
     border: none;
     padding:2px;
     background-color: transparent;
@@ -102,16 +102,18 @@ label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #555;
+    color: #ffd369;
 }
 
 input {
     width: 100%;
     padding: 0.8rem;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 5px;
     font-size: 1rem;
     transition: border-color 0.3s;
+    background-color: #222;
+    color: #fff;
 }
 
 input:focus {
@@ -120,7 +122,7 @@ input:focus {
 }
 
 .error {
-    color: #e74c3c;
+    color: #ff4646;
     font-size: 0.8rem;
     margin-top: 0.3rem;
     display: none;
@@ -154,31 +156,36 @@ input:focus {
 }
 
 .submit-btn {
-    background-color: #4a90e2;
-    color: white;
+    background-color: #ff4646;
+    color: #fff;
     border: none;
-    padding: 0.8rem;
-    width: 100%;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 1rem;
+    border-radius: 8px;
+    padding: 12px 0 12px 0; /* Más padding para mejor tacto */
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background 0.2s;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
 }
 
-button:hover {
-    background-color: #3a7bc8;
+.submit-btn:hover {
+    background-color: #ffd369;
+    color: #181818;
+    cursor: pointer;
 }
 
 .footer {
     text-align: center;
     margin-top: 1.5rem;
     font-size: 0.9rem;
-    color: #666;
+    color: #b3b3b3;
 }
 
 .footer a {
-    color: #4a90e2;
+    color: #ff4646;
     text-decoration: none;
 }
 
@@ -188,19 +195,7 @@ button:hover {
 
 .success-message {
     text-align: center;
-    color: #27ae60;
+    color: #ffd369;
     margin-top: 1rem;
     display: none;
 }
-
-.remember-me {
-    display: flex;
-    align-items: center;
-    margin-top: 1rem;
-}
-
-.remember-me input {
-    width: auto;
-    margin-right: 0.5rem;
-}
-

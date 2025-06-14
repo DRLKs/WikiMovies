@@ -23,7 +23,7 @@
 body {
     background-color: var(--primary-bg);
     color: var(--text-primary);
-    padding-top: 120px !important; /* Margin-top más alto */
+    padding-top: 80px !important; /* Margin-top más alto */
     min-height: 100vh;
 }
 

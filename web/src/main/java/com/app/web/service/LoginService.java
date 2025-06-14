@@ -32,7 +32,6 @@ public class LoginService extends UsuarioService {
 
     public String log(String correoElectronico,
                       String contrasena,
-                      Boolean remember,
                       Model model,
                       HttpSession session,
                       HttpServletResponse response) {
@@ -52,21 +51,6 @@ public class LoginService extends UsuarioService {
 
         UsuarioDTO usuarioAutenticadoDTO = usuarioAutenticado.toDTO();
         guardarSesion( usuarioAutenticadoDTO, session);
-
-        if (remember) {
-            // Crear un token único que combine ID de usuario y una marca de tiempo
-            String userToken = usuarioAutenticado.getId() + ":" + System.currentTimeMillis();
-
-            // Guardar en la cookie este token en lugar del session ID
-            Cookie userCookie = new Cookie("wikimovies_user_session", userToken);
-            userCookie.setHttpOnly(true);
-            userCookie.setMaxAge(60 * 60 * 24 * 30); // 30 días
-            userCookie.setPath("/");
-            response.addCookie(userCookie);
-
-            // Guardar en el cache de sesiones
-            guardarUsuarioEnSesionCache(userToken, usuarioAutenticadoDTO);
-        }
 
         return "redirect:/";
     }

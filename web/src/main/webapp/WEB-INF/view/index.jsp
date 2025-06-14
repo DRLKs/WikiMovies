@@ -7,7 +7,6 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/index.css">
-    <link rel="stylesheet" href="../../css/peliculas.css">
     <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
 
@@ -49,7 +48,7 @@
                         <img src="<%= p.getPoster() %>" alt="Póster de <%= p.getTitulo() %>" class="poster-ranking">
                     </a>
                     <div class="puntuacion">
-                        ⭐ <%= String.format("%.1f", p.getMediaVotos()) %>/10
+                        ⭐ <%= String.format("%.1f", p.getPopularidad()/10) %>/10
                     </div>
                 </div>
 

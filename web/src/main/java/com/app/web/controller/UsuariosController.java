@@ -47,9 +47,8 @@ public class UsuariosController extends BaseControlador {
 
         String correoElectronico = usuarioLogin.getEmail();
         String contrasena = usuarioLogin.getPassword();
-        boolean remember = usuarioLogin.getRemember();
 
-        return loginService.log(correoElectronico,contrasena,remember,model,session,response);
+        return loginService.log(correoElectronico,contrasena,model,session,response);
 
     }
 
