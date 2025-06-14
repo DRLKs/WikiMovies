@@ -39,31 +39,28 @@ public class Controlador extends BaseControlador {
             ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             ListaDTO vistas = listasService.getListaVistasDTO(usuario.getIdUsuario());
             // Realizamos lo del recomendador de las películas Favoritas aquí
-            if(usuario.getRol()>0 && !favoritas.getPeliculasId().isEmpty()) {
+            if (usuario.getRol() > 0 && !favoritas.getPeliculasId().isEmpty()) {
                 List<GeneroDTO> generosFavoritas = listasService.generosMasRepetidosEnLaLista(favoritas);
-                List<PeliculaDTO> peliculasRecomendadasFavoritas;
-                if(generosFavoritas.size()>1) {
+                List<PeliculaDTO> peliculasRecomendadasFavoritas = new ArrayList<>();
+                if (generosFavoritas.size() > 1) {
                     peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosFavoritas.get(0), generosFavoritas.get(1));
-                } else {
+                } else if (generosFavoritas.size() == 1) {
                     peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosFavoritas.get(0), null);
                 }
                 model.addAttribute("peliculasRecomendadasFavoritas", peliculasRecomendadasFavoritas);
             }
 
             // Realizamos lo del recomendador de las películas Vistas aquí
-            if(usuario.getRol()>0 && !vistas.getPeliculasId().isEmpty()) {
+            if (usuario.getRol() > 0 && !vistas.getPeliculasId().isEmpty()) {
                 List<GeneroDTO> generosVistas = listasService.generosMasRepetidosEnLaLista(vistas);
-                List<PeliculaDTO> peliculasRecomendadasVistas;
-                if(generosVistas.size()>1) {
-                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosVistas.get(0), generosVistas.get(1));
-                } else {
-                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosVistas.get(0), null);
+                List<PeliculaDTO> peliculasRecomendadasVistas = new ArrayList<>();
+                if (generosVistas.size() > 1) {
+                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(vistas.getPeliculasId(), generosVistas.get(0), generosVistas.get(1));
+                } else if (generosVistas.size() == 1) {
+                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(vistas.getPeliculasId(), generosVistas.get(0), null);
                 }
                 model.addAttribute("peliculasRecomendadasVistas", peliculasRecomendadasVistas);
             }
-
-        } else {
-            model.addAttribute("peliculasRecomendadasVistas", new ArrayList<>());
         }
 
         List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();
