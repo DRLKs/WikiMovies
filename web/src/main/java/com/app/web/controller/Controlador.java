@@ -39,7 +39,7 @@ public class Controlador extends BaseControlador {
             ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             ListaDTO vistas = listasService.getListaVistasDTO(usuario.getIdUsuario());
             // Realizamos lo del recomendador de las películas Favoritas aquí
-            if(usuario.getRol()>0 && favoritas.getPeliculasId().size()>0) {
+            if(usuario.getRol()>0 && !favoritas.getPeliculasId().isEmpty()) {
                 List<GeneroDTO> generosFavoritas = listasService.generosMasRepetidosEnLaLista(favoritas);
                 List<PeliculaDTO> peliculasRecomendadasFavoritas;
                 if(generosFavoritas.size()>1) {
@@ -51,7 +51,7 @@ public class Controlador extends BaseControlador {
             }
 
             // Realizamos lo del recomendador de las películas Vistas aquí
-            if(usuario.getRol()>0 && vistas.getPeliculasId().size()>0) {
+            if(usuario.getRol()>0 && !vistas.getPeliculasId().isEmpty()) {
                 List<GeneroDTO> generosVistas = listasService.generosMasRepetidosEnLaLista(vistas);
                 List<PeliculaDTO> peliculasRecomendadasVistas;
                 if(generosVistas.size()>1) {
@@ -193,8 +193,7 @@ public class Controlador extends BaseControlador {
     public String doFavorite(@RequestParam("idPelicula") Integer idPelicula, HttpServletRequest request,
             HttpSession session) {
 
-        // Un usuario no puede guardarse una película como favorita si tiene la sesión
-        // iniciada
+        // Un usuario solo puede guardarse una película como favorita si tiene la sesión iniciada
         if (!estaAutenticado(request, session)) {
             return "redirect:/login";
         }
@@ -311,8 +310,7 @@ public class Controlador extends BaseControlador {
     }
 
     @GetMapping("/mostrarLista")
-    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpServletRequest request,
-            HttpSession session) {
+    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpSession session) {
 
         UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
 
@@ -384,7 +382,7 @@ public class Controlador extends BaseControlador {
             @RequestParam("poster") String poster,
             @RequestParam("generos") List<Integer> idGeneros) {
 
-        PeliculaDTO peliculaDTO = null;
+        PeliculaDTO peliculaDTO;
         if (idPelicula == -1) { // Queremos crear una pelicula
             peliculaDTO = new PeliculaDTO();
         } else { // Queremos editar una pelicula

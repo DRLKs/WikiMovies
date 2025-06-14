@@ -45,7 +45,7 @@
 
 
             <%
-                if(usuario != null && userProfile.getIdUsuario() == usuario.getIdUsuario() && usuario.getRol() < 2){
+                if(usuario != null && Objects.equals(userProfile.getIdUsuario(), usuario.getIdUsuario()) && usuario.getRol() < 2){
             %>
             <div class="botonPremium">
                 <a class="boton-premium" href="/cambioRol?id=<%= userProfile.getIdUsuario() %>">
@@ -105,7 +105,7 @@
     <div class="profile-editar">
         <button id="editProfileBtn" class="edit-profile-btn">Editar perfil</button>
 
-        <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
+        <% if ( usuario.getRol() == USER_ADMIN){ %>
         <button type="button" class="btn-delete-user" onclick="showDeleteModal(<%=userProfile.getIdUsuario()%>, '<%=userProfile.getNombreUsuario()%>')">
             Eliminar perfil
         </button>
@@ -141,6 +141,7 @@
 
                     <div id="generosUsuarios" class="form-group">
                         <label for="generos">Género:</label>
+                        <%--@elvariable id="generosUsuarios" type="java.util.List<RolesDTO>"--%>
                         <form:radiobuttons id="generos" path="genero" itemValue="id" itemLabel="nombre" items="${generosUsuarios}"  />
                     </div>
 
@@ -149,10 +150,11 @@
                         <textarea id="biografia" name="biografia" maxlength="500" rows="7"><%= userProfile.getBiografia() != null ? userProfile.getBiografia() : "" %></textarea>
                     </div>
 
-                    <% if ( usuario != null && usuario.getRol() == USER_ADMIN){ %>
+                    <% if ( usuario.getRol() == USER_ADMIN && !Objects.equals(usuario.getIdUsuario(), userProfile.getIdUsuario())){ %>
 
                     <div class="form-group">
                         <label for="rol">Rol del usuario:</label><br/>
+                            <%--@elvariable id="rolesUsuarios" type="java.util.List<RolesDTO>"--%>
                             <form:radiobuttons id="rol" path="rol" itemValue="id" itemLabel="nombre" items="${rolesUsuarios}"  />
                     </div>
 

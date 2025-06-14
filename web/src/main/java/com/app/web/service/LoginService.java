@@ -1,6 +1,7 @@
 package com.app.web.service;
 
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.utils.Hash;
@@ -49,7 +50,8 @@ public class LoginService extends UsuarioService {
             return "login";
         }
 
-        session.setAttribute(USUARIO_SESION, usuarioAutenticado.toDTO());
+        UsuarioDTO usuarioAutenticadoDTO = usuarioAutenticado.toDTO();
+        guardarSesion( usuarioAutenticadoDTO, session);
 
         if (remember) {
             // Crear un token único que combine ID de usuario y una marca de tiempo
@@ -63,10 +65,28 @@ public class LoginService extends UsuarioService {
             response.addCookie(userCookie);
 
             // Guardar en el cache de sesiones
-            guardarUsuarioEnSesionCache(userToken, usuarioAutenticado);
+            guardarUsuarioEnSesionCache(userToken, usuarioAutenticadoDTO);
         }
 
         return "redirect:/";
+    }
+
+    /**
+     * Guardamos en la sesión del navegador un usuario el cual se debe haber identificado anteriormente
+     *
+     * @param usuarioAutenticado Usuario que se guardará en la sesión
+     */
+    private void guardarSesion(UsuarioDTO usuarioAutenticado, HttpSession session) {
+        session.setAttribute(USUARIO_SESION, usuarioAutenticado);
+    }
+
+    /**
+     * Actualiza la sesión del usuario
+     */
+    public void actualizarUsuarioSesion(HttpSession session, HttpServletRequest request, HttpServletResponse response){
+        Integer idUsuarioSesion = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
+        logOut(session, request, response);
+        guardarSesion( usuarioRepositorio.getReferenceById(idUsuarioSesion).toDTO(), session);
     }
 
     public void logOut(HttpSession session, HttpServletRequest request, HttpServletResponse response) {

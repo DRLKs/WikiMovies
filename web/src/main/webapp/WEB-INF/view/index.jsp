@@ -1,7 +1,6 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.dto.GeneroDTO" %>
-<%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <html>
@@ -27,7 +26,7 @@
 <%
     if(usuario != null && usuario.getRol() == 2) {
 %>
-<a href="/crearPelicula" class="crear-pelicula-btn">CREAR PELICULA</a>
+    <a href="/crearPelicula" class="crear-pelicula-btn">CREAR PELICULA</a>
 <%
     }
 %>
