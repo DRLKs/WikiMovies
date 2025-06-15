@@ -60,7 +60,7 @@ public class MiembrosService extends DTOService<UsuarioDTO, Usuario> {
                 usuario.setNombreUsuario(nombreUsuario);
             }
 
-            if (biografia != null && !biografia.isEmpty() && !biografia.equals(usuario.getBiografia())) {
+            if (biografia != null && !biografia.equals(usuario.getBiografia())) {
                 usuario.setBiografia(biografia);
             }
 

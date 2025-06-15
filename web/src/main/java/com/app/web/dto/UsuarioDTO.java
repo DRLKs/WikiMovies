@@ -3,6 +3,7 @@ package com.app.web.dto;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Usuario;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -46,6 +47,7 @@ public class UsuarioDTO{
 
     protected Integer rol;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate nacimientoFecha;
 
     public boolean sigueA(UsuarioDTO usuario){
