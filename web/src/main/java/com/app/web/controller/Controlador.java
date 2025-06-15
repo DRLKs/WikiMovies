@@ -38,7 +38,7 @@ public class Controlador extends BaseControlador {
             ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             ListaDTO vistas = listasService.getListaVistasDTO(usuario.getIdUsuario());
             // Realizamos lo del recomendador de las películas Favoritas aquí
-            if (usuario.getRol() > 0 && !favoritas.getPeliculas().isEmpty()) {
+            if (usuario.getRol() > USER_NORMAL && !favoritas.getPeliculas().isEmpty()) {
                 List<GeneroDTO> generosFavoritas = listasService.generosMasRepetidosEnLaLista(favoritas);
                 List<PeliculaDTO> peliculasRecomendadasFavoritas = new ArrayList<>();
                 if (generosFavoritas.size() > 1) {
@@ -50,7 +50,7 @@ public class Controlador extends BaseControlador {
             }
 
             // Realizamos lo del recomendador de las películas Vistas aquí
-            if (usuario.getRol() > 0 && !vistas.getPeliculas().isEmpty()) {
+            if (usuario.getRol() > USER_NORMAL && !vistas.getPeliculas().isEmpty()) {
                 List<GeneroDTO> generosVistas = listasService.generosMasRepetidosEnLaLista(vistas);
                 List<PeliculaDTO> peliculasRecomendadasVistas = new ArrayList<>();
                 if (generosVistas.size() > 1) {

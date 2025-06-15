@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class DTOService<DTOClass, EntityClass> {
+
     protected List<DTOClass> entity2DTO(Collection<EntityClass> entidades) {
         List<DTOClass> lista = new ArrayList<>();
         for (EntityClass entidad : entidades) {

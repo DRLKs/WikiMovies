@@ -58,6 +58,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     /**
      * Obtener todas las listas como entidades
      *
+     * @deprecated
      * @return Lista de entidades Lista
      */
     public List<Lista> getAllListas() {
@@ -139,6 +140,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     /**
      * Obtener la lista de favoritos de un usuario como entidad
      *
+     * @deprecated
      * @param userId ID del usuario
      * @return Entidad Lista de favoritos o null si no se encuentra
      */
@@ -168,6 +170,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     /**
      * Obtener la lista de películas vistas de un usuario como entidad
      *
+     * @deprecated
      * @param userId ID del usuario
      * @return Entidad Lista de películas vistas o null si no se encuentra
      */
@@ -207,6 +210,7 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
     /**
      * Obtener todas las listas creadas por un usuario específico como entidades
      *
+     * @deprecated
      * @param userId ID del usuario
      * @return Lista de entidades Lista o lista vacía si no se encuentra ninguna
      */
@@ -238,14 +242,13 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
      * Guardar o actualizar una lista
      * 
      * @param lista Entidad Lista a guardar
-     * @return La entidad Lista guardada
      */
-    public Lista guardarLista(Lista lista) {
+    public void guardarLista(Lista lista) {
         if (lista == null) {
             throw new IllegalArgumentException("La lista no puede ser nula");
         }
 
-        return listaRepository.save(lista);
+        listaRepository.save(lista);
     }
 
     /**

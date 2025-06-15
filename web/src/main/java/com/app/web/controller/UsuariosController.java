@@ -1,10 +1,8 @@
 package com.app.web.controller;
 
 import com.app.web.service.LoginService;
-import com.app.web.service.UsuarioService;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.ui.UsuarioSignup;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UsuariosController extends BaseControlador {
 
     @Autowired LoginService loginService;
-    @Autowired UsuarioService usuariosService;
 
     /**
      * Función que abre el apartado de LOGIN
@@ -27,9 +24,9 @@ public class UsuariosController extends BaseControlador {
      * @return Redirección
      */
     @GetMapping("/login")
-    public String abrirLogin(Model model, HttpServletRequest request, HttpSession session) {
+    public String abrirLogin(Model model, HttpSession session) {
 
-        return loginService.abrirLogin(model, request, session);
+        return loginService.abrirLogin(model, session);
     }
 
     /**
@@ -87,6 +84,6 @@ public class UsuariosController extends BaseControlador {
             return "signup";
         }
         
-        return usuariosService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
+        return loginService.crearCuenta(nombreUsuario, correoElectronico, contrasena, model);
     }
 }

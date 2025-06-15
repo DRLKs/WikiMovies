@@ -22,8 +22,14 @@ public class Constantes {
     public static final String DESCRIPCION_LISTA_VISTAS = "Lista de películas vistas";
     public static final String IMAGEN_LISTA_VISTAS = "https://static.vecteezy.com/system/resources/previews/023/731/459/non_2x/eye-icon-optic-illustration-sign-open-symbol-see-logo-vector.jpg";
     
-    /**
-     * Valor que indica que el usuario es administrador de cuentas
+    /*
+    Valores que indica que indica los diferentes roles de usuario
      */
+    public static final int USER_NORMAL = 0;
     public static final int USER_ADMIN = 3;
+
+    /*
+    Valores que indican los géneros de los usuarios
+     */
+    public static final int GENDER_NOT_SPECIFIED = 0;
 }
