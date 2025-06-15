@@ -497,4 +497,11 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         }
     }
 
+    /**
+     * Eliminar una lista por su ID (API para controlador)
+     */
+    public void eliminarLista(int id) {
+        deleteListaById(id);
+    }
+
 }

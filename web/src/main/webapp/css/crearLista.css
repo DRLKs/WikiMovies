@@ -11,28 +11,22 @@
     --input-border: #555555;
 }
 
-/* Estilos generales para la página */
+/* Reseteo y estilo general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
     background-color: var(--primary-bg);
     color: var(--text-primary);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
+    margin-top: 40px; /* Espacio para la barra de navegación */
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 /* Contenedor principal que ocupa toda la pantalla */
-.container-crear-lista {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 140px 20px 40px 20px; /* Top padding para la barra de navegación */
-    min-height: 100vh;
-    box-sizing: border-box;
-}
 
 .formulario-wrapper {
     background-color: var(--secondary-bg);

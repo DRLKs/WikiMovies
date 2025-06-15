@@ -161,8 +161,7 @@ public class ListasControlador extends BaseControlador {
         loadCommonModelAttributes(model);
         ListaDTO nuevaLista = new ListaDTO();
         nuevaLista.setId(-1);
-        model.addAttribute("model_lista", nuevaLista);
-        model.addAttribute("lista", null);
+        model.addAttribute("lista", nuevaLista);
 
         return "editarLista";
     }
@@ -219,5 +218,15 @@ public class ListasControlador extends BaseControlador {
 
         // Redirigir a la vista de la lista creada para que puedan añadir películas
         return "redirect:/mostrarLista?listaId=" + listaGuardada.getId();
+    }
+
+    /**
+     * Controlador para eliminar una lista
+     */
+    @PostMapping("/eliminarLista")
+    public String eliminarLista(@RequestParam("listaId") Integer listaId, HttpSession session) {
+        listasService.eliminarLista(listaId);
+        Integer idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
+        return "redirect:/misListas?id=" + idUsuario;
     }
 }

@@ -6,6 +6,8 @@
 <head>
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/mostrarLista.css">
+    <link rel="stylesheet" href="../../css/botonesPelicula.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
     <link rel="icon" type="image/png" href="../../img/favicon.png">
 </head>
     <%
@@ -28,8 +30,12 @@
         </div>
         <%if( usuario != null && (usuario.getIdUsuario().equals(listaDTO.getUsuarioId()) ) && (!listaDTO.getNombre().equals("Vistas") && !listaDTO.getNombre().equals("Favoritas"))){%>
 
-            <form method="post" action="/editarLista?listaId=<%=listaDTO.getId()%>" >
-                <button>Editar lista</button>
+            <form method="post" action="/editarLista?listaId=<%=listaDTO.getId()%>" style="display:inline-block;">
+                <button class="favorite-button" title="Editar lista"><i class="fa fa-pencil"></i></button>
+            </form>
+            <form method="post" action="/eliminarLista" style="display:inline-block; margin-left:8px;" onsubmit="return confirm('¿Seguro que quieres eliminar esta lista? Esta acción no se puede deshacer.');">
+                <input type="hidden" name="listaId" value="<%=listaDTO.getId()%>" />
+                <button class="favorite-button delete-btn" title="Eliminar lista"><i class="fa fa-trash"></i></button>
             </form>
 
         <%}%>
@@ -59,10 +65,10 @@
             </td>
             <%if(usuario != null && listaDTO.getUsuarioId().equals(usuario.getIdUsuario())){%>
                 <td class="delete-cell-wrapper">
-                    <div class="delete-cell"
-                         onclick="if (confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulo() %>?')) { window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= listaDTO.getId() %>'; }">
-                        ✖
-                    </div>
+                    <button class="favorite-button delete-btn" title="Eliminar película de la lista"
+                        onclick="if (confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulo() %>?')) { window.location.href='/quitarPeliLista?idPeli=<%= pelicula.getId() %>&idLista=<%= listaDTO.getId() %>'; } return false;">
+                        <i class="fa fa-times"></i>
+                    </button>
                 </td>
             <%}%>
         </tr>
@@ -74,5 +80,4 @@
     </table>
 
 </body>
-<script src="../../js/AñadirAMegusta.js"></script>
 </html>

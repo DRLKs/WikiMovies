@@ -8,6 +8,7 @@
     <title> WikiMovies </title>
     <link rel="stylesheet" href="../../css/index.css">
     <link rel="icon" type="image/png" href="../../img/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 </head>
 
 <%
@@ -63,36 +64,42 @@
 
     <% if(usuario != null && usuario.getRol() >= 1 && peliculasRecomendadasFavoritas != null && !peliculasRecomendadasFavoritas.isEmpty()) {%>
     <div class="peliculas-generos">
-        <h3> Peliculas recomendadas en base a tus películas favoritas
+        <h3 class="titulo-peliculas-recomendadas"> Películas recomendadas en base a tus películas favoritas
         </h3>
-        <div class="lista-peliculas">
-            <%for (PeliculaDTO p : peliculasRecomendadasFavoritas) {%>
-            <a href="/film?id=<%= p.getId() %>">
-                <img src="<%= p.getPoster() %>"
-                     alt="Póster de <%= p.getTitulo() %>"
-                     class="poster-ranking"
-                     style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
-                >
-            </a>
-            <%}%>
+        <div class="lista-peliculas-wrapper">
+            <button class="scroll-btn scroll-btn-left" onclick="scrollLista(this, -1)"><i class="fa fa-chevron-left"></i></button>
+            <div class="lista-peliculas">
+                <%for (PeliculaDTO p : peliculasRecomendadasFavoritas) {%>
+                <a href="/film?id=<%= p.getId() %>">
+                    <img src="<%= p.getPoster() %>"
+                         alt="Póster de <%= p.getTitulo() %>"
+                         class="poster-ranking"
+                    >
+                </a>
+                <%}%>
+            </div>
+            <button class="scroll-btn scroll-btn-right" onclick="scrollLista(this, 1)"><i class="fa fa-chevron-right"></i></button>
         </div>
     </div>
     <%}%>
 
     <% if(usuario != null && usuario.getRol() >= 1 && peliculasRecomendadasVistas != null && !peliculasRecomendadasVistas.isEmpty()) {%>
     <div class="peliculas-generos">
-        <h3> Peliculas recomendadas en base a tus películas vistas
+        <h3 class="titulo-peliculas-recomendadas"> Películas recomendadas en base a tus películas vistas
         </h3>
-        <div class="lista-peliculas">
-            <%for (PeliculaDTO p : peliculasRecomendadasVistas) {%>
-            <a href="/film?id=<%= p.getId() %>">
-                <img src="<%= p.getPoster() %>"
-                     alt="Póster de <%= p.getTitulo() %>"
-                     class="poster-ranking"
-                     style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
-                >
-            </a>
-            <%}%>
+        <div class="lista-peliculas-wrapper">
+            <button class="scroll-btn scroll-btn-left" onclick="scrollLista(this, -1)"><i class="fa fa-chevron-left"></i></button>
+            <div class="lista-peliculas">
+                <%for (PeliculaDTO p : peliculasRecomendadasVistas) {%>
+                <a href="/film?id=<%= p.getId() %>">
+                    <img src="<%= p.getPoster() %>"
+                         alt="Póster de <%= p.getTitulo() %>"
+                         class="poster-ranking"
+                    >
+                </a>
+                <%}%>
+            </div>
+            <button class="scroll-btn scroll-btn-right" onclick="scrollLista(this, 1)"><i class="fa fa-chevron-right"></i></button>
         </div>
     </div>
     <%}%>
@@ -100,21 +107,23 @@
     <%for (GeneroDTO g : generos) {%>
     <%if (!g.getPeliculasIDs().isEmpty()) {%>
     <div class="peliculas-generos">
-        <h3> Peliculas de <%=g.getNombre()%>
+        <h3> Películas de <%=g.getNombre()%>
         </h3>
-        <div class="lista-peliculas">
-            <%for (PeliculaDTO p : peliculaList) {%>
-            <%if (g.getPeliculasIDs().contains(p.getId())) {%>
-            <a href="/film?id=<%= p.getId() %>">
-                <img src="<%= p.getPoster() %>"
-                     alt="Póster de <%= p.getTitulo() %>"
-                     class="poster-ranking"
-                     style="width: 180px; height: 240px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: transform 0.2s; margin: 5px;"
-                >
-            </a>
-            <%}%>
-            <%}%>
-
+        <div class="lista-peliculas-wrapper">
+            <button class="scroll-btn scroll-btn-left" onclick="scrollLista(this, -1)"><i class="fa fa-chevron-left"></i></button>
+            <div class="lista-peliculas">
+                <%for (PeliculaDTO p : peliculaList) {%>
+                <%if (g.getPeliculasIDs().contains(p.getId())) {%>
+                <a href="/film?id=<%= p.getId() %>">
+                    <img src="<%= p.getPoster() %>"
+                         alt="Póster de <%= p.getTitulo() %>"
+                         class="poster-ranking"
+                    >
+                </a>
+                <%}%>
+                <%}%>
+            </div>
+            <button class="scroll-btn scroll-btn-right" onclick="scrollLista(this, 1)"><i class="fa fa-chevron-right"></i></button>
         </div>
     </div>
     <%}%>
@@ -122,5 +131,6 @@
 
 
 </div>
+<script src="../../js/index.js"></script>
 </body>
 </html>

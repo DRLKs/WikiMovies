@@ -23,7 +23,7 @@
 body {
     background-color: var(--primary-bg);
     color: var(--text-primary);
-    padding-top: 80px !important; /* Margin-top más alto */
+    padding: 80px 78px !important;
     min-height: 100vh;
 }
 
@@ -158,31 +158,12 @@ body {
 /* Estilos de la lista de películas */
 .lista-peliculas {
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden;
     gap: 15px;
     padding: 10px 5px 20px;
     scrollbar-width: thin;
     scrollbar-color: #555 var(--primary-bg);
     scroll-behavior: smooth;
-}
-
-/* Estilización de scrollbar personalizada */
-.lista-peliculas::-webkit-scrollbar {
-    height: 8px;
-}
-
-.lista-peliculas::-webkit-scrollbar-track {
-    background: var(--secondary-bg);
-    border-radius: 4px;
-}
-
-.lista-peliculas::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 4px;
-}
-
-.lista-peliculas::-webkit-scrollbar-thumb:hover {
-    background-color: #777;
 }
 
 /* Estilo para los pósters de películas */
@@ -353,4 +334,71 @@ body {
     overflow-y: visible !important;
     max-height: none !important;
     height: auto !important;
+}
+
+/* Botones para deslizar la lista de películas */
+.lista-peliculas-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-height: 320px;
+    overflow: visible;
+}
+.scroll-btn {
+    flex: 0 0 auto;
+    background: #ff4646;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+.scroll-btn-left {
+    left: 0;
+    transform: translate(-150%, -50%);
+}
+.scroll-btn-right {
+    right: 0;
+    transform: translate(150%, -50%);
+}
+.lista-peliculas {
+    flex: 1 1 0%;
+    order: 1;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+}
+.scroll-btn:hover {
+    background: #ffd369;
+    color: #ff4646;
+}
+
+.titulo-peliculas-recomendadas {
+    background: linear-gradient(90deg, #ffd369 0%, #ff4646 100%);
+    color: #181818 !important;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    display: inline-block;
 }
