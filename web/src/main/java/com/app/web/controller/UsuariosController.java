@@ -5,7 +5,6 @@ import com.app.web.service.UsuarioService;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.ui.UsuarioSignup;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,20 +41,18 @@ public class UsuariosController extends BaseControlador {
      */
     @PostMapping("/log")
     public String iniciarSesion(@ModelAttribute()UsuarioLogin usuarioLogin,
-                                Model model, HttpSession session,
-                                HttpServletResponse response) {
+                                Model model, HttpSession session) {
 
         String correoElectronico = usuarioLogin.getEmail();
         String contrasena = usuarioLogin.getPassword();
 
-        return loginService.log(correoElectronico,contrasena,model,session,response);
+        return loginService.log(correoElectronico,contrasena,model,session);
 
     }
 
     @GetMapping("/logout")
-    public String desLoguear(HttpSession session, HttpServletRequest request, 
-                            HttpServletResponse response) {
-        loginService.logOut(session,request,response);
+    public String desLoguear(HttpSession session) {
+        loginService.logOut(session);
         
         return "redirect:/";
     }

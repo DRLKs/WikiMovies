@@ -12,10 +12,10 @@ import java.util.List;
 public interface PeliculasRepository extends JpaRepository<Pelicula, Integer> {
 
     @Query("select P from Pelicula P where lower( P.titulo ) like lower( concat( '%', :titulo, '%'))")
-    public List<Pelicula> findByTitulo(@Param("titulo") String titulo);
+    List<Pelicula> findByTitulo(@Param("titulo") String titulo);
 
     @Query("select p from Pelicula p where p.id = :id")
-    public Pelicula getPeliculaById(@Param("id") Integer id);
+    Pelicula getPeliculaById(@Param("id") Integer id);
 
     @Query("SELECT DISTINCT p FROM Pelicula p JOIN p.generos g " +
             "WHERE LOWER(p.titulo) LIKE LOWER(CONCAT('%', :titulo, '%')) " +
@@ -31,8 +31,10 @@ public interface PeliculasRepository extends JpaRepository<Pelicula, Integer> {
     @Query("SELECT p FROM Pelicula p ORDER BY p.popularidad DESC")
     List<Pelicula> findTopPeliculasByPopularidad(PageRequest pageable);
 
+    @Query("SELECT DISTINCT p FROM Pelicula p JOIN p.generos g WHERE g.id = :idGenero1 OR g.id = :idGenero2")
+    List<Pelicula> getPeliculasByGeneros(@Param("idGenero1") Integer idGenero1, @Param("idGenero2") Integer idGenero2);
 
+    @Query("SELECT DISTINCT p FROM Pelicula p JOIN p.generos g WHERE g.id = :idGenero")
+    List<Pelicula> getPeliculasByGenero(@Param("idGenero") Integer idGenero);
 
-    @Query("SELECT p FROM Pelicula p WHERE :genero MEMBER OF p.generos ORDER BY p.popularidad DESC, p.mediaVotos DESC")
-    List<Pelicula> findPeliculasByGenero(@Param("genero") Genero genero, PageRequest pageable);
 }

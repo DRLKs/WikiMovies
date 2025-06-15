@@ -5,7 +5,6 @@ import com.app.web.dto.UsuarioDTO;
 import com.app.web.service.*;
 import com.app.web.ui.FiltroBusquedaDTO;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +27,7 @@ public class MiembrosControlador extends BaseControlador {
     @Autowired private GenerosService generosService;
     @Autowired private GenerosUsuariosService generosUsuariosService;
     @Autowired private RolesService rolesService;
-    @Autowired
-    private UsuarioService usuarioService;
-    @Autowired
-    private LoginService loginService;
+    @Autowired private LoginService loginService;
 
     /**
      * Controlador de la petición del sistema para cargar todos los miembros de
@@ -102,10 +98,9 @@ public class MiembrosControlador extends BaseControlador {
      * @return JSP
      */
     @PostMapping("/profile/update")
-    public String doUpdateProfile(@ModelAttribute() UsuarioDTO usuarioProfile,
-            HttpServletRequest request, HttpSession session) {
+    public String doUpdateProfile(@ModelAttribute() UsuarioDTO usuarioProfile, HttpSession session) {
 
-        if (!estaAutenticado(request, session)) {
+        if (!estaAutenticado(session)) {
             return "redirect:/login";
         }
 
@@ -157,10 +152,12 @@ public class MiembrosControlador extends BaseControlador {
     }
 
     @GetMapping("/cambioRol")
-    public String cambioRol(@RequestParam("id") Integer idUsuario, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public String cambioRol(@RequestParam("id") Integer idUsuario, HttpSession session) {
 
         miembrosService.editarRolPremium(idUsuario);
-        loginService.actualizarUsuarioSesion(session, request, response);
+
+        loginService.actualizarUsuarioSesion(session);
+
         return "redirect:/profile?id=" + idUsuario;
     }
 

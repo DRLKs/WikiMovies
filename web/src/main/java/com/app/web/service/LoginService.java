@@ -5,9 +5,7 @@ import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
 import com.app.web.ui.UsuarioLogin;
 import com.app.web.utils.Hash;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +31,7 @@ public class LoginService extends UsuarioService {
     public String log(String correoElectronico,
                       String contrasena,
                       Model model,
-                      HttpSession session,
-                      HttpServletResponse response) {
+                      HttpSession session) {
 
         if( !this.usuarioRepositorio.existsBycorreoElectronico(correoElectronico) ){
             String msg = "El email indicado no está registrado";
@@ -67,31 +64,16 @@ public class LoginService extends UsuarioService {
     /**
      * Actualiza la sesión del usuario
      */
-    public void actualizarUsuarioSesion(HttpSession session, HttpServletRequest request, HttpServletResponse response){
+    public void actualizarUsuarioSesion(HttpSession session){
         Integer idUsuarioSesion = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
-        logOut(session, request, response);
+        logOut(session);
         guardarSesion( usuarioRepositorio.getReferenceById(idUsuarioSesion).toDTO(), session);
     }
 
-    public void logOut(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    /**
+     * Elimina la sesión del usuario del sistem de memoria, lo desloguea
+     */
+    public void logOut(HttpSession session) {
         session.removeAttribute(USUARIO_SESION);
-
-        // Eliminar la cookie de sesión
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("wikimovies_user_session".equals(cookie.getName())) {
-                    // Eliminar del cache antes de invalidar la cookie
-                    eliminarUsuarioDelSesionCache(cookie.getValue());
-
-                    // Invalidar la cookie
-                    cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                    break;
-                }
-            }
-        }
     }
 }

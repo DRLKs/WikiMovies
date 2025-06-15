@@ -8,7 +8,6 @@ import com.app.web.service.GenerosService;
 import com.app.web.service.ListasService;
 import com.app.web.service.UsuarioService;
 import com.app.web.ui.FiltroBusquedaDTO;
-import com.app.web.ui.NuevaLista;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +129,24 @@ public class ListasControlador extends BaseControlador {
         return "redirect:/mostrarLista?listaId=" + idLista;
     }
 
+    @GetMapping("/mostrarLista")
+    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpSession session) {
+
+        // Usar el método que devuelve DTO en lugar de entidad
+        ListaDTO listaDTO = listasService.getListaDTOById(listaId);
+        if (listaDTO == null) {
+            return "redirect:/error"; // o una página 404
+        }
+
+        model.addAttribute("listaDTO", listaDTO);
+
+        model.addAttribute("generos", generosService.getAllGeneros());
+
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        return "mostrarLista";
+    }
+
     /**
      * Controlador para crear una nueva lista la cual comienza vacía
      */
@@ -137,13 +154,13 @@ public class ListasControlador extends BaseControlador {
     public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
 
         // El usuario debe estar conectado para crear una lista
-        if (!estaAutenticado(request, session)) {
+        if (!estaAutenticado(session)) {
             return "redirect:/login";
         }
 
         loadCommonModelAttributes(model);
-        NuevaLista nuevaLista = new NuevaLista();
-        nuevaLista.setListaId(-1);
+        ListaDTO nuevaLista = new ListaDTO();
+        nuevaLista.setId(-1);
         model.addAttribute("model_lista", nuevaLista);
         model.addAttribute("lista", null);
 
@@ -157,21 +174,14 @@ public class ListasControlador extends BaseControlador {
     public String editarLista(@RequestParam("listaId") Integer listaId, Model model) {
         
         // Obtenemos el DTO de la entidad lista
-        ListaDTO listaDTO = listasService.getListaDTOById(listaId);
+        ListaDTO lista = listasService.getListaDTOById(listaId);
 
-        if (listaDTO == null) {
+        if (lista == null) {
             return "redirect:/listas";
         }
 
-        // Preparar datos para el formulario de edición
-        NuevaLista editarLista = new NuevaLista();
-        editarLista.setNombre(listaDTO.getNombre());
-        editarLista.setDescripcion(listaDTO.getDescripcion());
-        editarLista.setListaId(listaDTO.getId());
-
         loadCommonModelAttributes(model);
-        model.addAttribute("model_lista", editarLista);
-        model.addAttribute("lista", listaDTO);
+        model.addAttribute("lista", lista);
 
         return "editarLista";
     }
@@ -180,12 +190,12 @@ public class ListasControlador extends BaseControlador {
      * Guarda en la base de datos la nueva lista, creada por el usuario
      */
     @PostMapping("/guardarLista")
-    public String guardarLista(@ModelAttribute("model_lista") NuevaLista nuevaLista, HttpSession session) {
+    public String guardarLista(@ModelAttribute("model_lista") ListaDTO nuevaLista, HttpSession session) {
 
         // Obtenemos el usuario
         int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
         Usuario usuario = usuarioService.buscarUsuario(idUsuario);
-        Lista lista = listasService.getListaById(nuevaLista.getListaId());
+        Lista lista = listasService.getListaById(nuevaLista.getId());
         if(lista == null) { // Estamos creando la lista
             lista = new Lista();
             lista.setPeliculas(new HashSet<>());

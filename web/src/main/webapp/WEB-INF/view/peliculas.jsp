@@ -59,10 +59,10 @@
         for (PeliculaDTO pelicula : peliculas) {
             if (usuarioAutenticado) {
                 if (vistas != null) {
-                    peliculaVista = vistas.getPeliculasId().contains(pelicula.getId());
+                    peliculaVista = vistas.getPeliculas().contains(pelicula);
                 }
                 if (favoritas != null) {
-                    peliculaFavorita = favoritas.getPeliculasId().contains(pelicula.getId());
+                    peliculaFavorita = favoritas.getPeliculas().contains(pelicula);
                 }
             } else {
                 peliculaVista = false;

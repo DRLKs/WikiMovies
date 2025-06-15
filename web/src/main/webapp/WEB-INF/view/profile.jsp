@@ -90,7 +90,7 @@
                             <h3 class="list-title"><%= lista.getNombre() %></h3>
                             <p class="list-description"><%= lista.getDescripcion() %></p>
                             <p class="list-propietario">Usuario: <%=lista.getNombreUsuario()%></p>
-                            <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
+                            <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
                         </div>
                     </div>
                     </a>

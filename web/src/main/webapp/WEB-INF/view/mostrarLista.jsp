@@ -1,7 +1,6 @@
 <%@ page import="com.app.web.dto.PeliculaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
-<%@ page import="com.app.web.service.PeliculasService" %>
 
 <html>
 <head>
@@ -11,13 +10,13 @@
 </head>
     <%
         ListaDTO listaDTO = (ListaDTO) request.getAttribute("listaDTO");
-        PeliculasService peliculasService = (PeliculasService) request.getAttribute("peliculasService");
-        Boolean peliculaFavorita = (Boolean) request.getAttribute("peliculaFavorita");
     %>
 
 <body>
 
-    <%@ include file="barra_navegacion.jsp" %>    <div class="container-header">
+    <%@ include file="barra_navegacion.jsp" %>
+
+    <div class="container-header">
         <div>
             <img src="<%= listaDTO.getFotoUrl() != null ? listaDTO.getFotoUrl() : "../../img/default-list.png" %>"
                  alt="<%= listaDTO.getNombre() %>">
@@ -25,7 +24,7 @@
         <div class="info">
             <h1 class="lista-name"><%=listaDTO.getNombre()%></h1>
             <p class="lista-descripcion"><%= listaDTO.getDescripcion() %></p>
-            <p class="movie-count" > Número de películas: <%=listaDTO.getPeliculasId().size()%></p>
+            <p class="movie-count" > Número de películas: <%=listaDTO.getPeliculas().size()%></p>
         </div>
         <%if( usuario != null && (usuario.getIdUsuario().equals(listaDTO.getUsuarioId()) ) && (!listaDTO.getNombre().equals("Vistas") && !listaDTO.getNombre().equals("Favoritas"))){%>
 
@@ -33,13 +32,6 @@
                 <button>Editar lista</button>
             </form>
 
-
-        <form action="/favorite" method="post" class="favorite-form">
-            <input type="hidden" name="idPelicula" value="<%= listaDTO.getId() %>">
-            <button type="submit" class="favorite-button">
-                <i class="heart-icon <%= peliculaFavorita ? "active" : "" %>">❤</i>
-            </button>
-        </form>
         <%}%>
 
     </div>    
@@ -52,9 +44,7 @@
             <td></td>
             <%}%>
         </tr>    <%
-        for(Integer peliculaId : listaDTO.getPeliculasId()){
-            PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(peliculaId);
-            if(pelicula != null) {
+        for(PeliculaDTO pelicula : listaDTO.getPeliculas()){
     %>
         <tr>
             <td>
@@ -78,7 +68,6 @@
         </tr>
 
     <%
-            }
         }
     %>
 

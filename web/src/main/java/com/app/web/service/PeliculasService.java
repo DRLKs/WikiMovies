@@ -154,24 +154,36 @@ public class PeliculasService extends DTOService<PeliculaDTO, Pelicula> {
     }
 
     /**
-     * Filtra las películas que contienen alguno de los géneros.
-     * @param idPeliculas Lista de ids de las películas que no queremos que se filtren porque ya están en esa lista
+     * Películas que recomendaremos al usuario según sus géneros más vistos.
+     * @param peliculasUsuario Lista de películas que el usuario ya tiene en su lista
      * @param genero1 Primer género
      * @param genero2 Segundo género
      * @return Lista de películas que contienen alguno de los géneros
      */
-    public List<PeliculaDTO> filtrarPorDosGeneros(List<Integer> idPeliculas, GeneroDTO genero1, GeneroDTO genero2) {
-        List<Pelicula> peliculas = peliculasRepository.findAll();
+    public List<PeliculaDTO> filtrarPorDosGeneros(List<PeliculaDTO> peliculasUsuario, GeneroDTO genero1, GeneroDTO genero2) {
 
-        List<Pelicula> filtrado = peliculas.stream()
-                .filter(p -> !idPeliculas.contains(p.getId()) &&
-                        p.getGeneros().stream().anyMatch(g ->
-                                g.getId().equals(genero1.getId()) ||
-                                        (genero2 != null && g.getId().equals(genero2.getId()))
-                        ))
-                .toList();
+        List<Pelicula> peliculasGeneros;
 
-        return this.entity2DTO(filtrado);
+        // Para los casos en el que usuario solo le gusten películas con un género
+        // La función se reutiliza pero pasando un género como nulo
+        if( genero1 == null ) {
+            peliculasGeneros = peliculasRepository.getPeliculasByGenero(genero2.getId());
+        }else if( genero2 == null ) {
+            peliculasGeneros = peliculasRepository.getPeliculasByGenero(genero1.getId());
+        }else{
+            peliculasGeneros = peliculasRepository.getPeliculasByGeneros(genero1.getId(), genero2.getId());
+        }
+
+        List<PeliculaDTO> peliculasObtenidas = new ArrayList<>();
+
+        // Recorremos todas las películas que contienen esos géneros
+        for( PeliculaDTO pelicula : entity2DTO(peliculasGeneros) ){
+            if( !peliculasUsuario.contains(pelicula) ){
+                peliculasObtenidas.add(pelicula);
+            }
+        }
+
+        return peliculasObtenidas;
     }
 
 }

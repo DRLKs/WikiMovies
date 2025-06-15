@@ -33,9 +33,9 @@
         <%}%>
 
         <!-- Formulario para crear/editar lista -->
-        <form:form action="/guardarLista" method="post" modelAttribute="model_lista" class="formulario-crear-lista">
+        <form:form action="/guardarLista" method="post" modelAttribute="lista" class="formulario-crear-lista">
 
-            <form:hidden path="listaId"/>
+            <form:hidden path="id"/>
 
             <div class="campo-formulario">
                 <label for="nombre" class="label-campo">Nombre de la Lista *</label>
@@ -80,7 +80,7 @@
             </div>
 
             <div class="botones-formulario">
-                <a href="/misListas" class="boton-cancelar">Cancelar</a>
+                <a href="/mostrarLista?listaId=<%= lista.getId() %>" class="boton-cancelar">Cancelar</a>
                 <form:button type="submit" class="boton-guardar">Guardar</form:button>
             </div>
 

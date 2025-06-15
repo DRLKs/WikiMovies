@@ -1,4 +1,3 @@
-<%@ page import="com.app.web.entity.Usuario" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.app.web.dto.ListaDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -62,7 +61,7 @@
                 <p class="list-propietario">Usuario: <%=lista.getNombreUsuario()%></p>
 
                 <!-- El DTO no tiene usuario, así que no mostramos el nombre -->
-                <span class="list-count"><%= lista.getPeliculasId().size() %> películas</span>
+                <span class="list-count"><%= lista.getPeliculas().size() %> películas</span>
             </div>
         </div>
     </a>

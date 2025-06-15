@@ -5,6 +5,7 @@ import com.app.web.dao.UsuariosRepositorio;
 import com.app.web.dao.PeliculasRepository;
 import com.app.web.dto.GeneroDTO;
 import com.app.web.dto.ListaDTO;
+import com.app.web.dto.PeliculaDTO;
 import com.app.web.entity.Genero;
 import com.app.web.entity.Lista;
 import com.app.web.entity.Pelicula;
@@ -363,11 +364,11 @@ public class ListasService extends DTOService<ListaDTO, Lista> {
         // Procesar las películas - esto requiere cargarlas por ID
         // Esta implementación podría necesitar optimización si hay muchas películas
         Set<Pelicula> peliculasSet = new LinkedHashSet<>();
-        if (listaDTO.getPeliculasId() != null) {
-            for (Integer peliculaId : listaDTO.getPeliculasId()) {
+        if (listaDTO.getPeliculas() != null) {
+            for (PeliculaDTO peliculaDTO : listaDTO.getPeliculas()) {
                 // Esto asume que hay un método para obtener películas por ID
                 // Se debería inyectar el servicio de películas si es necesario
-                Pelicula pelicula = peliculaRepository.findById(peliculaId).orElse(null);
+                Pelicula pelicula = peliculaRepository.findById(peliculaDTO.getId()).orElse(null);
                 if (pelicula != null) {
                     peliculasSet.add(pelicula);
                 }

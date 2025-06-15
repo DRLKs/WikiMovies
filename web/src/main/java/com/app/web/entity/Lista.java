@@ -2,13 +2,16 @@ package com.app.web.entity;
 
 import com.app.web.dto.DTO;
 import com.app.web.dto.ListaDTO;
+import com.app.web.dto.PeliculaDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -52,8 +55,14 @@ public class Lista implements DTO<ListaDTO> {
             listaDTO.setUsuarioId(this.idUsuario.getId());
             listaDTO.setNombreUsuario(this.idUsuario.getNombreUsuario());
         }
-        // Convertir los IDs de películas
-        this.peliculas.forEach(pelicula -> listaDTO.getPeliculasId().add(pelicula.getId()));
+
+        // Obtenemos todas las películas de la lista y la pasamos a DTO
+        List<PeliculaDTO> peliculasDTOList = new ArrayList<>();
+        for( Pelicula pelicula : this.peliculas ) {
+            peliculasDTOList.add(pelicula.toDTO());
+        }
+        listaDTO.setPeliculas(peliculasDTOList);
+
         return listaDTO;
     }
 

@@ -31,33 +31,32 @@ public class Controlador extends BaseControlador {
      * Controlador de la pantalla inicial
      */
     @GetMapping("/")
-    public String index(Model model, HttpServletRequest request,
-                        HttpSession session) {
+    public String index(Model model, HttpSession session) {
 
-        if (estaAutenticado(request, session)) {
+        if (estaAutenticado(session)) {
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
             ListaDTO favoritas = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             ListaDTO vistas = listasService.getListaVistasDTO(usuario.getIdUsuario());
             // Realizamos lo del recomendador de las películas Favoritas aquí
-            if (usuario.getRol() > 0 && !favoritas.getPeliculasId().isEmpty()) {
+            if (usuario.getRol() > 0 && !favoritas.getPeliculas().isEmpty()) {
                 List<GeneroDTO> generosFavoritas = listasService.generosMasRepetidosEnLaLista(favoritas);
                 List<PeliculaDTO> peliculasRecomendadasFavoritas = new ArrayList<>();
                 if (generosFavoritas.size() > 1) {
-                    peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosFavoritas.get(0), generosFavoritas.get(1));
+                    peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculas(), generosFavoritas.get(0), generosFavoritas.get(1));
                 } else if (generosFavoritas.size() == 1) {
-                    peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculasId(), generosFavoritas.get(0), null);
+                    peliculasRecomendadasFavoritas = peliculasService.filtrarPorDosGeneros(favoritas.getPeliculas(), generosFavoritas.get(0), null);
                 }
                 model.addAttribute("peliculasRecomendadasFavoritas", peliculasRecomendadasFavoritas);
             }
 
             // Realizamos lo del recomendador de las películas Vistas aquí
-            if (usuario.getRol() > 0 && !vistas.getPeliculasId().isEmpty()) {
+            if (usuario.getRol() > 0 && !vistas.getPeliculas().isEmpty()) {
                 List<GeneroDTO> generosVistas = listasService.generosMasRepetidosEnLaLista(vistas);
                 List<PeliculaDTO> peliculasRecomendadasVistas = new ArrayList<>();
                 if (generosVistas.size() > 1) {
-                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(vistas.getPeliculasId(), generosVistas.get(0), generosVistas.get(1));
+                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(vistas.getPeliculas(), generosVistas.get(0), generosVistas.get(1));
                 } else if (generosVistas.size() == 1) {
-                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(vistas.getPeliculasId(), generosVistas.get(0), null);
+                    peliculasRecomendadasVistas = peliculasService.filtrarPorDosGeneros(vistas.getPeliculas(), generosVistas.get(0), null);
                 }
                 model.addAttribute("peliculasRecomendadasVistas", peliculasRecomendadasVistas);
             }
@@ -80,10 +79,9 @@ public class Controlador extends BaseControlador {
      * Controlador del formulario sobre el filtro al buscar películas
      */
     @GetMapping("/search")
-    public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO, Model model, HttpServletRequest request,
-            HttpSession session) {
+    public String search(@ModelAttribute() FiltroBusquedaDTO filtroBusquedaDTO, Model model, HttpSession session) {
 
-        if (estaAutenticado(request, session)) {
+        if (estaAutenticado(session)) {
             UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
 
             model.addAttribute("favoritas", listasService.getListaFavoritasDTO(usuario.getIdUsuario()));
@@ -149,11 +147,11 @@ public class Controlador extends BaseControlador {
             // Usar métodos DTO en lugar de entidades
             ListaDTO peliculasFavoritasDTO = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
             peliculaFavorita = peliculasFavoritasDTO != null
-                    && peliculasFavoritasDTO.getPeliculasId().contains(pelicula.getId());
+                    && peliculasFavoritasDTO.getPeliculas().contains(pelicula);
 
             ListaDTO peliculasVistasDTO = listasService.getListaVistasDTO(usuario.getIdUsuario());
             peliculaVista = peliculasVistasDTO != null
-                    && peliculasVistasDTO.getPeliculasId().contains(pelicula.getId());
+                    && peliculasVistasDTO.getPeliculas().contains(pelicula);
 
             List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(usuario.getIdUsuario()); // Obtiene las
             // listas del
@@ -163,7 +161,7 @@ public class Controlador extends BaseControlador {
 
             List<ListaDTO> listasPeliculaDTO = new ArrayList<>();
             for (ListaDTO l : listasUsuarioDTO) {
-                if (l.getPeliculasId().contains(pelicula.getId())) {
+                if (l.getPeliculas().contains(pelicula)) {
                     listasPeliculaDTO.add(l);
                 }
             }
@@ -191,7 +189,7 @@ public class Controlador extends BaseControlador {
             HttpSession session) {
 
         // Un usuario solo puede guardarse una película como favorita si tiene la sesión iniciada
-        if (!estaAutenticado(request, session)) {
+        if (!estaAutenticado(session)) {
             return "redirect:/login";
         }
 
@@ -215,7 +213,7 @@ public class Controlador extends BaseControlador {
             HttpSession session) {
 
         // Un usuario no puede guardarse una películas como vistas si no tiene la sesión iniciada
-        if (!estaAutenticado(request, session)) {
+        if (!estaAutenticado(session)) {
             return "redirect:/login";
         }
 
@@ -245,23 +243,23 @@ public class Controlador extends BaseControlador {
 
         // Un usuario no puede guardarse una película a una lista si tiene la sesión
         // iniciada
-        if (!estaAutenticado(request, session)) {
+        if (!estaAutenticado(session)) {
             return "redirect:/login";
         } // Obtenemos los datos del usuario
         int idUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
 
         // Obtenemos todas las listas como DTOs
         List<ListaDTO> listasUsuarioDTO = listasService.getListasDTOByUsuario(idUsuario);
-
+        PeliculaDTO pelicula = peliculasService.getPeliculaDTOById(idPelicula);
         for (ListaDTO lista : listasUsuarioDTO) {
             if (listasSeleccionadas.contains(lista.getId())) {
                 // Si la lista está seleccionada, añadimos la película si no está ya
-                if (!lista.getPeliculasId().contains(idPelicula)) {
-                    lista.getPeliculasId().add(idPelicula);
+                if (!lista.getPeliculas().contains(pelicula)) {
+                    lista.getPeliculas().add(pelicula);
                 }
             } else {
                 // Si la lista no está seleccionada, quitamos la película si está
-                lista.getPeliculasId().remove(idPelicula);
+                lista.getPeliculas().remove(pelicula);
             }
             // Guardamos los cambios usando el método DTO
             listasService.guardarListaDTO(lista);
@@ -304,36 +302,6 @@ public class Controlador extends BaseControlador {
         model.addAttribute("pelicula", pelicula);
 
         return "informacionPelicula";
-    }
-
-    @GetMapping("/mostrarLista")
-    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpSession session) {
-
-        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
-
-        // Usar el método que devuelve DTO en lugar de entidad
-        ListaDTO listaDTO = listasService.getListaDTOById(listaId);
-        if (listaDTO == null) {
-            return "redirect:/error"; // o una página 404
-        }
-
-        model.addAttribute("listaDTO", listaDTO);
-        // Añadir el servicio de películas para poder obtener detalles de las películas
-        model.addAttribute("peliculasService", peliculasService);
-
-        // Verificar si la lista es favorita para el usuario
-        boolean peliculaFavorita;
-        if (usuario != null) {
-            ListaDTO favoritasDTO = listasService.getListaFavoritasDTO(usuario.getIdUsuario());
-            peliculaFavorita = favoritasDTO != null && favoritasDTO.getPeliculasId().contains(listaDTO.getId());
-            model.addAttribute("peliculaFavorita", peliculaFavorita);
-        }
-
-        model.addAttribute("generos", generosService.getAllGeneros());
-
-        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
-
-        return "mostrarLista";
     }
 
     @PostMapping("/editarPelicula")
