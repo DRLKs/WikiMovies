@@ -131,7 +131,7 @@
             <%
                 for (GeneroDTO genero : pelicula.getGeneros()) {
             %>
-            <span class="genero-tag"><%= genero.getNombre() %></span>
+            <a class="genero-tag" href="/search?titulo=&generos=<%=genero.getId()%>&_generos=on"><%= genero.getNombre() %></a>
             <%
                 }
             %>

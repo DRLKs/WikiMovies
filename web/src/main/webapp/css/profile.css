@@ -437,6 +437,12 @@ input[type="file"] {
     box-shadow: 0 3px 10px rgba(229, 9, 20, 0.3);
 }
 
+.radio-group span {
+    display: inline-block;
+    margin-right: 10px; /* Ajusta según necesidad */
+    margin-bottom: 4px;
+}
+
 /* Estilos para el modal de eliminación */
 .delete-modal {
     display: none;

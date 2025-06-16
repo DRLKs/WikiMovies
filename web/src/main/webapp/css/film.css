@@ -137,6 +137,15 @@ body {
         padding: 6px 8px;
         min-width: 60px;
     }
+
+    .genero-tag,
+    .genero-tag:visited,
+    .genero-tag:hover,
+    .genero-tag:active {
+        text-decoration: none !important;
+        outline: none;
+        box-shadow: none;
+    }
 }
 
 /* For larger screens, make it more cinematic */
@@ -181,13 +190,13 @@ body {
     padding: 8px 15px;
     border-radius: 4px;
     font-size: 14px;
-    /* Cambio de 60px a un tamaño razonable */
     font-weight: 500;
     display: inline-block;
     transition: all 0.3s ease;
     border: 1px solid var(--color-divider);
     text-align: center;
     min-width: 80px;
+    text-decoration: none !important;
 }
 
 .genero-tag:hover {

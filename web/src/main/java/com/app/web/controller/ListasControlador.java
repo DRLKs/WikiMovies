@@ -92,7 +92,7 @@ public class ListasControlador extends BaseControlador {
 
 
         // Convertir entidades Lista a ListaDTO y la lista a tipo List
-        List<ListaDTO> misListas = listasService.getListasUsuarioNoFavoritasNoVistas(id);
+        List<ListaDTO> misListas = listasService.getListasUsuario(id);
 
         model.addAttribute("listas", misListas);
 

@@ -92,6 +92,7 @@ body {
     justify-content: center;
     text-align: center;
     transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer;
 }
 .miembro-card:hover {
     box-shadow: 0 4px 24px rgba(229,9,20,0.10);

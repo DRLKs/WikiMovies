@@ -155,7 +155,9 @@
                     <div class="form-group">
                         <label for="rol">Rol del usuario:</label><br/>
                             <%--@elvariable id="rolesUsuarios" type="java.util.List<RolesDTO>"--%>
-                            <form:radiobuttons id="rol" path="rol" itemValue="id" itemLabel="nombre" items="${rolesUsuarios}"  />
+                            <div class="radio-group">
+                            <form:radiobuttons id="rol" path="rol" itemValue="id" itemLabel="nombre" items="${rolesUsuarios}" element="span" />
+                            </div>
                     </div>
 
                     <% } %>
