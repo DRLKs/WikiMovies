@@ -74,24 +74,5 @@
         });
     </script>
 
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById("password");
-            const icon = document.querySelector(".fas")
-            if (passwordInput) {
-                const currentType = passwordInput.getAttribute("type");
-                if(currentType === "password"){
-                    passwordInput.setAttribute("type", "text");
-                    icon.setAttribute("class", "fas fa-eye-slash");
-                } else {
-                    passwordInput.setAttribute("type", "password");
-                    icon.setAttribute("class", "fas fa-eye");
-                }
-            } else {
-                console.error("Campo de contraseña no encontrado.");
-            }
-        }
-    </script>
-
 </body>
 </html>
