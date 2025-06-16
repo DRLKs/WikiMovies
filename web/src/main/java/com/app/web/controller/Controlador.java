@@ -117,7 +117,7 @@ public class Controlador extends BaseControlador {
         model.addAttribute("peliculas", peliculas);
 
         // Modelos necesarios para la barra de navegación
-        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("filtroBusquedaDTO", filtroBusquedaDTO);
         model.addAttribute("generos", generosService.getAllGeneros());
 
         return "peliculas";
