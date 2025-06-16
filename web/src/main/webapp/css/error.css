@@ -1,0 +1,632 @@
+/* Variables para tema oscuro con detalles rojos */
+:root {
+    --error-primary: #e50914;
+    --error-secondary: #b8070f;
+    --error-tertiary: #8b0000;
+    --error-light: #ff4757;
+    --error-bg: rgba(229, 9, 20, 0.1);
+    
+    --bg-primary: #141414;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2a2a2a;
+    --bg-quaternary: #333333;
+    --bg-overlay: #0a0a0a;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #e5e5e5;
+    --text-tertiary: #b3b3b3;
+    --text-muted: #808080;
+    --text-disabled: #666666;
+    
+    --border-primary: #333333;
+    --border-secondary: #404040;
+    --border-accent: #e50914;
+    
+    --shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.5);
+    --shadow-large: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6);
+    --shadow-red: 0 4px 16px rgba(229, 9, 20, 0.3), 0 2px 8px rgba(229, 9, 20, 0.2);
+    
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    --transition-fast: 0.15s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bg-overlay), var(--bg-primary));
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fondo con patrón sutil tipo WikiMovies */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(229, 9, 20, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, rgba(229, 9, 20, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.01) 50%, transparent 100%);
+    background-size: 60px 60px, 80px 80px, 100% 2px;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+/* Contenedor principal estilo WikiMovies */
+.error-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary));
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-large);
+    padding: var(--spacing-2xl);
+    text-align: center;
+    width: 90vw;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+/* Borde rojo característico de WikiMovies */
+.error-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--error-primary), var(--error-light), var(--error-primary));
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+}
+
+/* Efecto de brillo sutil en el contenedor */
+.error-container::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+/* Icono con estilo WikiMovies */
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--error-primary);
+    text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: all var(--transition-medium);
+}
+
+.error-icon:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 30px rgba(229, 9, 20, 0.7);
+}
+
+.error-icon.warning {
+    color: var(--text-secondary);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.error-icon.info {
+    color: var(--text-tertiary);
+    text-shadow: 0 0 20px rgba(179, 179, 179, 0.3);
+}
+
+/* Título estilo WikiMovies */
+.error-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.025em;
+    position: relative;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.error-title.error {
+    background: linear-gradient(45deg, var(--error-primary), var(--error-light));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(229, 9, 20, 0.3));
+}
+
+.error-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--error-primary), transparent);
+    box-shadow: 0 0 8px rgba(229, 9, 20, 0.4);
+}
+
+/* Código de error con estilo de terminal */
+.error-code {
+    font-size: 0.875rem;
+    color: var(--error-primary);
+    font-family: 'Courier New', 'SF Mono', monospace;
+    background: var(--bg-overlay);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    display: inline-block;
+    border: 1px solid var(--border-accent);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(229, 9, 20, 0.2);
+}
+
+/* Mensaje principal con diseño consistente */
+.error-message {
+    padding: var(--spacing-xl);
+    background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-quaternary));
+    border-radius: var(--border-radius-lg);
+    border-left: 4px solid var(--error-primary);
+    text-align: left;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: var(--spacing-lg) 0;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+}
+
+.error-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--error-primary), var(--error-secondary));
+    border-radius: 0 0 0 var(--border-radius-lg);
+    box-shadow: 0 0 8px rgba(229, 9, 20, 0.3);
+}
+
+.error-message.warning {
+    border-left-color: var(--text-muted);
+    background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary));
+}
+
+.error-message.warning::before {
+    background: var(--text-muted);
+}
+
+.error-message.info {
+    border-left-color: var(--text-tertiary);
+    background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary));
+}
+
+.error-message.info::before {
+    background: var(--text-tertiary);
+}
+
+.error-message strong {
+    color: var(--error-primary);
+    font-weight: 600;
+}
+
+/* Grid de información estilo WikiMovies */
+.error-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+}
+
+.error-info-item {
+    background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary));
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-primary);
+    text-align: left;
+    transition: all var(--transition-medium);
+    position: relative;
+    box-shadow: var(--shadow-dark);
+}
+
+.error-info-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--error-primary), transparent);
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+}
+
+.error-info-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-red);
+    border-color: var(--border-accent);
+}
+
+.error-info-item:hover::before {
+    opacity: 1;
+}
+
+.error-info-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+}
+
+.error-info-value {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    word-break: break-word;
+    font-family: 'Courier New', monospace;
+    line-height: 1.4;
+}
+
+/* Detalles técnicos con estilo consistente */
+.error-details {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-lg);
+    margin: var(--spacing-lg) 0;
+    overflow: hidden;
+    box-shadow: var(--shadow-dark);
+}
+
+.error-details-header {
+    background: linear-gradient(90deg, var(--bg-overlay), var(--bg-primary));
+    color: var(--text-primary);
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all var(--transition-medium);
+    user-select: none;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.error-details-header:hover {
+    background: linear-gradient(90deg, var(--bg-primary), var(--bg-secondary));
+    color: var(--error-primary);
+}
+
+.error-details-header i {
+    transition: all var(--transition-medium);
+    color: var(--error-primary);
+}
+
+.error-details-content {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-secondary);
+}
+
+.error-details-content.expanded {
+    padding: var(--spacing-lg);
+    max-height: 500px;
+}
+
+.error-details-content pre {
+    background: var(--bg-overlay);
+    color: var(--text-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    font-family: 'Courier New', 'SF Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border: 1px solid var(--border-primary);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Texto de ayuda */
+.error-container > p {
+    color: var(--text-terciary);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-primary);
+}
+
+/* Botones estilo WikiMovies */
+.error-actions {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--border-primary);
+    position: relative;
+}
+
+.error-actions::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--error-primary), transparent);
+    box-shadow: 0 0 8px rgba(229, 9, 20, 0.4);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all var(--transition-medium);
+    border: 1px solid;
+    min-width: 140px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--error-primary), var(--error-secondary));
+    color: var(--text-primary);
+    border-color: var(--error-primary);
+    box-shadow: var(--shadow-red);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--error-light), var(--error-primary));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(229, 9, 20, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-quaternary));
+    color: var(--text-secondary);
+    border-color: var(--border-primary);
+    box-shadow: var(--shadow-dark);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--bg-quaternary), var(--bg-tertiary));
+    color: var(--text-primary);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--bg-overlay), var(--bg-primary));
+    color: var(--text-primary);
+    border-color: var(--error-primary);
+    box-shadow: var(--shadow-dark);
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-red);
+}
+
+/* Partículas sutiles */
+.particles {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 30s linear infinite;
+}
+
+.particle.type-1 {
+    background: radial-gradient(circle, var(--error-primary), transparent);
+    opacity: 0.1;
+}
+
+.particle.type-2 {
+    background: radial-gradient(circle, var(--text-muted), transparent);
+    opacity: 0.05;
+}
+
+.particle.type-3 {
+    background: radial-gradient(circle, var(--text-terciary), transparent);
+    opacity: 0.03;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-10vh) translateX(50px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Scroll personalizado estilo WikiMovies */
+.error-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.error-container::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 3px;
+}
+
+.error-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--error-primary), var(--error-secondary));
+    border-radius: 3px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.error-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--error-light), var(--error-primary));
+}
+
+/* Responsive manteniendo la estructura */
+@media (max-width: 768px) {
+    .error-container {
+        width: 95vw;
+        padding: var(--spacing-xl) var(--spacing-lg);
+        gap: var(--spacing-md);
+    }
+    
+    .error-icon {
+        font-size: 3rem;
+    }
+    
+    .error-title {
+        font-size: 1.875rem;
+    }
+    
+    .error-message {
+        padding: var(--spacing-lg);
+        font-size: 1rem;
+    }
+    
+    .error-info-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-container {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .error-icon {
+        font-size: 2.5rem;
+    }
+    
+    .error-title {
+        font-size: 1.5rem;
+    }
+    
+    .error-message {
+        font-size: 0.875rem;
+        padding: var(--spacing-md);
+    }
+}
+
+/* Estados de focus para accesibilidad */
+.btn:focus,
+.error-details-header:focus {
+    outline: 2px solid var(--error-primary);
+    outline-offset: 2px;
+}
+
+/* Alto contraste para accesibilidad */
+@media (prefers-contrast: high) {
+    :root {
+        --text-primary: #ffffff;
+        --text-secondary: #f0f0f0;
+        --error-primary: #ff0000;
+        --bg-primary: #000000;
+    }
+}
+
+/* Animaciones reducidas para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
