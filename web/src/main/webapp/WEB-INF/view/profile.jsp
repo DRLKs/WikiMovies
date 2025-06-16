@@ -192,9 +192,11 @@
                 <button onclick="hideDeleteModal()" class="btn-cancel-delete">
                     Cancelar
                 </button>
-                <button onclick="confirmUserDeletion()" class="btn-confirm-delete">
-                    Eliminar
-                </button>
+                <form action="/eliminar?id=<%=userProfile.getIdUsuario()%>" method="post">
+                    <button type="submit" class="btn-confirm-delete">
+                        Eliminar
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -229,25 +231,6 @@
         }, 400);
         
         userIdToDelete = null;
-    }
-
-    function confirmUserDeletion() {
-        if (userIdToDelete) {
-            // Efecto visual de confirmación
-            const confirmBtn = document.querySelector('.btn-confirm-delete');
-            const originalText = confirmBtn.textContent;
-            confirmBtn.textContent = 'Eliminando...';
-            confirmBtn.style.opacity = '0.7';
-            confirmBtn.disabled = true;
-            
-            setTimeout(() => {
-                const form = document.createElement('form');
-                form.method = 'post';
-                form.action = '/eliminar?id=' + userIdToDelete;
-                document.body.appendChild(form);
-                form.submit();
-            }, 800);
-        }
     }
 
     // Cerrar con Escape
