@@ -1,6 +1,7 @@
 package com.app.web.service;
 
 import com.app.web.dao.UsuariosRepositorio;
+import com.app.web.dto.UsuarioDTO;
 import com.app.web.entity.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import java.util.*;
 
 
 @Service
-public class UsuarioService {
+public class UsuarioService extends DTOService<UsuarioDTO, Usuario> {
 
     @Autowired private UsuariosRepositorio usuarioRepositorio;
 
@@ -26,12 +27,12 @@ public class UsuarioService {
         return usuario;
     }
 
-    public List<Usuario> usuarioSeguidos(int id){
+    public List<UsuarioDTO> usuarioSeguidos(int id){
         List<Usuario> seguidos = new ArrayList<>();
         if(id > 0){
             seguidos = usuarioRepositorio.getSeguidos(id);
         }
-        return seguidos;
+        return this.entity2DTO(seguidos);
     }
 
 

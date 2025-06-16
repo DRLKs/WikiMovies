@@ -65,12 +65,13 @@ public class Controlador extends BaseControlador {
         List<PeliculaDTO> peliculas = peliculasService.getAllPeliculasDTO();
         model.addAttribute("peliculas", peliculas);
 
-        model.addAttribute("generos", generosService.getAllGeneros());
 
         List<PeliculaDTO> peliculasRanking = peliculasService.buscarPeliculaDTOByPopularidad(PageRequest.of(0, 3)); // La selección del día es un top 3 películas ordenadas por popularidad
         model.addAttribute("peliculasRanking", peliculasRanking);
 
+        // Modelos necesarios para la barra de navegación
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("generos", generosService.getAllGeneros());
 
         return "index";
     }
@@ -115,9 +116,9 @@ public class Controlador extends BaseControlador {
 
         model.addAttribute("peliculas", peliculas);
 
+        // Modelos necesarios para la barra de navegación
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
         model.addAttribute("generos", generosService.getAllGeneros());
-
-        model.addAttribute("filtroBusquedaDTO", filtroBusquedaDTO);
 
         return "peliculas";
     }
@@ -171,9 +172,9 @@ public class Controlador extends BaseControlador {
         model.addAttribute("peliculaFavorita", peliculaFavorita);
         model.addAttribute("peliculaVista", peliculaVista);
 
-        model.addAttribute("generos", generosService.getAllGeneros());
-
+        // Modelos necesarios para la barra de navegación
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("generos", generosService.getAllGeneros());
 
         return "film";
     }
@@ -289,9 +290,9 @@ public class Controlador extends BaseControlador {
         // Para que la búsqueda y el filtro funcione
         model.addAttribute("titulo", "");
 
-        model.addAttribute("generos", generosService.getAllGeneros());
-
+        // Modelos necesarios para la barra de navegación
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("generos", generosService.getAllGeneros());
 
         return "peliculas";
     }
@@ -309,11 +310,11 @@ public class Controlador extends BaseControlador {
         PeliculaDTO pelicula = peliculasService.buscarPeliculaDTO(idPelicula);
         model.addAttribute("pelicula", pelicula);
 
-        model.addAttribute("generos", generosService.getAllGeneros());
-
         model.addAttribute("idiomas", idiomasService.getAllIdiomas());
 
+        // Modelos necesarios para la barra de navegación
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("generos", generosService.getAllGeneros());
 
         return "editarPelicula";
     }
@@ -323,11 +324,11 @@ public class Controlador extends BaseControlador {
 
         model.addAttribute("pelicula", null);
 
-        model.addAttribute("generos", generosService.getAllGeneros());
-
         model.addAttribute("idiomas", idiomasService.getAllIdiomas());
 
+        // Modelos necesarios para la barra de navegación
         model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        model.addAttribute("generos", generosService.getAllGeneros());
 
         return "editarPelicula";
     }

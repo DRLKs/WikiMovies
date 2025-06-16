@@ -8,7 +8,6 @@ import com.app.web.service.GenerosService;
 import com.app.web.service.ListasService;
 import com.app.web.service.UsuarioService;
 import com.app.web.ui.FiltroBusquedaDTO;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.app.web.utils.Constantes.USUARIO_SESION;
 
@@ -68,20 +65,15 @@ public class ListasControlador extends BaseControlador {
      * Controlador para mostrar listas de usuarios seguidos
      */
     @GetMapping("/listasSeguidos")
-    public String listasSeguidos(@RequestParam("id") Integer id, Model model, HttpSession session) {
+    public String listasSeguidos(@RequestParam("id") Integer id, Model model) {
         
         // Obtenemos los usuarios que sigue el usuario
-        List<Usuario> seguidos = usuarioService.usuarioSeguidos(id);
+        List<UsuarioDTO> seguidos = usuarioService.usuarioSeguidos(id);
         List<ListaDTO> listasSeguidos = new ArrayList<>();
 
         // Recolectar listas de usuarios seguidos
-        for (Usuario seguido : seguidos) {
-            if (seguido.getListas() != null) {
-                // Convertir entidades Lista a ListaDTO
-                listasSeguidos.addAll(seguido.getListas().stream()
-                        .map(Lista::toDTO)
-                        .collect(Collectors.toList()));
-            }
+        for (UsuarioDTO seguido : seguidos) {
+            listasSeguidos.addAll( listasService.getListasUsuarioNoFavoritasNoVistas( seguido.getIdUsuario() ) );
         }
         model.addAttribute("listas", listasSeguidos);
 
@@ -98,13 +90,9 @@ public class ListasControlador extends BaseControlador {
     @GetMapping("/misListas")
     public String misListas(@RequestParam("id") Integer id, Model model) {
 
-        Usuario miUsuario = usuarioService.buscarUsuario(id);
-        Set<Lista> misListasEntidades = miUsuario.getListas();
 
         // Convertir entidades Lista a ListaDTO y la lista a tipo List
-        List<ListaDTO> misListas = misListasEntidades.stream()
-                .map(Lista::toDTO)
-                .toList();
+        List<ListaDTO> misListas = listasService.getListasUsuarioNoFavoritasNoVistas(id);
 
         model.addAttribute("listas", misListas);
 
@@ -130,7 +118,7 @@ public class ListasControlador extends BaseControlador {
     }
 
     @GetMapping("/mostrarLista")
-    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model, HttpSession session) {
+    public String mostrarLista(@RequestParam("listaId") Integer listaId, Model model) {
 
         // Usar el método que devuelve DTO en lugar de entidad
         ListaDTO listaDTO = listasService.getListaDTOById(listaId);
@@ -151,7 +139,7 @@ public class ListasControlador extends BaseControlador {
      * Controlador para crear una nueva lista la cual comienza vacía
      */
     @GetMapping("/crearLista")
-    public String crearLista(Model model, HttpServletRequest request, HttpSession session) {
+    public String crearLista(Model model, HttpSession session) {
 
         // El usuario debe estar conectado para crear una lista
         if (!estaAutenticado(session)) {

@@ -29,6 +29,18 @@ public class MiembrosControlador extends BaseControlador {
     @Autowired private RolesService rolesService;
     @Autowired private LoginService loginService;
 
+
+    /**
+     * Cargamos los modelos necesarios para la barra de navegación
+     */
+    private void loadCommonModelAttributes(Model model) {
+        // Añadir filtro de búsqueda
+        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+
+        // Añadir géneros para filtros
+        model.addAttribute("generos", generosService.getAllGeneros());
+    }
+
     /**
      * Controlador de la petición del sistema para cargar todos los miembros de
      * WikiMovies
@@ -37,10 +49,11 @@ public class MiembrosControlador extends BaseControlador {
     public String mostrarMiembros(Model model) {
 
         // Cargamos los generos para el filtro de búsqueda de películas
-        model.addAttribute("generos", generosService.getAllGeneros());
-        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
         model.addAttribute("miembros", miembrosService.obtenerMiembros(null));
         model.addAttribute("filtro", null);
+
+        loadCommonModelAttributes(model);
+
         return "miembros";
     }
 
@@ -51,11 +64,10 @@ public class MiembrosControlador extends BaseControlador {
     @GetMapping("/miembros/filtro")
     public String mostrarFiltro(@RequestParam("nombre") String filtroNombre,  Model model) {
 
-        // Cargamos los generos para el filtro de búsqueda de películas
-        model.addAttribute("generos", generosService.getAllGeneros());
-        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
         model.addAttribute("miembros", miembrosService.obtenerMiembros(filtroNombre));
         model.addAttribute("filtro", filtroNombre);
+
+        loadCommonModelAttributes(model);
 
         return "miembros";
     }
@@ -74,20 +86,19 @@ public class MiembrosControlador extends BaseControlador {
         if( usuarioProfile == null ) return "redirect:/miembros";
         model.addAttribute("usuarioProfile", usuarioProfile);
 
-        // Obtenemos las listas del usuario
+        // Obtenemos las listas del usuario, incluyendo Vistas + Favoritas
         List<ListaDTO> listasDTO = listasService.getListasUsuario(id);
         model.addAttribute("listasDTO", listasDTO);
 
-        // Obtenemos el número de personas que sigue el usuario
+        // Obtenemos el número de personas que sigue el usuario (El número de seguidores lo obtenemos directamente en el JSP)
         Integer numseguidos = miembrosService.numSeguidosUsuario(id);
         model.addAttribute("numseguidos", numseguidos);
 
-        // Cargamos los modelos para el filtro de películas
-        model.addAttribute("generos", generosService.getAllGeneros());
-        model.addAttribute("filtroBusquedaDTO", new FiltroBusquedaDTO());
+        loadCommonModelAttributes(model);
 
         generosUsuariosService.cargarModelosGenerosUsuarios(model);
         rolesService.cargarModelosRoles(model);
+
         return "profile";
     }
 
@@ -108,8 +119,8 @@ public class MiembrosControlador extends BaseControlador {
         UsuarioDTO usuario = (UsuarioDTO) session.getAttribute(USUARIO_SESION);
         Integer idUsuarioProfile = usuarioProfile.getIdUsuario();
 
-        if( !usuario.getIdUsuario().equals(idUsuarioProfile) ) {
-            if( usuario.getRol() != USER_ADMIN ) {
+        if( !usuario.getIdUsuario().equals(idUsuarioProfile) ) {    // Usuario logueado desigual a usuario del perfil
+            if( usuario.getRol() != USER_ADMIN ) {                  // Usuario sin roles para editar perfiles
                 // Alguien sin permisos intenta ajustar una cuenta
                 return "redirect:/profile?id=" + idUsuarioProfile;
             }
@@ -124,6 +135,7 @@ public class MiembrosControlador extends BaseControlador {
     public String seguir(@RequestParam("id") Integer idUsuarioSeguir, HttpSession session,
             HttpServletRequest request) {
 
+        // Obtenemos el id del usuario logueado
         Integer miId = ((UsuarioDTO) session.getAttribute("usuario")).getIdUsuario();
         miembrosService.seguirUsuario( miId ,idUsuarioSeguir);
 
@@ -135,6 +147,7 @@ public class MiembrosControlador extends BaseControlador {
     public String dejarSeguir(@RequestParam("id") Integer idUsuario, HttpSession session,
             HttpServletRequest request) {
 
+        // Obtenemos el id del usuario logueado
         Integer miId = ((UsuarioDTO) session.getAttribute("usuario")).getIdUsuario();
         miembrosService.dejarDeSeguirUsuario( miId ,idUsuario);
 
@@ -156,6 +169,7 @@ public class MiembrosControlador extends BaseControlador {
 
         miembrosService.editarRolPremium(idUsuario);
 
+        // Actualizamos el UsuarioDTO que se almacena en el navegador para que tenga el rol nuevo
         loginService.actualizarUsuarioSesion(session);
 
         return "redirect:/profile?id=" + idUsuario;
