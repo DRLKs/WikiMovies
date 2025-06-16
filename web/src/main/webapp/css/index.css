@@ -528,6 +528,18 @@ body {
     align-items: flex-start;
 }
 
+.titulo-peliculas-recomendadas {
+    background: linear-gradient(90deg, #ffd369 0%, #ff4646 100%);
+    color: #181818 !important;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
 .scroll-btn:hover {
     background: rgba(229, 9, 20, 0.1);
     color: #e50914;

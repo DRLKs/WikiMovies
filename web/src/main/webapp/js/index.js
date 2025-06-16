@@ -2,7 +2,7 @@
 function scrollLista(button, direction) {
     const wrapper = button.closest('.lista-peliculas-wrapper');
     const lista = wrapper.querySelector('.lista-peliculas');
-    const scrollAmount = 300; // Cantidad de píxeles a desplazar
+    const scrollAmount = 600; // Cantidad de píxeles a desplazar
     
     if (direction === -1) {
         // Scroll hacia la izquierda
