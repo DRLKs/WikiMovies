@@ -128,6 +128,9 @@ public class MiembrosControlador extends BaseControlador {
 
         miembrosService.editarUsuario(usuarioProfile);
 
+        // Actualizamos el UsuarioDTO que se almacena en el navegador para que tenga el rol nuevo
+        loginService.actualizarUsuarioSesion(session);
+
         return "redirect:/profile?id=" + idUsuarioProfile;
     }
 

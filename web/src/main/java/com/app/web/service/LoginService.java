@@ -77,7 +77,6 @@ public class LoginService extends UsuarioService {
      */
     public void actualizarUsuarioSesion(HttpSession session){
         Integer idUsuarioSesion = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario();
-        logOut(session);
         guardarSesion( usuarioRepositorio.getReferenceById(idUsuarioSesion).toDTO(), session);
     }
 
