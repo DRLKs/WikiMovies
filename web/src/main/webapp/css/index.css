@@ -475,38 +475,46 @@ body {
     box-sizing: border-box;
     min-height: 320px;
     overflow: visible;
+    padding: 0 70px; /* Espacio para los botones */
 }
 
 .scroll-btn {
     flex: 0 0 auto;
-    background: var(--movie-card-bg);
-    border: 2px solid var(--accent-color);
-    color: var(--accent-color);
-    font-size: 1.5rem;
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid rgba(229, 9, 20, 0.6);
+    color: #e50914;
+    font-size: 1.3rem;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
-    display: flex;
+    display: none; /* Oculto por defecto */
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    margin: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s ease; /* Transición más suave */
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.scroll-btn.visible {
+    display: flex;
+    opacity: 0.7;
+    visibility: visible;
+    transform: translateY(-50%) scale(1); /* Asegurar escala normal */
 }
 
 .scroll-btn-left {
-    left: 0;
-    transform: translate(-150%, -50%);
+    left: 10px;
 }
 
 .scroll-btn-right {
-    right: 0;
-    transform: translate(150%, -50%);
+    right: 10px;
 }
 
 .lista_peliculas {
@@ -521,21 +529,73 @@ body {
 }
 
 .scroll-btn:hover {
-    background: var(--accent-color);
-    color: white;
-    transform: translateY(-50%) scale(1.1);
+    background: rgba(229, 9, 20, 0.1);
+    color: #e50914;
+    border-color: rgba(229, 9, 20, 0.8);
+    transform: translateY(-50%) scale(1.05);
+    opacity: 1;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
 }
 
-.titulo-peliculas-recomendadas {
-    background: linear-gradient(135deg, var(--accent-color), #ff6b6b);
-    color: white !important;
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 18px;
-    padding: 12px 20px;
-    border-radius: 25px;
-    display: inline-block;
-    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.scroll-btn:active {
+    transform: translateY(-50%) scale(0.98);
+    opacity: 0.8;
+}
+
+/* Ajuste para cuando no hay suficientes películas */
+.lista-peliculas-wrapper.no-scroll {
+    padding: 0 20px; /* Menos padding cuando no hay botones */
+}
+
+.lista-peliculas-wrapper.no-scroll .scroll-btn {
+    display: none !important;
+}
+
+/* Estilos mejorados para responsive */
+@media (max-width: 768px) {
+    .lista-peliculas-wrapper {
+        padding: 0 60px;
+    }
+    
+    .lista-peliculas-wrapper.no-scroll {
+        padding: 0 15px;
+    }
+    
+    .scroll-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .scroll-btn-left {
+        left: 8px;
+    }
+    
+    .scroll-btn-right {
+        right: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .lista-peliculas-wrapper {
+        padding: 0 55px;
+    }
+    
+    .lista-peliculas-wrapper.no-scroll {
+        padding: 0 10px;
+    }
+    
+    .scroll-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+    }
+    
+    .scroll-btn-left {
+        left: 5px;
+    }
+    
+    .scroll-btn-right {
+        right: 5px;
+    }
 }
