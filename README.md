@@ -2,7 +2,7 @@
 
 # 🎬 WikiMovies - Tu Mundo de Películas
 
-Bienvenido a **WikiMovies**, el lugar donde puedes encontrar información sobre tus películas favoritas, descubrir nuevos títulos y compartir opiniones con la comunidad.
+Bienvenido a **WikiMovies**, el lugar donde puedes encontrar información sobre tus películas favoritas, descubrir nuevos títulos.
 
 ## 📌 Características
 - 🎞️ [Base de datos con cientos de películas](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata?resource=download&select=tmdb_5000_movies.csv).
@@ -10,11 +10,10 @@ Bienvenido a **WikiMovies**, el lugar donde puedes encontrar información sobre 
 - 📖 Muchísima información de todas las películas.
 
 ## 🫂​ Roles
-- Administrador: gestión de usuarios y datos generales
-- Editor: peliculas, personajes, casting, y datos relacionados
-- Usuario común: entra en la aplicación y hace uso de ella (tiene un plan gratuito). Ver peliculas, añadir a favoritas, valorar con puntuación
-- Recomendador de peliculas: Usuario premium. La aplicación te recomienda peliculas en función de tu perfil. No hace falta IA (Ej: si te gusta una peli de terror te recomienda una del mismo genero)
-- Analista: Análisis de las bases de datos. Saca estadísticas como numero de peliculas de 5 estrellas, etc
+- Administrador de Usuarios: Gestiona a los usuarios del sistema, cambiando roles, eliminandolos...
+- Administrador de Películas: Gestiona todos los datos de las películas, puede eliminarlas, añadirlas y editarlas.
+- Usuario normal: Entra en la aplicación y hace uso de ella (tiene un plan gratuito). Ver peliculas, añadir a favoritas, crear listas, seguir a usuarios...
+- Usuario premium: Además de las funcionalidades gratuitas, dispone de una serie de recomendaciones en la página principal personalizadas en sus gustos.
 
 ## 🚀 Cómo Empezar
 1. Clona el repositorio:
@@ -35,4 +34,4 @@ Bienvenido a **WikiMovies**, el lugar donde puedes encontrar información sobre 
 
 ---
 
-💡 _¡Explora el mundo del cine con WikiMovie y únete a la comunidad cinéfila!_ 🎥🍿
+💡 _¡Explora el mundo del cine con WikiMovies y únete a la comunidad cinéfila!_ 🎥🍿
