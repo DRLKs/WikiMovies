@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: peliculas_tmdb
 -- ------------------------------------------------------
@@ -118,33 +118,6 @@ CREATE TABLE `etiquetas` (
 LOCK TABLES `etiquetas` WRITE;
 /*!40000 ALTER TABLE `etiquetas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `etiquetas` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `favoritos`
---
-
-DROP TABLE IF EXISTS `favoritos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `favoritos` (
-  `id_usuario` int NOT NULL,
-  `id_pelicula` int NOT NULL,
-  PRIMARY KEY (`id_usuario`,`id_pelicula`),
-  KEY `FK_Favoritos_Pelicula` (`id_pelicula`),
-  CONSTRAINT `FK_Favoritos_Pelicula` FOREIGN KEY (`id_pelicula`) REFERENCES `peliculas` (`id_pelicula`),
-  CONSTRAINT `FK_Favoritos_Usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `favoritos`
---
-
-LOCK TABLES `favoritos` WRITE;
-/*!40000 ALTER TABLE `favoritos` DISABLE KEYS */;
-INSERT INTO `favoritos` VALUES (10,1),(11,1),(10,2),(10,3);
-/*!40000 ALTER TABLE `favoritos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -639,4 +612,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-17 14:03:20
+-- Dump completed on 2025-06-17 17:51:38

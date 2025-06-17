@@ -29,7 +29,6 @@ public class MiembrosControlador extends BaseControlador {
     @Autowired private RolesService rolesService;
     @Autowired private LoginService loginService;
 
-
     /**
      * Cargamos los modelos necesarios para la barra de navegación
      */
@@ -160,9 +159,12 @@ public class MiembrosControlador extends BaseControlador {
 
 
     @PostMapping("/eliminar")
-    public String eliminarUsuario(@RequestParam("id") Integer idUsuario){
+    public String eliminarUsuario(@RequestParam("id") Integer idUsuario, HttpSession session){
 
         miembrosService.eliminarUsuario(idUsuario);
+        if( session.getAttribute(USUARIO_SESION) != null && ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getIdUsuario().equals(idUsuario) ) {
+            loginService.logOut(session);
+        }
 
         return "redirect:/miembros";
     }
