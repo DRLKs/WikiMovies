@@ -320,7 +320,14 @@ public class Controlador extends BaseControlador {
     }
 
     @GetMapping("/crearPelicula")
-    public String crearPelicula(Model model) {
+    public String crearPelicula(Model model,  HttpSession session) {
+        if (!estaAutenticado(session)) {
+            return "redirect:/login";
+        }
+        int rolUsuario = ((UsuarioDTO) session.getAttribute(USUARIO_SESION)).getRol();
+        if(rolUsuario != 2) {
+            return"redirect:/";
+        }
 
         model.addAttribute("pelicula", null);
 

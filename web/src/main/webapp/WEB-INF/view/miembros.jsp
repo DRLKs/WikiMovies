@@ -44,7 +44,7 @@
                 if(usuarios != null && !usuarios.isEmpty()) {
                     for(UsuarioDTO userMiembro : usuarios) {
             %>
-                    <div class="miembro-card" onclick="location.href='profile?id=<%= userMiembro.getIdUsuario() %>'">
+                    <div class="miembro-card" onclick="location.href='/profile?id=<%= userMiembro.getIdUsuario() %>'">
                         <div>
                             <img class="miembro-profile-image" src="<%= userMiembro.getAvatar() != null ? userMiembro.getAvatar() : "../../img/default-avatar.png"%>" alt="Avatar de <%=userMiembro.getNombreUsuario()%>">
                             <div class="miembro-nombre"><%= userMiembro.getNombreUsuario() %></div>

@@ -90,9 +90,7 @@
             </div>
         </div>
         <!---------------------------------------------------------->
-
-        <!-- BOTONES DE ACCIÓN -->
-        <!-- BOTON DE EDITAR PELICULA (Solo para administradores autenticados) -->
+        <!-- BOTONES DE ELIMINAR/EDITAR PELICULA -->
         <%
             if (usuarioAutenticado && usuario.getRol() == 2) {
         %>

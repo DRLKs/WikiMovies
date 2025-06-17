@@ -36,7 +36,7 @@
         <i class="eslogan"><%= pelicula.getEslogan() %>
         </i>
         <!---------------------------------------------------------->
-        <!-- BOTON DE EDITAR PELICULA -->
+        <!-- BOTONES DE ELIMINAR/EDITAR PELICULA -->
         <% 
             if (usuario != null && usuario.getRol() == 2) { 
         %>
